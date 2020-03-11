@@ -6,6 +6,7 @@ const utils = require('./utils/utils');
 const exec = require('child_process').exec; //import the exec function, used for executing bash commands
 const plugger = require('@nonamenpm/plugger');
 const chalk = require('chalk');
+const mem = require('./utils/mem');
 
 let plugins = [];
 
@@ -15,11 +16,15 @@ exports.use = function(plugins) {
 	plugger(plugins, this, false);
 };
 
+exports.pluginInfo = {};
+exports.pluginList = '';
+
 //entry point for plugins
 exports.templateKeys = {
 	create: function(file, element) {
 		const fileToCreate = file;
-		let lastindex = 0;
+		const createdDirs = {};
+
 		for (let i = 0; i <= fileToCreate.length - 1; i++) {
 			//console.log(fileToCreate[i].replace(/\(name\)/g, element));
 			if (typeof fileToCreate[i] !== 'object') {
@@ -27,14 +32,16 @@ exports.templateKeys = {
 					let parsedFile = fileToCreate[i].replace(/\(name\)/g, element);
 
 					fs.mkdir(parsedFile.substring(0, utils.lastOf(parsedFile, '/')), { recursive: true }, () => {
-						console.log(
-							chalk.greenBright(
-								'		created directory: ' + parsedFile.substring(0, utils.lastOf(parsedFile, '/'))
-							)
-						);
+						createdDirs[parsedFile.substring(0, utils.lastOf(parsedFile, '/'))] ||
+							console.log(
+								chalk.greenBright(
+									'	created directory: ' + parsedFile.substring(0, utils.lastOf(parsedFile, '/'))
+								)
+							);
+						createdDirs[parsedFile.substring(0, utils.lastOf(parsedFile, '/'))] = true;
 					});
 					fs.writeFile('./' + parsedFile, '', () => {
-						console.log(chalk.greenBright('		created file: ' + parsedFile));
+						console.log(chalk.greenBright('	created file: ' + parsedFile));
 					});
 				} else {
 					const parsedFile = fileToCreate[i].replace(/\(name\)/g, element);
@@ -58,14 +65,19 @@ exports.use(plugins);
 //#endregion PLUGIN_ENTRY_POINT
 
 exports.loadTemplates = function(element, logLevel) {
-	const file = yaml.safeLoad(fs.readFileSync('./templates/' + element[0] + '.yaml', 'utf8')); //parse the yaml template
-
+	try {
+		var file = yaml.safeLoad(fs.readFileSync('./templates/' + element[0] + '.yaml', 'utf8')); //parse the yaml template
+	} catch (e) {
+		console.log(chalk.redBright('error: template not found: ') + chalk.whiteBright(element[0]));
+		return 1;
+	}
 	for (key in file) {
 		try {
 			exports.templateKeys[key](file[key], element[1]);
 		} catch (e) {
-			console.log(e);
+			//console.log(e);
 			console.log("Unsupported key: '" + key + "'.");
+			return 1;
 		}
 	}
 	return 0;
@@ -74,6 +86,9 @@ exports.loadTemplates = function(element, logLevel) {
 function walk(dir) {
 	files = fs.readdirSync(dir);
 	files.forEach((element) => {
-		plugins.push(require(dir + element));
+		if (!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.')))) {
+			exports.pluginList += element.substring(0, utils.lastOf(element, '.')) + ' ';
+			plugins.push(require(dir + element));
+		}
 	});
 }
