@@ -33,7 +33,7 @@ exports.templateKeys = {
 					try {
 						template.templateKeys[key2](file[key] ? file[key][key2] : file[key2], name, file[key]);
 					} catch (e) {
-						console.log("Unsupported key: '" + key2 + "'.");
+						console.log(chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key + "'."));
 
 						return 1;
 					}
@@ -53,7 +53,7 @@ exports.templateKeys = {
 					template.templateKeys[key](file[key], name);
 				}
 			} catch (e) {
-				console.log("Unsupported key: '" + key + "'.");
+				console.log(chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key + "'."));
 				return 1;
 			}
 		}

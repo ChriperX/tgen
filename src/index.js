@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/local/bin/node
 const template = require('./templates');
 const tp = require('@nonamenpm/text-parser');
 const fs = require('fs');
@@ -36,7 +36,7 @@ function walk(dir) {
 	});
 }
 
-walk('../plugins/parser/');
+walk(process.env.TGENPATH + '../plugins/parser/');
 exports.use(plugins);
 addCustomCommands();
 
@@ -49,7 +49,9 @@ tp.add('new <template> <name>', (element) => {
 			'executing template: ' +
 				element[0] +
 				', ' +
-				(template.pluginList ? 'with plugins: ' + template.pluginList : 'with no plugins installed.')
+				(template.pluginList
+					? 'with template plugins: ' + chalk.whiteBright(template.pluginList)
+					: 'with no template plugins installed.')
 		)
 	);
 	template.loadTemplates(element, logLevel);
@@ -58,18 +60,22 @@ tp.add('new <template> <name>', (element) => {
 tp.add('plugin <option> <pluginName>', (element) => {
 	if (element[0] === 'info') {
 		if (exports.pluginInfo[element[1]]) {
-			console.log(chalk.cyan('version: ') + chalk.whiteBright(exports.pluginInfo[element[1]]['version']));
-			console.log(chalk.cyan('author: ') + chalk.whiteBright(exports.pluginInfo[element[1]]['author']));
-			console.log(chalk.cyan('repo: ') + chalk.whiteBright(exports.pluginInfo[element[1]]['repo']));
-			console.log(chalk.cyan('extends: ') + chalk.whiteBright(exports.pluginInfo[element[1]]['extends']));
-			console.log(chalk.cyan('description: ') + chalk.whiteBright(exports.pluginInfo[element[1]]['description']));
-		} else if (template.pluginInfo[element[1]]) {
-			console.log(chalk.cyan('version: ') + chalk.whiteBright(template.pluginInfo[element[1]]['version']));
-			console.log(chalk.cyan('author: ') + chalk.whiteBright(template.pluginInfo[element[1]]['author']));
-			console.log(chalk.cyan('repo: ') + chalk.whiteBright(template.pluginInfo[element[1]]['repo']));
-			console.log(chalk.cyan('extends: ') + chalk.whiteBright(template.pluginInfo[element[1]]['extends']));
+			console.log(chalk.cyan('info about plugin ') + chalk.whiteBright(element[1]) + ':');
+			console.log(chalk.cyan('	version: ') + chalk.whiteBright(exports.pluginInfo[element[1]]['version']));
+			console.log(chalk.cyan('	author: ') + chalk.whiteBright(exports.pluginInfo[element[1]]['author']));
+			console.log(chalk.cyan('	repo: ') + chalk.whiteBright(exports.pluginInfo[element[1]]['repo']));
+			console.log(chalk.cyan('	extends: ') + chalk.whiteBright(exports.pluginInfo[element[1]]['extends']));
 			console.log(
-				chalk.cyan('description: ') + chalk.whiteBright(template.pluginInfo[element[1]]['description'])
+				chalk.cyan('	description: ') + chalk.whiteBright(exports.pluginInfo[element[1]]['description'])
+			);
+		} else if (template.pluginInfo[element[1]]) {
+			console.log(chalk.cyan('info about plugin ') + chalk.whiteBright(element[1] + ':'));
+			console.log(chalk.cyan('	version: ') + chalk.whiteBright(template.pluginInfo[element[1]]['version']));
+			console.log(chalk.cyan('	author: ') + chalk.whiteBright(template.pluginInfo[element[1]]['author']));
+			console.log(chalk.cyan('	repo: ') + chalk.whiteBright(template.pluginInfo[element[1]]['repo']));
+			console.log(chalk.cyan('	extends: ') + chalk.whiteBright(template.pluginInfo[element[1]]['extends']));
+			console.log(
+				chalk.cyan('	description: ') + chalk.whiteBright(template.pluginInfo[element[1]]['description'])
 			);
 		} else {
 			console.log(chalk.redBright('error: non-existent plugin: ') + chalk.whiteBright(element[1]));
@@ -79,10 +85,10 @@ tp.add('plugin <option> <pluginName>', (element) => {
 	if (element[0] === 'ignore') {
 		console.log(chalk.cyanBright('ignoring plugin: ' + element[1]));
 		mem.tgenSettings['plugins']['ignore'].push(element[1]);
-		fs.writeFileSync('../.tgen.yaml', yaml.safeDump(mem.tgenSettings));
+		fs.writeFileSync(process.env.TGENPATH + '/../.tgen.yaml', yaml.safeDump(mem.tgenSettings));
 	}
 	if (element[0] === 'check') {
-		const dir = fs.readdirSync('../plugins/' + element[1] + '/');
+		const dir = fs.readdirSync(process.env.TGENPATH + '../plugins/' + element[1] + '/');
 
 		console.log(chalk.cyanBright('installed plugins: '));
 
@@ -97,3 +103,6 @@ tp.add('-v --verbose', () => {
 });
 
 tp.parse();
+
+//final separator
+console.log();

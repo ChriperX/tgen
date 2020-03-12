@@ -1,3 +1,1 @@
-exports.log = function(msg, levelCode) {
-
-}
+exports.log = function(msg, levelCode) {};

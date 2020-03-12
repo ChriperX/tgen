@@ -1,7 +1,6 @@
 create:
     - (name)/index.ts
     - (name)/package.json
-    - (name)/tsconfig.json
 commands:
     - cd ./(name) && npm init -y && npm i typescript --save-dev
-    - cd ./(name) && tsc
+    - cd ./(name) && tsc --init

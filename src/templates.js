@@ -56,27 +56,30 @@ exports.templateKeys = {
 			exec(commands[i].replace(/\(name\)/g, element));
 			console.log(chalk.cyan('	ran command: ' + commands[i].replace(/\(name\)/g, element)));
 		}
+		console.log(chalk.yellowBright('	this may take a while'));
 	}
 };
 
-walk('../plugins/templateParser/');
+walk(process.env.TGENPATH + '../plugins/templateParser/');
 exports.use(plugins);
 
 //#endregion PLUGIN_ENTRY_POINT
 
 exports.loadTemplates = function(element, logLevel) {
 	try {
-		var file = yaml.safeLoad(fs.readFileSync('./templates/' + element[0] + '.yaml', 'utf8')); //parse the yaml template
+		var file = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '/templates/' + element[0] + '.yaml', 'utf8')); //parse the yaml template
 	} catch (e) {
-		console.log(chalk.redBright('error: template not found: ') + chalk.whiteBright(element[0]));
+		console.log(e);
+		console.log(chalk.redBright('	error: template not found: ') + chalk.whiteBright(element[0]));
 		return 1;
 	}
 	for (key in file) {
 		try {
-			exports.templateKeys[key](file[key], element[1]);
+			console.log(exports.templateKeys);
+			exports.templateKeys[key](file[key], element[1], file);
 		} catch (e) {
-			//console.log(e);
-			console.log("Unsupported key: '" + key + "'.");
+			console.log(e);
+			console.log(chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key + "'."));
 			return 1;
 		}
 	}
@@ -87,7 +90,8 @@ function walk(dir) {
 	files = fs.readdirSync(dir);
 	files.forEach((element) => {
 		if (!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.')))) {
-			exports.pluginList += element.substring(0, utils.lastOf(element, '.')) + ' ';
+			exports.pluginList +=
+				element.substring(0, utils.lastOf(element, '.')) + (files[files.length - 1] !== element ? ', ' : ' ');
 			plugins.push(require(dir + element));
 		}
 	});
