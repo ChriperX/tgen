@@ -1,5 +1,26 @@
 # tgen
 
+## Legend
+ - [Install](#install)
+    - [npm](#npm)
+ - [FAQ](#faq)
+    - [What's tgen?](#what's-tgen)
+    - [What do i need to install tgen?](#what-do-i-need-to-install-tgen)
+    - [What do i need to create plugins?](#what-do-i-need-to-create-plugins)
+    - [Ok how do i create my first project with tgen?](#ok-how-do-i-create-my-first-project-with-tgen)
+ - [Documentation](#documentation)
+    - [Template formatting](#template-formatting)
+    - [Common plugin syntax](#common-plugin-syntax)
+    - [Parser plugins](#parser-plugins)
+    - [Template plugins](#template-plugins)
+ - [Template keys syntax](#template-keys-syntax)
+    - [create](#create)
+    - [commands](#commands)
+    - [if](#if)
+    - [else][#else]
+    - [log][#else]
+ - [Contributing][#contributing]
+
 ## Install
 
 ### npm
@@ -17,17 +38,23 @@ npm i tgen -g
 
 ### What do i need to install tgen?
 
-[Node.js](https://www.nodejs.com)
+[Node.js](https://www.nodejs.org)
 
 And the tools of your favourite language.
 
 ### What do i need to create plugins?
 
-Nothing. Only some knowledge about node.js, and about the [plugin API](#documentation)
+Nothing. Only some knowledge about node.js, and the [plugin API](#documentation)
+
+### How do i install plugins?
+
+You can install them directly with tgen, or you can put them in /plugins/templateParser/ or /plugins/parser/.
+
+**NOTE: To figure out in which folder you have to put them, please see the installation guide provided by the plugin creator.**
 
 ### How do i install and make templates?
 
-You can install templates directly with tgen.
+You can install templates directly with tgen, or drop them in **/src/templates/**.
 
 To create templates you need to know how [YAML](https://yaml.org) works, and what [keys](#template-keys-syntax) are and how to use them.
 
@@ -39,7 +66,6 @@ tgen new yourLanguageHere yourProjectNameHere
 ```
 
 This will execute the template **yourLanguageHere** (you can see what templates you have installed in /src/templates/), creating a
-
 project called **yourProjectNameHere**.
 
 ## Documentation
@@ -129,6 +155,7 @@ log:
 ```
 
 **NOTE: When writing a plugin, please add a pluginInfo object to your plugin. It's optional, but it's recommended.**
+
 **NOTE: The log plugin is already installed by default. Installed template plugins will be listed whenever a new project is created.**
 
 ## Template keys syntax
