@@ -1,5 +1,27 @@
 //TODO implement plugin support
 
+//#region LICENSE
+
+/*
+	File used in tgen for template handling.
+    Copyright (C) 2020 Christian
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+//#endregion LICENSE
+
 const yaml = require('js-yaml');
 const fs = require('fs');
 const utils = require('./utils/utils');
@@ -67,18 +89,22 @@ exports.use(plugins);
 
 exports.loadTemplates = function(element, logLevel) {
 	try {
+		//load file, TGENPATH is the path to where tgen is installed
 		var file = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '/templates/' + element[0] + '.yaml', 'utf8')); //parse the yaml template
 	} catch (e) {
-		console.log(e);
-		console.log(chalk.redBright('	error: template not found: ') + chalk.whiteBright(element[0]));
+		if (e.name === 'YAMLException') {
+			//bad formatting in template
+			console.log(chalk.redBright('	error: bad formatting in template: ') + chalk.whiteBright(element[0]));
+		} else {
+			//template not found
+			console.log(chalk.redBright('	error: template not found: ') + chalk.whiteBright(element[0]));
+		}
 		return 1;
 	}
 	for (key in file) {
 		try {
-			console.log(exports.templateKeys);
 			exports.templateKeys[key](file[key], element[1], file);
 		} catch (e) {
-			console.log(e);
 			console.log(chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key + "'."));
 			return 1;
 		}

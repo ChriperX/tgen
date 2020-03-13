@@ -1,18 +1,44 @@
+
+//#region LICENSE
+
+/*
+	Log plugin for tgen, the open source templating engine.
+    Copyright (C) 2020 Christian
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+//#endregion LICENSE
+
+
 const chalk = require('chalk');
 
 const logLevels = {
-	default: function(msg) {
-		console.log(chalk.whiteBright('	' + msg));
+	default: function(msg, name) {
+		console.log(chalk.whiteBright('	' + msg.replace(/\(name\)/g, name)));
 	},
-	info: function(msg) {
-		console.log('sadsadsafsafsafsafasgsa');
-		console.log(chalk.cyanBright('	INFO: ') + chalk.whiteBright(msg));
+	info: function(msg, name) {
+		console.log('	' + chalk.cyanBright(msg.replace(/\(name\)/g, name)));
 	},
-	error: function(msg) {
-		console.log(chalk.redBright('	ERROR: ' + msg));
+	error: function(msg, name) {
+		console.log('	' + chalk.redBright(msg.replace(/\(name\)/g, name)));
 	},
-	success: function(msg) {
-		console.log(chalk.greenBright('	SUCCESS: ' + msg));
+	warning: function(msg, name) {
+		console.log('	' + chalk.yellowBright(msg.replace(/\(name\)/g, name)));
+	},
+	success: function(msg, name) {
+		console.log('	' + chalk.greenBright(msg.replace(/\(name\)/g, name)));
 	}
 };
 
@@ -31,11 +57,12 @@ exports.templateKeys = {
 		try {
 			for (key in file) {
 				for (let i = 0; i <= file[key].length - 1; i++) {
-					logLevels[key](file[key][i]);
+					logLevels[key](file[key][i], name);
 				}
 			}
 		} catch (e) {
 			console.log(chalk.redBright('	error: logs must be in a logLevel sub-key.'));
+			return 1;
 		}
 	}
 };
