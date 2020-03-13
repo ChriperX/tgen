@@ -17,9 +17,9 @@
     - [create](#create)
     - [commands](#commands)
     - [if](#if)
-    - [else][#else]
-    - [log][#else]
- - [Contributing][#contributing]
+    - [else](#else)
+    - [log](#else)
+ - [Contributing](#contributing)
 
 ## Install
 
