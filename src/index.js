@@ -28,6 +28,7 @@ const fs = require('fs');
 const chalk = require('chalk');
 const yaml = require('js-yaml');
 const utils = require('./utils/utils');
+const logger = require('./utils/logger');
 const plugger = require('@nonamenpm/plugger');
 const mem = require('./utils/mem');
 
@@ -48,6 +49,7 @@ exports.use = function(plugin) {
 
 function addCustomCommands() {
 	for (key in exports.commands) {
+		//loops through the commands object and adds the commands
 		tp.add(exports.commands[key]['command'], exports.commands[key]['cb'], exports.commands[key]['desc']);
 	}
 }
@@ -83,47 +85,58 @@ tp.add('new <template> <name>', (element) => {
 tp.add('plugin <option> <pluginName>', (element) => {
 	if (element[0] === 'info') {
 		if (exports.pluginInfo[element[1]]) {
+			//log info about a plugin
 			console.log(chalk.cyan('info about plugin ') + chalk.whiteBright(element[1]) + ':');
-			console.log(chalk.cyan('	version: ') + chalk.whiteBright(exports.pluginInfo[element[1]]['version']));
-			console.log(chalk.cyan('	author: ') + chalk.whiteBright(exports.pluginInfo[element[1]]['author']));
-			console.log(chalk.cyan('	repo: ') + chalk.whiteBright(exports.pluginInfo[element[1]]['repo']));
-			console.log(chalk.cyan('	extends: ') + chalk.whiteBright(exports.pluginInfo[element[1]]['extends']));
-			console.log(
-				chalk.cyan('	description: ') + chalk.whiteBright(exports.pluginInfo[element[1]]['description'])
-			);
+			logger('version: ' + chalk.whiteBright(exports.pluginInfo[element[1]]['version']), 'info');
+			logger('author: ' + chalk.whiteBright(exports.pluginInfo[element[1]]['author']), 'info');
+			logger('repo: ' + chalk.whiteBright(exports.pluginInfo[element[1]]['repo']), 'info');
+			logger('extends: ' + chalk.whiteBright(exports.pluginInfo[element[1]]['extension']), 'info');
+			logger('description: ' + chalk.whiteBright(exports.pluginInfo[element[1]]['description']), 'info');
 		} else if (template.pluginInfo[element[1]]) {
+			//log info about a plugin
 			console.log(chalk.cyan('info about plugin ') + chalk.whiteBright(element[1] + ':'));
-			console.log(chalk.cyan('	version: ') + chalk.whiteBright(template.pluginInfo[element[1]]['version']));
-			console.log(chalk.cyan('	author: ') + chalk.whiteBright(template.pluginInfo[element[1]]['author']));
-			console.log(chalk.cyan('	repo: ') + chalk.whiteBright(template.pluginInfo[element[1]]['repo']));
-			console.log(chalk.cyan('	extends: ') + chalk.whiteBright(template.pluginInfo[element[1]]['extends']));
-			console.log(
-				chalk.cyan('	description: ') + chalk.whiteBright(template.pluginInfo[element[1]]['description'])
-			);
+			logger('version: ' + chalk.whiteBright(template.pluginInfo[element[1]]['version']), 'info');
+			logger('author: ' + chalk.whiteBright(template.pluginInfo[element[1]]['author']), 'info');
+			logger('repo: ' + chalk.whiteBright(template.pluginInfo[element[1]]['repo']), 'info');
+			logger('extends: ' + chalk.whiteBright(template.pluginInfo[element[1]]['extends']), 'info');
+			logger('description: ' + chalk.whiteBright(template.pluginInfo[element[1]]['description']), 'info');
 		} else {
 			console.log(chalk.redBright('error: non-existent plugin: ') + chalk.whiteBright(element[1]));
 			return 1;
 		}
 	}
 	if (element[0] === 'ignore') {
+		//ignore a plugin
 		console.log(chalk.cyanBright('ignoring plugin: ' + element[1]));
+		//pushes to tgenSetting the plugin to ignore
 		mem.tgenSettings['plugins']['ignore'].push(element[1]);
+		//writes the changes to tgen.yaml
 		fs.writeFileSync(process.env.TGENPATH + '/../.tgen.yaml', yaml.safeDump(mem.tgenSettings));
 	}
 	if (element[0] === 'check') {
-		const dir = fs.readdirSync(process.env.TGENPATH + '../plugins/' + element[1] + '/');
-
+		//check a plugin directory
+		try {
+			//reads a directory
+			var dir = fs.readdirSync(process.env.TGENPATH + '../plugins/' + element[1] + '/');
+		} catch (e) {
+			//the directory doesn't exist
+			console.log(chalk.redBright('error: plugin directory not found: ' + element[1]));
+			return 1;
+		}
 		console.log(chalk.cyanBright('installed plugins: '));
 
 		dir.forEach((ind) => {
-			console.log(chalk.whiteBright('	' + ind.substring(0, utils.lastOf(ind, '.'))));
+			//lists the plugin files
+			logger(ind.substring(0, utils.lastOf(ind, '.')), 'default');
 		});
 	}
 });
 
+/*
 tp.add('-v --verbose', () => {
 	logLevel = 'verbose';
 });
+*/
 
 tp.parse();
 
