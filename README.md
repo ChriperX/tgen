@@ -20,6 +20,7 @@
     - [else](#else)
     - [log](#else)
  - [Contributing](#contributing)
+ - [Donating](#donating)
 
 ## Install
 
@@ -193,3 +194,25 @@ There are 5 logLevels: **default**, **info**, **success**, **warning**, **error*
 ## Contributing
 
 See CONTRIBUTING.md
+
+## Donating
+
+If you want to donate you can with cryptos!
+
+### Ethereum
+
+```
+0x72A8Db5952110Bc06425099945F18F9A7d268560
+```
+
+### Bitcoin Cash
+
+```
+qpluevlrmtt6eqg9qh604zp80hkc3p764sulqtqd8x
+```
+
+### ZCash
+
+```
+t1e58RCguse2tYw1bAT6ZZZpgPduim6tLAz
+```
