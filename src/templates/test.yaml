@@ -1,9 +1,9 @@
 if:
-  '"b" === "b"':
-    log:
-      info:
-        - it works
   'true':
     log:
       info:
-        - ok
+        - 'yes'
+else:
+  log:
+    warning:
+      - 'no'
