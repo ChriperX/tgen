@@ -1,4 +1,3 @@
-
 //#region LICENSE
 
 /*
@@ -21,26 +20,8 @@
 
 //#endregion LICENSE
 
-
-const chalk = require('chalk');
-
-const logLevels = {
-	default: function(msg, name) {
-		console.log(chalk.whiteBright('	' + msg.replace(/\(name\)/g, name)));
-	},
-	info: function(msg, name) {
-		console.log('	' + chalk.cyanBright(msg.replace(/\(name\)/g, name)));
-	},
-	error: function(msg, name) {
-		console.log('	' + chalk.redBright(msg.replace(/\(name\)/g, name)));
-	},
-	warning: function(msg, name) {
-		console.log('	' + chalk.yellowBright(msg.replace(/\(name\)/g, name)));
-	},
-	success: function(msg, name) {
-		console.log('	' + chalk.greenBright(msg.replace(/\(name\)/g, name)));
-	}
-};
+//const chalk = require('chalk');
+const logger = require('../../src/utils/logger');
 
 exports.pluginInfo = {
 	log: {
@@ -54,15 +35,11 @@ exports.pluginInfo = {
 
 exports.templateKeys = {
 	log: function(file, name) {
-		try {
-			for (key in file) {
-				for (let i = 0; i <= file[key].length - 1; i++) {
-					logLevels[key](file[key][i], name);
-				}
+		for (key in file) {
+			for (let i = 0; i <= file[key].length - 1; i++) {
+				//logLevels[key](file[key][i], name);
+				logger(file[key][i], key);
 			}
-		} catch (e) {
-			console.log(chalk.redBright('	error: logs must be in a logLevel sub-key.'));
-			return 1;
 		}
 	}
 };
