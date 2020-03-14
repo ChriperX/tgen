@@ -84,13 +84,12 @@ exports.templateKeys = {
 	},
 	else: function(file, name, fileStructure) {
 		file = currKey[currKey.length - 1] || file;
-
 		if (lastEval[lastEval.length - 1] === false) {
 			lastEval.pop();
 			currKey.pop();
 			try {
 				for (key in file) {
-					template.templateKeys[key](file[key], name, fileStructure);
+					template.templateKeys[key](file[key], name, fileStructure['else']);
 				}
 			} catch (e) {
 				console.log(e);
