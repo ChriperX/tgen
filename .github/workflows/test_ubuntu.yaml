@@ -15,5 +15,5 @@ jobs:
       - run: npm ci
       - run: npm test
         env:
-          TGENPATH: './src/'
+          TGENPATH: '/home/runner/work/tgen/tgen/src/'
       - run: npm run build
