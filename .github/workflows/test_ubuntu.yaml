@@ -14,6 +14,6 @@ jobs:
           node-version: 13
       - run: npm ci
       - run: npm test
-         env:
-           TGENPATH: './'
+        env:
+          TGENPATH: './src/'
       - run: npm run build
