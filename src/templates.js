@@ -26,6 +26,7 @@ const yaml = require('js-yaml');
 const fs = require('fs');
 const utils = require('./utils/utils');
 const exec = require('child_process').exec; //import the exec function, used for executing bash commands
+const logger = require('./utils/logger.js');
 const plugger = require('@nonamenpm/plugger');
 const chalk = require('chalk');
 const mem = require('./utils/mem');
@@ -76,9 +77,11 @@ exports.templateKeys = {
 		const commands = file || [ 'echo' ];
 		for (let i = 0; i <= commands.length - 1; i++) {
 			exec(commands[i].replace(/\(name\)/g, element));
+
 			console.log(chalk.cyan('	ran command: ' + commands[i].replace(/\(name\)/g, element)));
 		}
-		console.log(chalk.yellowBright('	this may take a while'));
+
+		logger('this may take a while', 'warning');
 	}
 };
 

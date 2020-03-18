@@ -2,3 +2,4 @@ node_modules
 src/templates/test.yaml
 src/templates/test2.yml
 src/templates/blank.yaml
+test

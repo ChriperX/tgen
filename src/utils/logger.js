@@ -23,6 +23,9 @@
 const chalk = require('chalk');
 
 const levelCodes = {
+	none: function(msg) {
+		console.log('	' + msg);
+	},
 	default: function(msg) {
 		console.log(chalk.whiteBright('	' + msg));
 	},

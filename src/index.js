@@ -32,8 +32,7 @@ const logger = require('./utils/logger');
 const plugger = require('@nonamenpm/plugger');
 const mem = require('./utils/mem');
 
-//logLevel for logger
-let logLevel = '';
+let logLevel;
 let plugins = [];
 
 //#region PLUGIN_ENTRY_POINT
@@ -139,6 +138,3 @@ tp.add('-v --verbose', () => {
 */
 
 tp.parse();
-
-//separator
-console.log();

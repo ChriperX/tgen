@@ -24,4 +24,6 @@
 const yaml = require('js-yaml');
 const fs = require('fs');
 
-exports.tgenSettings = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '../.tgen.yaml', 'utf8'));
+exports.tgenSettings = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '../.tgen.yaml', 'utf8')) || {
+	plugins: { ignore: [] }
+};
