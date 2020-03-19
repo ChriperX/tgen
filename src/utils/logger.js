@@ -21,10 +21,14 @@
 //#endregion LICENSE
 
 const chalk = require('chalk');
+const mem = require('./mem');
 
 const levelCodes = {
 	none: function(msg) {
 		console.log('	' + msg);
+	},
+	external: function(msg) {
+		console.log(chalk.magentaBright('	' + msg));
 	},
 	default: function(msg) {
 		console.log(chalk.whiteBright('	' + msg));
@@ -46,7 +50,7 @@ const levelCodes = {
 module.exports = function(msg, levelCode) {
 	try {
 		//try calling a logLevel function
-		levelCodes[levelCode](msg);
+		levelCodes[levelCode](mem.replaceVars(msg));
 	} catch (e) {
 		//if the specified logLevel is not defined return 1
 		console.log(chalk.redBright('	error: levelCode not found: ' + levelCode));
