@@ -70,6 +70,7 @@ exports.templateKeys = {
 							file[constKey]
 						);
 					} catch (e) {
+						//console.log(e);
 						console.log(
 							chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key2 + "'.")
 						);
