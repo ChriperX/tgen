@@ -92,6 +92,12 @@ exports.use(plugins);
 
 exports.loadTemplates = function(element, logLevel) {
 	try {
+		//if TGENPATH is not set, return 1
+		if (!process.env.TGENPATH) {
+			console.log(chalk.redBright('error: TGENPATH env variable not set.'));
+			return 1;
+		}
+
 		//load file, TGENPATH is the path to where tgen is installed
 		var extension = fs.existsSync(process.env.TGENPATH + '/templates/' + element[0] + '.yaml') ? '.yaml' : '.yml';
 		var file = yaml.safeLoad(
