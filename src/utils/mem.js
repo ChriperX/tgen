@@ -24,6 +24,29 @@
 const yaml = require('js-yaml');
 const fs = require('fs');
 
+let vars = {};
+
 exports.tgenSettings = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '../.tgen.yaml', 'utf8')) || {
 	plugins: { ignore: [] }
+};
+
+exports.newVar = function(content, varName) {
+	// prettier-ignore
+	vars['\\(' + varName + '\\)'] = content;
+	return content;
+};
+
+exports.fetch = function(varName = '') {
+	// prettier-ignore
+	return vars['\\(' + varName + '\\)'] ? vars['\\(' + varName + '\\)'] : vars;
+};
+
+exports.replaceVars = function(string) {
+	let returnString = string;
+
+	for (key in vars) {
+		returnString = returnString.replace(new RegExp(key, 'g'), vars[key]);
+	}
+
+	return returnString;
 };
