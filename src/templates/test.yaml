@@ -1,9 +1,0 @@
-if:
-  'true':
-    log:
-      info:
-        - '(yes) (name)'
-else:
-  log:
-    warning:
-      - 'no'
