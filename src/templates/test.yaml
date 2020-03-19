@@ -2,7 +2,7 @@ if:
   'true':
     log:
       info:
-        - 'yes'
+        - '(yes) (name)'
 else:
   log:
     warning:
