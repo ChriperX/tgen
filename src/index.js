@@ -32,6 +32,8 @@ const logger = require('./utils/logger');
 const plugger = require('@nonamenpm/plugger');
 const mem = require('./utils/mem');
 
+const INFO_NOT_GIVEN = 'not given';
+
 let logLevel;
 let plugins = [];
 
@@ -40,6 +42,7 @@ let plugins = [];
 //entry point for plugins
 exports.commands = {};
 
+//object that defines information about a plugin
 exports.pluginInfo = {};
 
 exports.use = function(plugin) {
@@ -56,7 +59,9 @@ function addCustomCommands() {
 function walk(dir) {
 	files = fs.readdirSync(dir);
 	files.forEach((element) => {
-		plugins.push(require(dir + element));
+		if (!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.')))) {
+			plugins.push(require(dir + element));
+		}
 	});
 }
 
@@ -66,8 +71,10 @@ addCustomCommands();
 
 //#endregion PLUGIN_ENTRY_POINT
 
-//add the new command, with template and name
-tp.add('new <template> <name>', (element) => {
+//creates a new project from a template
+function newTemplate(element) {
+	mem.newVar(element[1], 'name');
+
 	console.log(
 		chalk.cyanBright(
 			'executing template: ' +
@@ -78,63 +85,95 @@ tp.add('new <template> <name>', (element) => {
 					: 'with no template plugins installed.')
 		)
 	);
-	template.loadTemplates(element, logLevel);
+	//we return the exit status
+	return template.loadTemplates(element, logLevel);
+}
+
+tp.error((token) => {
+	logger('error: unrecognized token ' + chalk.whiteBright("'" + token + "'."), 'error');
 });
 
-tp.add('plugin <option> <pluginName>', (element) => {
-	if (element[0] === 'info') {
-		if (exports.pluginInfo[element[1]]) {
-			//log info about a plugin
-			console.log(chalk.cyan('info about plugin ') + chalk.whiteBright(element[1]) + ':');
-			logger('version: ' + chalk.whiteBright(exports.pluginInfo[element[1]]['version']), 'info');
-			logger('author: ' + chalk.whiteBright(exports.pluginInfo[element[1]]['author']), 'info');
-			logger('repo: ' + chalk.whiteBright(exports.pluginInfo[element[1]]['repo']), 'info');
-			logger('extends: ' + chalk.whiteBright(exports.pluginInfo[element[1]]['extension']), 'info');
-			logger('description: ' + chalk.whiteBright(exports.pluginInfo[element[1]]['description']), 'info');
-		} else if (template.pluginInfo[element[1]]) {
-			//log info about a plugin
-			console.log(chalk.cyan('info about plugin ') + chalk.whiteBright(element[1] + ':'));
-			logger('version: ' + chalk.whiteBright(template.pluginInfo[element[1]]['version']), 'info');
-			logger('author: ' + chalk.whiteBright(template.pluginInfo[element[1]]['author']), 'info');
-			logger('repo: ' + chalk.whiteBright(template.pluginInfo[element[1]]['repo']), 'info');
-			logger('extends: ' + chalk.whiteBright(template.pluginInfo[element[1]]['extends']), 'info');
-			logger('description: ' + chalk.whiteBright(template.pluginInfo[element[1]]['description']), 'info');
-		} else {
-			console.log(chalk.redBright('error: non-existent plugin: ') + chalk.whiteBright(element[1]));
-			return 1;
+//add the new command, with template and name
+tp.add('new <template> <name>', newTemplate, 'Create new project from template.');
+
+//alias for new
+tp.add('exec <template> <name>', newTemplate, 'Alias of new.');
+
+tp.add(
+	'plugin <option> <pluginName>',
+	(element) => {
+		if (element[0] === 'info') {
+			if (exports.pluginInfo[element[1]]) {
+				//log info about a plugin
+				console.log(chalk.cyan('info about plugin ') + chalk.whiteBright(element[1]) + ':');
+				logger('version: ' + chalk.whiteBright(exports.pluginInfo[element[1]]['version']), 'info');
+				logger('author: ' + chalk.whiteBright(exports.pluginInfo[element[1]]['author']), 'info');
+				logger('repo: ' + chalk.whiteBright(exports.pluginInfo[element[1]]['repo']), 'info');
+				logger('extends: ' + chalk.whiteBright(exports.pluginInfo[element[1]]['extension']), 'info');
+				logger('description: ' + chalk.whiteBright(exports.pluginInfo[element[1]]['description']), 'info');
+			} else if (template.pluginInfo[element[1]]) {
+				//log info about a plugin
+				console.log(chalk.cyan('info about plugin ') + chalk.whiteBright(element[1] + ':'));
+				logger(
+					'version: ' + chalk.whiteBright(template.pluginInfo[element[1]]['version'] || INFO_NOT_GIVEN),
+					'info'
+				);
+				logger(
+					'author: ' + chalk.whiteBright(template.pluginInfo[element[1]]['author'] || INFO_NOT_GIVEN),
+					'info'
+				);
+				logger('repo: ' + chalk.whiteBright(template.pluginInfo[element[1]]['repo'] || INFO_NOT_GIVEN), 'info');
+				logger(
+					'extends: ' + chalk.whiteBright(template.pluginInfo[element[1]]['extends'] || INFO_NOT_GIVEN),
+					'info'
+				);
+				logger(
+					'description: ' +
+						chalk.whiteBright(template.pluginInfo[element[1]]['description'] || INFO_NOT_GIVEN),
+					'info'
+				);
+			} else {
+				if (element[1]) {
+					console.log(chalk.redBright('error: non-existent plugin: ') + chalk.whiteBright(element[1]));
+				} else {
+					console.log(chalk.redBright('error: please specify a plugin.'));
+				}
+				return 1;
+			}
 		}
-	}
-	if (element[0] === 'ignore') {
-		//ignore a plugin
-		console.log(chalk.cyanBright('ignoring plugin: ' + element[1]));
-		//pushes to tgenSetting the plugin to ignore
-		mem.tgenSettings['plugins']['ignore'].push(element[1]);
-		//writes the changes to tgen.yaml
-		fs.writeFileSync(process.env.TGENPATH + '/../.tgen.yaml', yaml.safeDump(mem.tgenSettings));
-	}
-	if (element[0] === 'check') {
-		//check a plugin directory
-		try {
-			//reads a directory
-			var dir = fs.readdirSync(process.env.TGENPATH + '../plugins/' + element[1] + '/');
-		} catch (e) {
-			//the directory doesn't exist
-			console.log(chalk.redBright('error: plugin directory not found: ' + element[1]));
-			return 1;
+		if (element[0] === 'ignore') {
+			//ignore a plugin
+			console.log(chalk.cyanBright('ignoring plugin: ' + element[1]));
+			//pushes to tgenSetting the plugin to ignore
+			mem.tgenSettings['plugins']['ignore'].push(element[1]);
+			//writes the changes to tgen.yaml
+			fs.writeFileSync(process.env.TGENPATH + '/../.tgen.yaml', yaml.safeDump(mem.tgenSettings));
 		}
-		console.log(chalk.cyanBright('installed plugins: '));
+		if (element[0] === 'check') {
+			//check a plugin directory
+			try {
+				//reads a directory
+				var dir = fs.readdirSync(process.env.TGENPATH + '../plugins/' + element[1] + '/');
+			} catch (e) {
+				//the directory doesn't exist
+				console.log(chalk.redBright('error: plugin directory not found: ' + element[1]));
+				return 1;
+			}
+			console.log(chalk.cyanBright('installed plugins: '));
 
-		dir.forEach((ind) => {
-			//lists the plugin files
-			logger(ind.substring(0, utils.lastOf(ind, '.')), 'default');
-		});
-	}
-});
+			dir.forEach((ind) => {
+				//lists the plugin files
+				logger(ind.substring(0, utils.lastOf(ind, '.')), 'default');
+			});
+		}
+	},
+	'Get info, install or ignore a plugin.'
+);
 
-/*
-tp.add('-v --verbose', () => {
-	logLevel = 'verbose';
-});
-*/
+//set exit status only if we are not in a mocha test, so shells like zsh can visualize the exit code
+if (typeof global.it !== 'function') {
+	process.exit(tp.parse());
+}
 
+//we are running a mocha test, so we don't exit.
 tp.parse();
