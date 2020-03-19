@@ -22,6 +22,7 @@
 
 //const chalk = require('chalk');
 const logger = require('../../src/utils/logger');
+const mem = require('../../src/utils/mem.js');
 
 exports.pluginInfo = {
 	log: {
@@ -35,7 +36,7 @@ exports.pluginInfo = {
 
 exports.templateKeys = {
 	log: function(file, name) {
-		for (key in file) {
+		for (let key in file) {
 			for (let i = 0; i <= file[key].length - 1; i++) {
 				//logLevels[key](file[key][i], name);
 				logger(file[key][i], key);
