@@ -12,7 +12,8 @@
 		"chalk": "^3.0.0",
 		"extend": "^3.0.2",
 		"js-yaml": "^3.13.1",
-		"lodash.concat": "^4.5.0"
+		"lodash.concat": "^4.5.0",
+		"prompt-sync": "^4.2.0"
 	},
 	"devDependencies": {
 		"chai": "^4.2.0",
