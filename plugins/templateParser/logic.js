@@ -22,6 +22,7 @@
 
 const template = require('../../src/templates.js');
 const chalk = require('chalk');
+const mem = require('../../src/utils/mem.js');
 
 var lastEval = [];
 var currKey = [];
@@ -61,7 +62,7 @@ exports.templateKeys = {
 
 			fileStructure['else'] ? currKey.push(fileStructure['else']) : '';
 
-			if (safeEval(key.replace(/\(name\)/g, name))) {
+			if (safeEval(mem.replaceVars(key))) {
 				for (key2 in file[constKey]) {
 					try {
 						template.templateKeys[key2](
