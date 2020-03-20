@@ -28,7 +28,7 @@ const levelCodes = {
 		console.log('	' + msg);
 	},
 	external: function(msg) {
-		console.log(chalk.magentaBright('	' + msg));
+		console.log(chalk.yellowBright('	' + msg));
 	},
 	default: function(msg) {
 		console.log(chalk.whiteBright('	' + msg));
