@@ -1,5 +1,3 @@
-//TODO implement plugin support
-
 //#region LICENSE
 
 /*
