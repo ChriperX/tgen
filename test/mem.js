@@ -16,7 +16,7 @@ describe('mem', () => {
 
 	describe('replaceVars()', () => {
 		it('should return the string with vars', () => {
-			expect(mem.replaceVars('this (is) a (test var)')).to.be.equal('this (is) a new var');
+			expect(mem.replaceVars('this (is) a $(test var)')).to.be.equal('this (is) a new var');
 		});
 	});
 });
