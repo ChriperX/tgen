@@ -49,26 +49,27 @@ exports.templateKeys = {
 		const createdDirs = {};
 
 		for (let i = 0; i <= fileToCreate.length - 1; i++) {
-			//console.log(fileToCreate[i].replace(/\(name\)/g, element));
+			//console.log(mem.replaceVars(fileToCreate[i]));
 			if (typeof fileToCreate[i] !== 'object') {
 				if (utils.lastOf(fileToCreate[i], '/') !== -1) {
-					let parsedFile = fileToCreate[i].replace(/\(name\)/g, element);
+					let parsedFile = mem.replaceVars(fileToCreate[i]);
 
-					fs.mkdir(parsedFile.substring(0, utils.lastOf(parsedFile, '/')), { recursive: true }, () => {
-						createdDirs[parsedFile.substring(0, utils.lastOf(parsedFile, '/'))] ||
-							console.log(
-								chalk.greenBright(
-									'	created directory: ' + parsedFile.substring(0, utils.lastOf(parsedFile, '/'))
-								)
-							);
-						createdDirs[parsedFile.substring(0, utils.lastOf(parsedFile, '/'))] = true;
-					});
-					fs.writeFile('./' + parsedFile, '', () => {
-						console.log(chalk.greenBright('	created file: ' + parsedFile));
-					});
+					//create the directories
+					fs.mkdirSync(parsedFile.substring(0, utils.lastOf(parsedFile, '/')), { recursive: true });
+					createdDirs[parsedFile.substring(0, utils.lastOf(parsedFile, '/'))] ||
+						console.log(
+							chalk.greenBright(
+								'	created directory: ' + parsedFile.substring(0, utils.lastOf(parsedFile, '/'))
+							)
+						);
+
+					createdDirs[parsedFile.substring(0, utils.lastOf(parsedFile, '/'))] = true;
+
+					fs.writeFileSync('./' + parsedFile, '');
+					console.log(chalk.greenBright('	created file: ' + parsedFile));
 				} else {
-					const parsedFile = fileToCreate[i].replace(/\(name\)/g, element);
-					fs.writeFile('./' + parsedFile, '', () => {});
+					const parsedFile = mem.replaceVars(fileToCreate[i]);
+					fs.writeFileSync('./' + parsedFile, '');
 				}
 			}
 		}
@@ -76,9 +77,10 @@ exports.templateKeys = {
 	commands: function(file, element) {
 		const commands = file || [ 'echo' ];
 		for (let i = 0; i <= commands.length - 1; i++) {
-			exec(commands[i].replace(/\(name\)/g, element));
+			//exec(commands[i].replace(/\(name\)/g, element));
+			exec(mem.replaceVars(commands[i]));
 
-			console.log(chalk.cyan('	ran command: ' + commands[i].replace(/\(name\)/g, element)));
+			logger('ran command: ' + mem.replaceVars(commands[i]), 'info');
 		}
 
 		logger('this may take a while', 'warning');
