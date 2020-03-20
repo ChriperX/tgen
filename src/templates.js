@@ -59,14 +59,15 @@ exports.templateKeys = {
 					createdDirs[parsedFile.substring(0, utils.lastOf(parsedFile, '/'))] ||
 						console.log(
 							chalk.greenBright(
-								'	created directory: ' + parsedFile.substring(0, utils.lastOf(parsedFile, '/'))
+								'	created directory: ' +
+									chalk.whiteBright(parsedFile.substring(0, utils.lastOf(parsedFile, '/')))
 							)
 						);
 
 					createdDirs[parsedFile.substring(0, utils.lastOf(parsedFile, '/'))] = true;
 
 					fs.writeFileSync('./' + parsedFile, '');
-					console.log(chalk.greenBright('	created file: ' + parsedFile));
+					console.log(chalk.greenBright('	created file: ' + chalk.whiteBright(parsedFile)));
 				} else {
 					const parsedFile = mem.replaceVars(fileToCreate[i]);
 					fs.writeFileSync('./' + parsedFile, '');
@@ -119,6 +120,7 @@ exports.loadTemplates = function(element, logLevel) {
 		try {
 			exports.templateKeys[key](file[key], element[1], file);
 		} catch (e) {
+			//console.log(e);
 			console.log(chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key + "'."));
 			return 1;
 		}
