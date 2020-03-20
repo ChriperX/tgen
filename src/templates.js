@@ -142,7 +142,7 @@ function walk(dir) {
 			count < 4
 		) {
 			exports.pluginList +=
-				element.substring(0, utils.lastOf(element, '.')) + (files[files.length - 1] !== element ? ', ' : ' ');
+				element.substring(0, utils.lastOf(element, '.')) + (files[files.length - 1] !== element ? ', ' : '.');
 			plugins.push(require(dir + element));
 		}
 		count++;
