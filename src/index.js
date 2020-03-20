@@ -174,7 +174,10 @@ tp.add(
 //set exit status only if we are not in a mocha test, so shells like zsh can visualize the exit code
 if (typeof global.it !== 'function') {
 	console.log(chalk.greenBright('tgen templating engine version ' + chalk.whiteBright(TGEN_VERSION)));
-	process.exit(tp.parse());
+	const exitStatus = tp.parse();
+	//separator
+	console.log();
+	process.exit(exitStatus);
 }
 
 //we are running a mocha test, so we don't exit.
