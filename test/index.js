@@ -10,16 +10,10 @@ describe('index.commands', () => {
 			throw index.commands['safg']['cb']();
 		}).to.throw();
 	});
-
-	it('should not throw an error', () => {
-		expect(function() {
-			throw index.commands['test']['cb']();
-		}).to.not.throw();
-	});
 });
 
 describe('index.pluginInfo', () => {
-    it('should be undefined', () => {
-        expect(index.pluginInfo).to.be
-    })
-})
+	it('should be undefined', () => {
+		expect(index.pluginInfo).to.be;
+	});
+});
