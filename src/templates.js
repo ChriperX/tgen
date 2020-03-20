@@ -125,12 +125,26 @@ exports.loadTemplates = function(element, logLevel) {
 };
 
 function walk(dir) {
-	files = fs.readdirSync(dir);
+	let files = fs.readdirSync(dir);
+	let count = 0;
+
 	files.forEach((element) => {
-		if (!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.')))) {
+		if (count === 4) {
+			exports.pluginList += chalk.cyanBright(
+				'and ' +
+					String(files.length - count) +
+					(files.length - count === 1 ? ' more plugin.' : ' more plugins.')
+			);
+		}
+
+		if (
+			!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.'))) &&
+			count < 4
+		) {
 			exports.pluginList +=
 				element.substring(0, utils.lastOf(element, '.')) + (files[files.length - 1] !== element ? ', ' : ' ');
 			plugins.push(require(dir + element));
 		}
+		count++;
 	});
 }
