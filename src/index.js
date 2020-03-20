@@ -32,6 +32,7 @@ const logger = require('./utils/logger');
 const plugger = require('@nonamenpm/plugger');
 const mem = require('./utils/mem');
 
+const TGEN_VERSION = '1.0.0';
 const INFO_NOT_GIVEN = 'not given';
 
 let logLevel;
@@ -172,6 +173,7 @@ tp.add(
 
 //set exit status only if we are not in a mocha test, so shells like zsh can visualize the exit code
 if (typeof global.it !== 'function') {
+	console.log(chalk.greenBright('tgen templating engine version ' + chalk.whiteBright(TGEN_VERSION)));
 	process.exit(tp.parse());
 }
 
