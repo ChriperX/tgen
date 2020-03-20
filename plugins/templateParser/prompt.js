@@ -22,9 +22,8 @@ exports.templateKeys = {
 		try {
 			for (let key in file) {
 				//process.stdout.moveCursor(8, 0);
-
-				logger(key, 'external');
-				mem.newVar(cli_prompt('	' + chalk.magentaBright('$') + ' '), file[key]);
+				logger(key, 'default');
+				mem.newVar(cli_prompt('	' + chalk.greenBright('$') + ' '), file[key]);
 			}
 		} catch (e) {
 			//console.log(e);
