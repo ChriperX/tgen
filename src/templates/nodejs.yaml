@@ -1,5 +1,5 @@
 create:
-    - (name)/index.js
-    - (name)/package.json
+    - $(name)/index.js
+    - $(name)/package.json
 commands:
-    - cd ./(name) && npm init -y
+    - cd ./$(name) && npm init -y
