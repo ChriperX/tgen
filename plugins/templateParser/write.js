@@ -27,9 +27,11 @@ exports.templateKeys = {
 			}
 
 			logger('wrote to file: ' + chalk.whiteBright(key), 'success');
-			for (let i = 0; i <= objStructure[key].length - 1; i++) {
-				//append to the file
-				fs.appendFileSync(mem.replaceVars(key), objStructure[key][i] + '\n');
+
+			try {
+				fs.appendFileSync(mem.replaceVars(key), objStructure[key] + '\n');
+			} catch (e) {
+				console.log(e);
 			}
 		}
 	}
