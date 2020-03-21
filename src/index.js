@@ -73,7 +73,7 @@ addCustomCommands();
 //#endregion PLUGIN_ENTRY_POINT
 
 //creates a new project from a template
-function newTemplate(element) {
+exports.newTemplate = function(element) {
 	mem.newVar(element[1], 'name');
 
 	console.log(
@@ -88,17 +88,17 @@ function newTemplate(element) {
 	);
 	//we return the exit status
 	return template.loadTemplates(element, logLevel);
-}
+};
 
 tp.error((token) => {
 	logger('error: unrecognized token ' + chalk.whiteBright("'" + token + "'."), 'error');
 });
 
 //add the new command, with template and name
-tp.add('new <template> <name>', newTemplate, 'Create new project from template.');
+tp.add('new <template> <name>', exports.newTemplate, 'Create new project from template.');
 
 //alias for new
-tp.add('exec <template> <name>', newTemplate, 'Alias of new.');
+tp.add('exec <template> <name>', exports.newTemplate, 'Alias of new.');
 
 tp.add(
 	'plugin <option> <pluginName>',
