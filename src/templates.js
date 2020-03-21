@@ -118,7 +118,6 @@ exports.loadTemplates = function(element, logLevel) {
 		try {
 			exports.templateKeys[key](file[key], element[1], file);
 		} catch (e) {
-			//console.log(e);
 			console.log(chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key + "'."));
 			return 1;
 		}
@@ -139,12 +138,12 @@ function walk(dir) {
 			);
 		}
 
-		if (
-			!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.'))) &&
-			count < 4
-		) {
-			exports.pluginList +=
-				element.substring(0, utils.lastOf(element, '.')) + (files[files.length - 1] !== element ? ', ' : '.');
+		if (!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.')))) {
+			if (count < 4) {
+				exports.pluginList +=
+					element.substring(0, utils.lastOf(element, '.')) +
+					(files[files.length - 1] !== element ? ', ' : '.');
+			}
 			plugins.push(require(dir + element));
 		}
 		count++;
