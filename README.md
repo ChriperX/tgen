@@ -151,7 +151,8 @@ This adds a template key called **log** that can be used as it follows:
 
 ```yaml
 log:
-  - i am logging to the console with the log template key!
+  default:
+    - i am logging to the console with the log template key!
 
 ```
 
