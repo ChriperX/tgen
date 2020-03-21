@@ -23,34 +23,34 @@ create:
 
 #write to index
 write:
-  '$(name)/main.js':
-    - 'const { app, BrowserWindow } = require("electron");'
-    - ''
-    - 'function createWindow() {'
-    - '    //create browser window'
-    - '    let win = new BrowserWindow({'
-    - '        width: 800,'
-    - '        height: 600,'
-    - '        webPreferences: { nodeIntegration: true },'
-    - '    })'
-    - ''
-    - '    win.loadFile("index.html")'
-    - '}'
-    - ''
-    - 'app.whenReady().then(createWindow)'
-  
-  '$(name)/src/js/index.js':
-    - "//This is were your app's code goes"
+  '$(name)/main.js': |
+    const { app, BrowserWindow } = require('electron');
 
-  '$(name)/index.html':
-    - '<!DOCTYPE html>'
-    - '<html lang="en">'
-    - '<head>'
-    - '    <meta charset="UTF-8">'
-    - '    <meta name="viewport" content="width=device-width, initial-scale=1.0">'
-    - '    <title></title>'
-    - '</head>'
-    - '<body></body>'
-    - '</html>'
+    function createWindow() {
+        //create browser window
+        let win = new BrowserWindow({
+            width: 800,
+            height: 600,
+            webPreferences: { nodeIntegration: true }
+        })
+    
+        win.loadFile('index.html')
+    }
+
+    app.whenReady().then(createWindow)
+  
+  '$(name)/src/js/index.js': |
+    //This is were your app's code goes
+
+  '$(name)/index.html': |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title></title>
+    </head>
+    <body></body>
+    </html>
 commands:
   - cd ./$(name) && npm init -y
