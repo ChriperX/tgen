@@ -89,9 +89,6 @@ exports.templateKeys = {
 	}
 };
 
-walk(process.env.TGENPATH + '../plugins/templateParser/');
-exports.use(plugins);
-
 //#endregion PLUGIN_ENTRY_POINT
 
 exports.loadTemplates = function(element, logLevel) {
@@ -118,6 +115,9 @@ exports.loadTemplates = function(element, logLevel) {
 		}
 		return 1;
 	}
+	walk(process.env.TGENPATH + '../plugins/templateParser/', file);
+	exports.use(plugins);
+
 	for (key in file) {
 		try {
 			exports.templateKeys[key](file[key], element[1], file);
@@ -131,27 +131,55 @@ exports.loadTemplates = function(element, logLevel) {
 	return 0;
 };
 
-function walk(dir) {
+function walk(dir, objTree) {
 	let files = fs.readdirSync(dir);
 	let count = 0;
 
-	files.forEach((element) => {
-		if (count === 4) {
-			exports.pluginList += chalk.cyanBright(
-				'and ' +
-					String(files.length - count) +
-					(files.length - count === 1 ? ' more plugin.' : ' more plugins.')
-			);
-		}
+	if (!objTree) {
+		return 1;
+	}
 
-		if (!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.')))) {
-			if (count < 4) {
-				exports.pluginList +=
-					element.substring(0, utils.lastOf(element, '.')) +
-					(files[files.length - 1] !== element ? ', ' : '.');
+	if (!objTree['use']) {
+		files.forEach((element) => {
+			if (count === 4) {
+				exports.pluginList += chalk.cyanBright(
+					'and ' +
+						String(files.length - count) +
+						(files.length - count === 1 ? ' more plugin.' : ' more plugins.')
+				);
 			}
-			plugins.push(require(dir + element));
-		}
-		count++;
-	});
+
+			if (!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.')))) {
+				if (count < 4) {
+					exports.pluginList +=
+						element.substring(0, utils.lastOf(element, '.')) +
+						(files[files.length - 1] !== element ? ', ' : '.');
+				}
+				plugins.push(require(dir + element));
+			}
+			count++;
+		});
+	} else if (objTree['use']) {
+		//load the use key, if objTree is undefined we return an empty array
+		files = objTree ? objTree['use'] : [];
+
+		//loop through the array, and load the plugins
+		files.forEach((element) => {
+			if (count === 4) {
+				exports.pluginList += chalk.cyanBright(
+					'and ' +
+						String(files.length - count) +
+						(files.length - count === 1 ? ' more plugin.' : ' more plugins.')
+				);
+			}
+
+			if (count < 4) {
+				exports.pluginList += element + (files[files.length - 1] !== element ? ', ' : '.');
+			}
+			plugins.push(require(dir + element + '.js'));
+
+			count++;
+		});
+		objTree ? delete objTree['use'] : '';
+	}
 }
