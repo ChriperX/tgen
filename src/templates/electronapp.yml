@@ -1,22 +1,19 @@
 #electron template
-#
+use:
+  - 'log'
+  - 'write'
+  - 'prompt'
+  - 'logic'
 
 log:
   warning:
     - This template doesn't install electron automatically, you have to install it yourself
-
-prompt:
-  "Do you want git? (y/n)":
-    'git'
 
 if:
   '"$(name)" === "undefined"':
     prompt:
       'Please specify a name for your project.':
         - 'name'
-  "'$(git)' !== 'undefined' && '$(git)' === 'y'":
-    commands:
-      - cd ./$(name) && git init
 
 create:
   - $(name)/index.html
