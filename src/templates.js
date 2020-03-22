@@ -118,6 +118,17 @@ exports.loadTemplates = function(element, logLevel) {
 	walk(process.env.TGENPATH + '../plugins/templateParser/', file);
 	exports.use(plugins);
 
+	console.log(
+		chalk.cyanBright(
+			'executing template: ' +
+				element[0] +
+				', ' +
+				(exports.pluginList
+					? 'with template plugins: ' + chalk.whiteBright(exports.pluginList)
+					: 'with no template plugins installed.')
+		)
+	);
+
 	for (key in file) {
 		try {
 			exports.templateKeys[key](file[key], element[1], file);

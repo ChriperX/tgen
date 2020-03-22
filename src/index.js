@@ -76,16 +76,6 @@ addCustomCommands();
 exports.newTemplate = function(element) {
 	mem.newVar(element[1], 'name');
 
-	console.log(
-		chalk.cyanBright(
-			'executing template: ' +
-				element[0] +
-				', ' +
-				(template.pluginList
-					? 'with template plugins: ' + chalk.whiteBright(template.pluginList)
-					: 'with no template plugins installed.')
-		)
-	);
 	//we return the exit status
 	return template.loadTemplates(element, logLevel);
 };
