@@ -87,7 +87,7 @@ exports.templateKeys = {
 			//exec(commands[i].replace(/\(name\)/g, element));
 			exec(mem.replaceVars(commands[i]));
 
-			logger('ran command: ' + mem.replaceVars(commands[i]), 'info');
+			logger('ran command: ' + chalk.whiteBright(mem.replaceVars(commands[i])), 'info');
 		}
 
 		logger('this may take a while', 'warning');
