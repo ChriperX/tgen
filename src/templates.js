@@ -40,6 +40,11 @@ exports.use = function(plugins) {
 exports.pluginInfo = {};
 exports.pluginList = '';
 
+exports.loadPlugins = function(file) {
+	walk(process.env.TGENPATH + '../plugins/templateParser/', file);
+	exports.use(plugins);
+};
+
 //entry point for plugins
 exports.templateKeys = {
 	create: function(file, element) {
@@ -115,8 +120,8 @@ exports.loadTemplates = function(element, logLevel) {
 		}
 		return 1;
 	}
-	walk(process.env.TGENPATH + '../plugins/templateParser/', file);
-	exports.use(plugins);
+
+	exports.loadPlugins(file);
 
 	console.log(
 		chalk.cyanBright(

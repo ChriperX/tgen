@@ -94,6 +94,8 @@ tp.add(
 	'plugin <option> <pluginName>',
 	(element) => {
 		if (element[0] === 'info') {
+			template.loadPlugins({});
+
 			if (exports.pluginInfo[element[1]]) {
 				//log info about a plugin
 				console.log(chalk.cyan('info about plugin ') + chalk.whiteBright(element[1]) + ':');
