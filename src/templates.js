@@ -64,8 +64,11 @@ exports.templateKeys = {
 
 					createdDirs[parsedFile.substring(0, utils.lastOf(parsedFile, '/'))] = true;
 
-					fs.writeFileSync('./' + parsedFile, '');
-					console.log(chalk.greenBright('	created file: ' + chalk.whiteBright(parsedFile)));
+					//if a slash is at the end, assume we aren't creating a file
+					if (utils.lastOf(parsedFile, '/') !== parsedFile.length - 1) {
+						fs.writeFileSync('./' + parsedFile, '');
+						console.log(chalk.greenBright('	created file: ' + chalk.whiteBright(parsedFile)));
+					}
 				} else {
 					const parsedFile = mem.replaceVars(fileToCreate[i]);
 					fs.writeFileSync('./' + parsedFile, '');
@@ -107,6 +110,7 @@ exports.loadTemplates = function(element, logLevel) {
 	} catch (e) {
 		if (e.name === 'YAMLException') {
 			//bad formatting in template
+
 			console.log(chalk.redBright('	error: bad formatting in template: ') + chalk.whiteBright(element[0]));
 		} else {
 			//template not found
@@ -118,7 +122,9 @@ exports.loadTemplates = function(element, logLevel) {
 		try {
 			exports.templateKeys[key](file[key], element[1], file);
 		} catch (e) {
-			console.log(chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key + "'."));
+			if (e instanceof TypeError) {
+				console.log(chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key + "'."));
+			}
 			return 1;
 		}
 	}
