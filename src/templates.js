@@ -181,6 +181,19 @@ function walk(dir, objTree) {
 
 		//loop through the array, and load the plugins
 		files.forEach((element) => {
+			//user is trying directory traversal
+			if (element.includes('/')) {
+				element = element.substring(utils.lastOf(element, '/') + 1);
+			}
+
+			//check if file exists
+			if (!fs.existsSync(dir + element + '.js')) {
+				logger('error: plugin not found: ' + chalk.whiteBright(element), 'error');
+				//separator
+				console.log();
+				process.exit(1);
+			}
+
 			if (count === 4) {
 				exports.pluginList += chalk.cyanBright(
 					'and ' +
@@ -192,6 +205,7 @@ function walk(dir, objTree) {
 			if (count < 4) {
 				exports.pluginList += element + (files[files.length - 1] !== element ? ', ' : '.');
 			}
+
 			plugins.push(require(dir + element + '.js'));
 
 			count++;
