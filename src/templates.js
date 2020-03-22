@@ -29,8 +29,6 @@ const plugger = require('@nonamenpm/plugger');
 const chalk = require('chalk');
 const mem = require('./utils/mem');
 
-const MAX_PLUGIN_LIST = 4;
-
 let plugins = [];
 
 //#region PLUGIN_ENTRY_POINT
@@ -84,15 +82,12 @@ exports.templateKeys = {
 			//exec(commands[i].replace(/\(name\)/g, element));
 			exec(mem.replaceVars(commands[i]));
 
-			logger('ran command: ' + chalk.whiteBright(mem.replaceVars(commands[i])), 'info');
+			logger('ran command: ' + mem.replaceVars(commands[i]), 'info');
 		}
 
 		logger('this may take a while', 'warning');
 	}
 };
-
-walk(process.env.TGENPATH + '../plugins/templateParser/');
-exports.use(plugins);
 
 //#endregion PLUGIN_ENTRY_POINT
 
@@ -120,11 +115,13 @@ exports.loadTemplates = function(element, logLevel) {
 		}
 		return 1;
 	}
+	walk(process.env.TGENPATH + '../plugins/templateParser/', file);
+	exports.use(plugins);
+
 	for (key in file) {
 		try {
 			exports.templateKeys[key](file[key], element[1], file);
 		} catch (e) {
-			//we log an error only if it is TypeError.
 			if (e instanceof TypeError) {
 				console.log(chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key + "'."));
 			}
@@ -134,27 +131,55 @@ exports.loadTemplates = function(element, logLevel) {
 	return 0;
 };
 
-function walk(dir) {
+function walk(dir, objTree) {
 	let files = fs.readdirSync(dir);
 	let count = 0;
 
-	files.forEach((element) => {
-		if (count === MAX_PLUGIN_LIST) {
-			exports.pluginList += chalk.cyanBright(
-				'and ' +
-					String(files.length - count) +
-					(files.length - count === 1 ? ' more plugin.' : ' more plugins.')
-			);
-		}
+	if (!objTree) {
+		return 1;
+	}
 
-		if (!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.')))) {
-			if (count < MAX_PLUGIN_LIST) {
-				exports.pluginList +=
-					element.substring(0, utils.lastOf(element, '.')) +
-					(files[files.length - 1] !== element ? ', ' : '.');
+	if (!objTree['use']) {
+		files.forEach((element) => {
+			if (count === 4) {
+				exports.pluginList += chalk.cyanBright(
+					'and ' +
+						String(files.length - count) +
+						(files.length - count === 1 ? ' more plugin.' : ' more plugins.')
+				);
 			}
-			plugins.push(require(dir + element));
-		}
-		count++;
-	});
+
+			if (!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.')))) {
+				if (count < 4) {
+					exports.pluginList +=
+						element.substring(0, utils.lastOf(element, '.')) +
+						(files[files.length - 1] !== element ? ', ' : '.');
+				}
+				plugins.push(require(dir + element));
+			}
+			count++;
+		});
+	} else if (objTree['use']) {
+		//load the use key, if objTree is undefined we return an empty array
+		files = objTree ? objTree['use'] : [];
+
+		//loop through the array, and load the plugins
+		files.forEach((element) => {
+			if (count === 4) {
+				exports.pluginList += chalk.cyanBright(
+					'and ' +
+						String(files.length - count) +
+						(files.length - count === 1 ? ' more plugin.' : ' more plugins.')
+				);
+			}
+
+			if (count < 4) {
+				exports.pluginList += element + (files[files.length - 1] !== element ? ', ' : '.');
+			}
+			plugins.push(require(dir + element + '.js'));
+
+			count++;
+		});
+		objTree ? delete objTree['use'] : '';
+	}
 }
