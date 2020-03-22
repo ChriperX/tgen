@@ -94,6 +94,7 @@ tp.add(
 	'plugin <option> <pluginName>',
 	(element) => {
 		if (element[0] === 'info') {
+			//load the plugins, if i don't do this the plugins will never load
 			template.loadPlugins({});
 
 			if (exports.pluginInfo[element[1]]) {
