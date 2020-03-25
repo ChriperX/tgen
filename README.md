@@ -13,12 +13,23 @@
     - [Common plugin syntax](#common-plugin-syntax)
     - [Parser plugins](#parser-plugins)
     - [Template plugins](#template-plugins)
+    - [Variables](#variables)
+        - [Creating a variable](#creating-a-variable)
+        - [Read from a variable](#read-from-a-variable)
+        - [Add variable support to plugins](#add-variable-support-to-plugins)
+    - [API](#api)
+        - [Memory](#memory)
+        - [Logger](#logger)
  - [Template keys syntax](#template-keys-syntax)
+    - [use](#use)
     - [create](#create)
     - [commands](#commands)
     - [if](#if)
     - [else](#else)
     - [log](#else)
+    - [prompt](#prompt)
+    - [set](#set)
+    - [write](#write)
  - [Contributing](#contributing)
  - [Donating](#donating)
 
@@ -30,6 +41,8 @@
 npm i tgen -g
 
 ```
+
+**NOTE: After install add to your shell startup file (ex. ~/.zshrc) an env variable called TGENPATH: `export TGENPATH=/usr/local/lib/node_modules/tgen/src/`**
 
 ## FAQ
 
@@ -160,7 +173,69 @@ log:
 
 **NOTE: The log plugin is already installed by default. Installed template plugins will be listed whenever a new project is created.**
 
+### Variables
+
+#### Creating a variable
+
+You can create and assign a value to a variable using the set key (see [set](#set)).
+
+#### Read from a variable
+
+You can reference a variable by writing $(var_name_here)
+
+#### Add variable support to plugins
+
+See [API](#api)
+
+### API
+
+#### Memory
+
+The memory is handled by **mem.js** (you can find it in **src/utils/**).
+
+It loads the **.tgen.yaml** config file, and handles variables.
+
+To create a variable with mem.js, you have to call the **newVar()** function.
+
+It takes as arguments the content of the variable, and the name.
+
+To replace all the variables references in a string, call the **replaceVars()** function.
+
+It takes as an argument the string, and returns the resolved string.
+
+#### logger
+
+Logger is a module that logs to the console with proper formatting.
+
+**Example**:
+
+```js
+//require the logger module, located in src/utils/logger.js
+const logger = require('../../src/utils/logger.js')
+
+//logger takes as an argument a string, and a logLevel.
+//logLevels are identical to the log plugin logLevels
+logger('This is a string formatted properly for tgen.', 'default')
+
+```
+
 ## Template keys syntax
+
+### use
+
+If present in the template, loads all plugins specified.
+
+If it's not present, it will load all plugins installed.
+
+**Example**:
+
+```yaml
+use:
+  - 'log'
+# in this case, tgen is going to load only the log plugin.
+```
+
+**NOTE: The use key ignores plugins that are ignored in .tgen.yaml**
 
 ### create
 
@@ -191,6 +266,44 @@ Console logs everything specified in an array under a **logLevel** object.
 There are 5 logLevels: **default**, **info**, **success**, **warning**, **error**.
 
 **NOTE: There must be a logLevel otherwise it will not work.**
+
+### prompt
+
+Takes user input with a prompt specified, and stores it in a variable specified in the custom prompt object.
+
+```yaml
+prompt:
+  "What's your name?":
+    'user_name'
+log:
+  default:
+    - Hi $(user_name)!
+```
+
+### set
+
+Creates a variable, whose name is specified as an object, and the value is specified under the variable name.
+
+```yaml
+set:
+  greetings:
+    'Hi!'
+log:
+  default:
+    - $(greetings)
+```
+
+### write
+
+Writes to a file specified under the write object.
+
+```yaml
+write:
+  'lorem.txt': |
+    Lorem ipsum
+        dolor
+    sit amet.
+```
 
 ## Contributing
 
