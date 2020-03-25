@@ -31,7 +31,7 @@ exports.templateKeys = {
 			try {
 				fs.appendFileSync(mem.replaceVars(key), objStructure[key] + '\n');
 			} catch (e) {
-				console.log(e);
+				return 1;
 			}
 		}
 	}
