@@ -21,7 +21,8 @@
 		"mocha": "^7.1.1"
 	},
 	"scripts": {
-		"test": "mocha"
+		"test": "mocha",
+		"postinstall": "echo \"Add a TGENPATH environmental variable pointing to /usr/local/lib/node_modules/tgen/src/.\""
 	},
 	"repository": {
 		"type": "git",
@@ -32,5 +33,10 @@
 	"bugs": {
 		"url": "https://github.com/ChriperX/tgen/issues"
 	},
-	"homepage": "https://github.com/ChriperX/tgen#readme"
+	"homepage": "https://github.com/ChriperX/tgen#readme",
+	"bin": {
+		"tgentest": "./src/index.js"
+	},
+	"os": [ "darwin", "linux" ],
+	"preferGlobal": true
 }
