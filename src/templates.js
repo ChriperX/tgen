@@ -83,12 +83,16 @@ exports.templateKeys = {
 	},
 	commands: function(file, element) {
 		const commands = file || [ 'echo' ];
+		let chainedCommand = '';
+
 		for (let i = 0; i <= commands.length - 1; i++) {
 			//exec(commands[i].replace(/\(name\)/g, element));
-			exec(mem.replaceVars(commands[i]));
+			chainedCommand += i === commands.length - 1 ? commands[i] : commands[i] + ' && ';
 
 			logger('ran command: ' + chalk.whiteBright(mem.replaceVars(commands[i])), 'info');
 		}
+
+		exec(mem.replaceVars(chainedCommand));
 
 		logger('this may take a while', 'warning');
 	}
@@ -138,6 +142,7 @@ exports.loadTemplates = function(element, logLevel) {
 		try {
 			exports.templateKeys[key](file[key], element[1], file);
 		} catch (e) {
+			console.log(e);
 			if (e instanceof TypeError) {
 				console.log(chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key + "'."));
 			}
