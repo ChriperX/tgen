@@ -2,5 +2,6 @@ create:
     - $(name)/index.ts
     - $(name)/package.json
 commands:
-    - cd ./$(name) && npm init -y && npm i typescript --save-dev
-    - cd ./$(name) && tsc --init
+    - cd ./$(name)
+    - npm init -y && npm i typescript --save-dev
+    - tsc --init
