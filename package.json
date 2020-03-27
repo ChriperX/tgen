@@ -35,7 +35,7 @@
 	},
 	"homepage": "https://github.com/ChriperX/tgen#readme",
 	"bin": {
-		"tgentest": "./src/index.js"
+		"tgen": "./src/index.js"
 	},
 	"os": [ "darwin", "linux" ],
 	"preferGlobal": true
