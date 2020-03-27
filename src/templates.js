@@ -28,6 +28,9 @@ const logger = require('./utils/logger.js');
 const plugger = require('@nonamenpm/plugger');
 const chalk = require('chalk');
 const mem = require('./utils/mem');
+const messages = require('./messages.js');
+
+const error = messages.newMessageType('error');
 
 let plugins = [];
 
@@ -123,11 +126,18 @@ exports.loadTemplates = function(element, logLevel) {
 	} catch (e) {
 		if (e.name === 'YAMLException') {
 			//bad formatting in template
-
-			console.log(chalk.redBright('	error: bad formatting in template: ') + chalk.whiteBright(element[0]));
+			logger(
+				error(chalk.redBright('error: bad formatting in template: '), 'yaml_bad_formatting') +
+					chalk.whiteBright(element[0]),
+				'error'
+			);
 		} else {
 			//template not found
-			console.log(chalk.redBright('	error: template not found: ') + chalk.whiteBright(element[0]));
+			logger(
+				error(chalk.redBright('error: template not found: '), 'template_not_found') +
+					chalk.whiteBright(element[0]),
+				'error'
+			);
 		}
 		return 1;
 	}
@@ -151,7 +161,7 @@ exports.loadTemplates = function(element, logLevel) {
 		} catch (e) {
 			console.log(e);
 			if (e instanceof TypeError) {
-				console.log(chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key + "'."));
+				logger(chalk.redBright('error: unsupported key: ') + chalk.whiteBright("'" + key + "'."), 'error');
 			}
 			return 1;
 		}

@@ -30,7 +30,12 @@ const yaml = require('js-yaml');
 const utils = require('./utils/utils');
 const logger = require('./utils/logger');
 const plugger = require('@nonamenpm/plugger');
+const messages = require('./messages.js');
 const mem = require('./utils/mem');
+
+const error = messages.newMessageType('error');
+const info = messages.newMessageType('info');
+const general = messages.newMessageType('general');
 
 const TGEN_VERSION = '1.0.0';
 const INFO_NOT_GIVEN = 'not given';
@@ -81,7 +86,10 @@ exports.newTemplate = function(element) {
 };
 
 tp.error((token) => {
-	logger('error: unrecognized token ' + chalk.whiteBright("'" + token + "'."), 'error');
+	logger(
+		error('error: unrecognized token ', 'parser_unrecognized_token') + chalk.whiteBright("'" + token + "'."),
+		'error'
+	);
 });
 
 tp.add(
@@ -182,7 +190,9 @@ tp.add(
 
 //set exit status only if we are not in a mocha test, so shells like zsh can visualize the exit code
 if (typeof global.it !== 'function') {
-	console.log(chalk.greenBright('tgen templating engine version ' + chalk.whiteBright(TGEN_VERSION)));
+	console.log(
+		general(chalk.greenBright('tgen templating engine version '), 'tgen_version') + chalk.whiteBright(TGEN_VERSION)
+	);
 	const exitStatus = tp.parse();
 	//separator
 	console.log();
