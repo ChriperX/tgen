@@ -38,7 +38,7 @@ exports.newVar = function(content, varName) {
 
 exports.fetch = function(varName = '') {
 	// prettier-ignore
-	return vars['\\$\\(' + varName + '\\)'] ? vars['\\$\\(' + varName + '\\)'] : vars;
+	return vars['\\$\\(' + varName + '\\)'] !== undefined ? vars['\\$\\(' + varName + '\\)'] : vars;
 };
 
 exports.replaceVars = function(string) {
@@ -50,3 +50,6 @@ exports.replaceVars = function(string) {
 
 	return returnString;
 };
+
+exports.newVar(false, 'suppress');
+exports.newVar(false, 'verbose');

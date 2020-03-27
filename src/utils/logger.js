@@ -34,16 +34,20 @@ const levelCodes = {
 		console.log(chalk.whiteBright('	' + msg));
 	},
 	info: function(msg) {
-		console.log(chalk.cyanBright('	' + msg));
+		//log only if suppress is false
+		mem.fetch('suppress') || console.log(chalk.cyanBright('	' + msg));
 	},
 	success: function(msg) {
-		console.log(chalk.greenBright('	' + msg));
+		mem.fetch('suppress') || console.log(chalk.greenBright('	' + msg));
 	},
 	warning: function(msg) {
 		console.log(chalk.yellowBright('	' + msg));
 	},
 	error: function(msg) {
 		console.log(chalk.redBright('	' + msg));
+	},
+	verbose: function(msg) {
+		!mem.fetch('verbose') || console.log(chalk.green('	' + msg));
 	}
 };
 

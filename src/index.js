@@ -84,6 +84,22 @@ tp.error((token) => {
 	logger('error: unrecognized token ' + chalk.whiteBright("'" + token + "'."), 'error');
 });
 
+tp.add(
+	'verbose',
+	() => {
+		mem.newVar(true, 'verbose');
+	},
+	'Enable verbose logging.'
+);
+
+tp.add(
+	'suppress',
+	() => {
+		mem.newVar(true, 'suppress');
+	},
+	'Suppresses info and success logs.'
+);
+
 //add the new command, with template and name
 tp.add('new <template> <name>', exports.newTemplate, 'Create new project from template.');
 
