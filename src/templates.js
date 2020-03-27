@@ -60,19 +60,26 @@ exports.templateKeys = {
 					//create the directories
 					fs.mkdirSync(parsedFile.substring(0, utils.lastOf(parsedFile, '/')), { recursive: true });
 					createdDirs[parsedFile.substring(0, utils.lastOf(parsedFile, '/'))] ||
-						console.log(
+						logger(
+							'created directory: ' +
+								chalk.whiteBright(parsedFile.substring(0, utils.lastOf(parsedFile, '/'))),
+							'success'
+						);
+					/*	
+					console.log(
 							chalk.greenBright(
 								'	created directory: ' +
 									chalk.whiteBright(parsedFile.substring(0, utils.lastOf(parsedFile, '/')))
 							)
 						);
+								*/
 
 					createdDirs[parsedFile.substring(0, utils.lastOf(parsedFile, '/'))] = true;
 
 					//if a slash is at the end, assume we aren't creating a file
 					if (utils.lastOf(parsedFile, '/') !== parsedFile.length - 1) {
 						fs.writeFileSync('./' + parsedFile, '');
-						console.log(chalk.greenBright('	created file: ' + chalk.whiteBright(parsedFile)));
+						logger('created file: ' + chalk.whiteBright(parsedFile), 'success');
 					}
 				} else {
 					const parsedFile = mem.replaceVars(fileToCreate[i]);
