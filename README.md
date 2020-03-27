@@ -235,7 +235,7 @@ use:
 # in this case, tgen is going to load only the log plugin.
 ```
 
-**NOTE: The use key ignores plugins that are ignored in .tgen.yaml**
+**NOTE: The use key can load plugins that are ignored in .tgen.yaml**
 
 ### create
 
