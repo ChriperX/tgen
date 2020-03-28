@@ -53,3 +53,4 @@ exports.replaceVars = function(string) {
 
 exports.newVar(false, 'suppress');
 exports.newVar(false, 'verbose');
+exports.newVar(false, 'suppressAll');
