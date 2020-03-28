@@ -25,29 +25,29 @@ const mem = require('./mem');
 
 const levelCodes = {
 	none: function(msg) {
-		console.log('	' + msg);
+		mem.fetch('suppressAll') || console.log('	' + msg);
 	},
 	external: function(msg) {
-		console.log(chalk.yellowBright('	' + msg));
+		mem.fetch('suppressAll') || console.log(chalk.yellowBright('	' + msg));
 	},
 	default: function(msg) {
-		console.log(chalk.whiteBright('	' + msg));
+		mem.fetch('suppressAll') || console.log(chalk.whiteBright('	' + msg));
 	},
 	info: function(msg) {
 		//log only if suppress is false
-		mem.fetch('suppress') || console.log(chalk.cyanBright('	' + msg));
+		mem.fetch('suppress') || mem.fetch('suppressAll') || console.log(chalk.cyanBright('	' + msg));
 	},
 	success: function(msg) {
-		mem.fetch('suppress') || console.log(chalk.greenBright('	' + msg));
+		mem.fetch('suppress') || mem.fetch('suppressAll') || console.log(chalk.greenBright('	' + msg));
 	},
 	warning: function(msg) {
-		console.log(chalk.yellowBright('	' + msg));
+		mem.fetch('suppressAll') || console.log(chalk.yellowBright('	' + msg));
 	},
 	error: function(msg) {
-		console.log(chalk.redBright('	' + msg));
+		mem.fetch('suppressAll') || console.log(chalk.redBright('	' + msg));
 	},
 	verbose: function(msg) {
-		!mem.fetch('verbose') || console.log(chalk.green('	' + msg));
+		!mem.fetch('verbose') || mem.fetch('suppressAll') || console.log(chalk.green('	' + msg));
 	}
 };
 
