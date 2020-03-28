@@ -22,19 +22,30 @@
 
 //#endregion LICENSE
 
+const chalk = require('chalk');
+const logger = require('./utils/logger');
+
+if (!process.env.TGENPATH) {
+	console.log(chalk.redBright('error: TGENPATH env variable not set.'));
+	console.log(
+		chalk.cyanBright(
+			'In your shell startup file (.bashrc or .zshrc if you have zsh installed), please add this line:'
+		)
+	);
+	logger('export TGENPATH="/usr/local/lib/node_modules/tgen/src/"', 'default');
+	return 1;
+}
+
 const template = require('./templates');
 const tp = require('@nonamenpm/text-parser');
 const fs = require('fs');
-const chalk = require('chalk');
 const yaml = require('js-yaml');
 const utils = require('./utils/utils');
-const logger = require('./utils/logger');
 const plugger = require('@nonamenpm/plugger');
 const messages = require('./messages.js');
 const mem = require('./utils/mem');
 
 const error = messages.newMessageType('error');
-const info = messages.newMessageType('info');
 const general = messages.newMessageType('general');
 
 const TGEN_VERSION = '1.0.0';
@@ -200,4 +211,5 @@ if (typeof global.it !== 'function') {
 }
 
 //we are running a mocha test, so we don't exit.
+mem.newVar(true, 'suppressAll');
 tp.parse();
