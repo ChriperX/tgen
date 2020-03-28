@@ -115,6 +115,12 @@ exports.loadTemplates = function(element, logLevel) {
 		//if TGENPATH is not set, return 1
 		if (!process.env.TGENPATH) {
 			console.log(chalk.redBright('error: TGENPATH env variable not set.'));
+			console.log(
+				chalk.cyanBright(
+					'In your shell startup file (.bashrc or .zshrc if you have zsh installed), please add this line:'
+				)
+			);
+			logger('export TGENPATH="/usr/local/lib/node_modules/tgen/src/"');
 			return 1;
 		}
 
