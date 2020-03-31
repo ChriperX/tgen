@@ -57,46 +57,60 @@ exports.pluginInfo = {
 
 exports.templateKeys = {
 	if: function(file, name, fileStructure) {
-		for (key in file) {
-			var constKey = key; //if i don't do this js freaks out
+		//mem.fetch('if-count') ? mem.newVar(0, 'if-count') : mem.newVar(mem.fetch('if-count') + 1, 'if-count');
+		if (typeof mem.fetch('if-count') === 'object') {
+			mem.newVar(0, 'if-count');
+		} else {
+			mem.newVar(mem.fetch('if-count') + 1, 'if-count');
+		}
 
-			fileStructure['else'] ? currKey.push(fileStructure['else']) : '';
+		lastEval[mem.fetch('if-count')] = [];
 
-			if (safeEval(mem.replaceVars(key))) {
-				for (key2 in file[constKey]) {
-					try {
-						template.templateKeys[key2](
-							file[constKey] ? file[constKey][key2] : file[key2],
-							name,
-							file[constKey]
-						);
-					} catch (e) {
-						//console.log(e);
-						console.log(
-							chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key2 + "'.")
-						);
+		for (let i = 0; i <= file.length - 1; i++) {
+			for (let key in file[i]) {
+				var constKey = key; //if i don't do this js freaks out
 
-						return 1;
+				fileStructure['else'] ? currKey.push(fileStructure['else']) : '';
+
+				if (safeEval(mem.replaceVars(key))) {
+					fileStructure['else'] ? lastEval[mem.fetch('if-count')].push(true) : '';
+					for (let key2 in file[i][constKey]) {
+						try {
+							template.templateKeys[key2](
+								file[i][constKey] ? file[i][constKey][key2] : file[i][key2],
+								name,
+								file[i][constKey]
+							);
+						} catch (e) {
+							//console.log(e);
+							console.log(
+								chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key2 + "'.")
+							);
+
+							return 1;
+						}
 					}
+				} else {
+					fileStructure['else'] ? lastEval[mem.fetch('if-count')].push(false) : '';
 				}
-			} else {
-				fileStructure['else'] ? lastEval.push(false) : '';
 			}
 		}
 	},
 	else: function(file, name, fileStructure) {
 		file = currKey[currKey.length - 1] || file;
-		if (lastEval[lastEval.length - 1] === false) {
-			lastEval.pop();
-			currKey.pop();
-			try {
-				for (key in file) {
-					template.templateKeys[key](file[key], name, fileStructure['else']);
+		for (let i = 0; i <= file.length - 1; i++) {
+			if (lastEval[mem.fetch('if-count')][i] === false) {
+				currKey.pop();
+				try {
+					for (let key in file[i]) {
+						template.templateKeys[key](file[i][key], name, fileStructure['else']);
+					}
+				} catch (e) {
+					console.log(e);
+
+					console.log(chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key + "'."));
+					return 1;
 				}
-			} catch (e) {
-				console.log(e);
-				console.log(chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key + "'."));
-				return 1;
 			}
 		}
 	}
