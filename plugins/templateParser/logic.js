@@ -23,6 +23,7 @@
 const template = require('../../src/templates.js');
 const chalk = require('chalk');
 const mem = require('../../src/utils/mem.js');
+const logger = require('../../src/utils/logger.js');
 
 var lastEval = [];
 var currKey = [];
@@ -72,7 +73,17 @@ exports.templateKeys = {
 
 				fileStructure['else'] ? currKey.push(fileStructure['else']) : '';
 
-				if (safeEval(mem.replaceVars(key))) {
+				try {
+					var evaluation = safeEval(mem.replaceVars(key));
+				} catch (e) {
+					logger(
+						'error: error while evaluating if condition.\n	maybe there is an indentation error?',
+						'error'
+					);
+					return 1;
+				}
+
+				if (evaluation) {
 					fileStructure['else'] ? lastEval[mem.fetch('if-count')].push(true) : '';
 					for (let key2 in file[i][constKey]) {
 						try {
@@ -83,8 +94,12 @@ exports.templateKeys = {
 							);
 						} catch (e) {
 							//console.log(e);
-							console.log(
-								chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key2 + "'.")
+
+							logger(
+								'error: unsupported key: ' +
+									chalk.whiteBright("'" + key2 + "'.") +
+									'\n	maybe there is an indentation error?',
+								'error'
 							);
 
 							return 1;
