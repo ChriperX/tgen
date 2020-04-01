@@ -27,24 +27,26 @@ const levelCodes = {
 	none: function(msg) {
 		mem.fetch('suppressAll') || console.log('	' + msg);
 	},
+	/*
 	external: function(msg) {
-		mem.fetch('suppressAll') || console.log(chalk.yellowBright('	' + msg));
+		mem.fetch('suppressAll') || console.log(chalk.bold.yellowBright('	' + msg));
 	},
+	*/
 	default: function(msg) {
-		mem.fetch('suppressAll') || console.log(chalk.whiteBright('	' + msg));
+		mem.fetch('suppressAll') || console.log(chalk.bold.whiteBright('	' + msg));
 	},
 	info: function(msg) {
 		//log only if suppress is false
-		mem.fetch('suppress') || mem.fetch('suppressAll') || console.log(chalk.cyanBright('	' + msg));
+		mem.fetch('suppress') || mem.fetch('suppressAll') || console.log(chalk.bold.blueBright('	' + msg));
 	},
 	success: function(msg) {
-		mem.fetch('suppress') || mem.fetch('suppressAll') || console.log(chalk.greenBright('	' + msg));
+		mem.fetch('suppress') || mem.fetch('suppressAll') || console.log(chalk.bold.green('	' + msg));
 	},
 	warning: function(msg) {
-		mem.fetch('suppressAll') || console.log(chalk.yellowBright('	' + msg));
+		mem.fetch('suppressAll') || console.log(chalk.bold.yellow('	' + msg));
 	},
 	error: function(msg) {
-		mem.fetch('suppressAll') || console.log(chalk.redBright('	' + msg));
+		mem.fetch('suppressAll') || console.log(chalk.bold.red('	' + msg));
 	},
 	verbose: function(msg) {
 		!mem.fetch('verbose') || mem.fetch('suppressAll') || console.log(chalk.green('	' + msg));
