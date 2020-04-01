@@ -259,6 +259,8 @@ template keys inside of it.
 
 Executes the template keys inside of it, only if the last if statement evaluated to false.
 
+See the [examples](/tree/master/examples)
+
 ### log
 
 Console logs everything specified in an array under a **logLevel** object.

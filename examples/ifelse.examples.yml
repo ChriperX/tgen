@@ -1,0 +1,26 @@
+#to try this example, copy this file into the /src/templates folder, and
+#execute it with 'tgen exec ifelse.examples'
+#in this example we are going to use only the 'logic' and 'log' plugins
+use:
+  - 'logic'
+  - 'log'
+#we make an if statement and evaluate two things: true and false
+if:
+  #we make arrays for each of our conditions
+  - 'true':
+      #make sure it as an extra indentation
+      log:
+        info:
+          - 'We are logging from here because the condition is true!'
+  - 'false':
+      log:
+        warning:
+          - "It shouldn't log from here, if it does, open an issue!"
+#now we are going to make an else statement for both
+else:
+  - log:
+      warning:
+        - "It shouldn't log from here, if it does, open an issue!"
+  - log:
+      info:
+        - 'We are logging from here because the last condition is false!'

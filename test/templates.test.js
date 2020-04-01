@@ -27,7 +27,7 @@ describe('templates.templateKeys', () => {
 
 	it('should throw', () => {
 		expect(function() {
-			throw templates.templateKeys['if']({ a: { log: { info: 'test' } } });
+			throw templates.templateKeys['if']([ { a: { log: { info: 'test' } } } ]);
 		}).to.throw();
 	});
 });

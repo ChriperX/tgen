@@ -23,11 +23,13 @@
 const template = require('../../src/templates.js');
 const chalk = require('chalk');
 const mem = require('../../src/utils/mem.js');
+const logger = require('../../src/utils/logger.js');
 
 var lastEval = [];
 var currKey = [];
 
 function safeEval(expr) {
+	//we don't evaluate with eval() because it opens attack vectors for malicious templates
 	return Function("'use strict'; return(" + expr + ')')();
 }
 
@@ -57,46 +59,87 @@ exports.pluginInfo = {
 
 exports.templateKeys = {
 	if: function(file, name, fileStructure) {
-		for (key in file) {
-			var constKey = key; //if i don't do this js freaks out
+		//variable used to maintain track of at wwhich if statement we are at
+		if (typeof mem.fetch('if-count') === 'object') {
+			mem.newVar(0, 'if-count');
+		} else {
+			mem.newVar(mem.fetch('if-count') + 1, 'if-count');
+		}
+		//create 2d array
+		//this will be used with if count to execute the various else statements
+		//only if the corresponding if and the corresponding conditions are met
+		lastEval[mem.fetch('if-count')] = [];
 
-			fileStructure['else'] ? currKey.push(fileStructure['else']) : '';
+		for (let i = 0; i <= file.length - 1; i++) {
+			for (let key in file[i]) {
+				var constKey = key; //if i don't do this js freaks out
+				//push to currKey the next else statement, if there are any
+				fileStructure['else'] ? currKey.push(fileStructure['else']) : '';
 
-			if (safeEval(mem.replaceVars(key))) {
-				for (key2 in file[constKey]) {
-					try {
-						template.templateKeys[key2](
-							file[constKey] ? file[constKey][key2] : file[key2],
-							name,
-							file[constKey]
-						);
-					} catch (e) {
-						//console.log(e);
-						console.log(
-							chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key2 + "'.")
-						);
-
-						return 1;
-					}
+				try {
+					//evaluate the condition
+					var evaluation = safeEval(mem.replaceVars(key));
+				} catch (e) {
+					//there may be a reference error or an indentation error in the template
+					logger(
+						'error: error while evaluating if condition.\n	maybe there is an indentation error?',
+						'error'
+					);
+					return 1;
 				}
-			} else {
-				fileStructure['else'] ? lastEval.push(false) : '';
+
+				if (evaluation) {
+					//this is where we execute the syntax inside the if
+					fileStructure['else'] ? lastEval[mem.fetch('if-count')].push(true) : '';
+					for (let key2 in file[i][constKey]) {
+						try {
+							template.templateKeys[key2](
+								file[i][constKey] ? file[i][constKey][key2] : file[i][key2],
+								name,
+								file[i][constKey]
+							);
+						} catch (e) {
+							//console.log(e);
+							//there may be an inexistent key or an indentation error
+							logger(
+								'error: unsupported key: ' +
+									chalk.whiteBright("'" + key2 + "'.") +
+									'\n	maybe there is an indentation error?',
+								'error'
+							);
+
+							return 1;
+						}
+					}
+				} else {
+					//if the evaluation is false, we push to the current if a false flag, only if there are any elses
+					fileStructure['else'] ? lastEval[mem.fetch('if-count')].push(false) : '';
+				}
 			}
 		}
 	},
 	else: function(file, name, fileStructure) {
+		//get the current file or currKey if it exists
 		file = currKey[currKey.length - 1] || file;
-		if (lastEval[lastEval.length - 1] === false) {
-			lastEval.pop();
-			currKey.pop();
-			try {
-				for (key in file) {
-					template.templateKeys[key](file[key], name, fileStructure['else']);
+		for (let i = 0; i <= file.length - 1; i++) {
+			//check if any of the last if's conditions are false
+			if (lastEval[mem.fetch('if-count')][i] === false) {
+				//we take out of memory the last else statement
+				currKey.pop();
+				try {
+					for (let key in file[i]) {
+						template.templateKeys[key](file[i][key], name, fileStructure['else']);
+					}
+				} catch (e) {
+					//console.log(e);
+					logger(
+						'error: unsupported key: ' +
+							chalk.whiteBright("'" + key2 + "'.") +
+							'\n	maybe there is an indentation error?',
+						'error'
+					);
+					return 1;
 				}
-			} catch (e) {
-				console.log(e);
-				console.log(chalk.redBright('	error: unsupported key: ') + chalk.whiteBright("'" + key + "'."));
-				return 1;
 			}
 		}
 	}
