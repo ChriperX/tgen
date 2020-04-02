@@ -1,6 +1,6 @@
 node_modules
 src/templates/test.yaml
 src/templates/test2.yml
-src/templates/test3.yml
+src/templates/color_tests.yml
 src/templates/blank.yaml
 .github
