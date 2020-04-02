@@ -1,4 +1,4 @@
-//#region LICENSE
+// #region LICENSE
 
 /*
 	Logger library for tgen, the open source templating engine.
@@ -18,7 +18,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-//#endregion LICENSE
+// #endregion LICENSE
 
 const chalk = require('chalk');
 const mem = require('./mem');
@@ -36,7 +36,7 @@ const levelCodes = {
 		mem.fetch('suppressAll') || console.log(chalk.bold.whiteBright('	' + msg));
 	},
 	info: function(msg) {
-		//log only if suppress is false
+		// log only if suppress is false
 		mem.fetch('suppress') || mem.fetch('suppressAll') || console.log(chalk.bold.blueBright('	' + msg));
 	},
 	success: function(msg) {
@@ -55,13 +55,13 @@ const levelCodes = {
 
 module.exports = function(msg, levelCode) {
 	try {
-		//try calling a logLevel function
+		// try calling a logLevel function
 		levelCodes[levelCode](mem.replaceVars(msg));
 	} catch (e) {
-		//if the specified logLevel is not defined return 1
+		// if the specified logLevel is not defined return 1
 		console.log(chalk.redBright('	error: levelCode not found: ' + levelCode));
 		return 1;
 	}
-	//return 0 the message and the level code
+	// return 0 the message and the level code
 	return [ 0, msg, levelCode ];
 };
