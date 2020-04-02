@@ -46,7 +46,7 @@ const levelCodes = {
 		mem.fetch('suppressAll') || console.log(chalk.bold.yellow('	' + msg));
 	},
 	error: function(msg) {
-		mem.fetch('suppressAll') || console.log(chalk.bold.red('	' + msg));
+		mem.fetch('suppressAll') || console.log(chalk.bold.redBright('	' + msg));
 	},
 	verbose: function(msg) {
 		!mem.fetch('verbose') || mem.fetch('suppressAll') || console.log(chalk.green('	' + msg));
