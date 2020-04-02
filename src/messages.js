@@ -1,4 +1,4 @@
-//#region LICENSE
+// #region LICENSE
 
 /*
 	Modifiable messages for tgen, the open source templating engine.
@@ -18,11 +18,11 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-//#endregion LICENSE
+// #endregion LICENSE
 const plugger = require('@nonamenpm/plugger');
 const fs = require('fs');
 
-let plugins = [];
+const plugins = [];
 
 function walk(dir) {
 	files = fs.readdirSync(dir);
@@ -33,7 +33,7 @@ function walk(dir) {
 
 walk(process.env.TGENPATH + '../plugins/messages/');
 
-//entry point that will be used by plugin to make custom messages for tgen
+// entry point that will be used by plugin to make custom messages for tgen
 exports.logMessages = {};
 
 exports.newMessageType = (msgType) => (msg, id) => {

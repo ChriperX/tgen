@@ -1,4 +1,4 @@
-//#region LICENSE
+// #region LICENSE
 
 /*
 	Log plugin for tgen, the open source templating engine.
@@ -18,29 +18,29 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-//#endregion LICENSE
+// #endregion LICENSE
 
-//const chalk = require('chalk');
-const logger = require('../../src/utils/logger');
-const mem = require('../../src/utils/mem.js');
+// const chalk = require('chalk');
+const logger = require('../../src/utils/logger')
+const mem = require('../../src/utils/mem.js')
 
 exports.pluginInfo = {
-	log: {
-		version: 'v1.0.0',
-		author: 'NoName',
-		repo: 'none',
-		extends: 'log, logLevel',
-		description: 'Log functionality for templates.'
-	}
-};
+  log: {
+    version: 'v1.0.0',
+    author: 'NoName',
+    repo: 'none',
+    extends: 'log, logLevel',
+    description: 'Log functionality for templates.'
+  }
+}
 
 exports.templateKeys = {
-	log: function(file, name) {
-		for (let key in file) {
-			for (let i = 0; i <= file[key].length - 1; i++) {
-				//logLevels[key](file[key][i], name);
-				logger(file[key][i], key);
-			}
-		}
-	}
-};
+  log: function (file, name) {
+    for (const key in file) {
+      for (let i = 0; i <= file[key].length - 1; i++) {
+        // logLevels[key](file[key][i], name);
+        logger(file[key][i], key)
+      }
+    }
+  }
+}

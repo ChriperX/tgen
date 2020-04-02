@@ -1,4 +1,4 @@
-//#region LICENSE
+// #region LICENSE
 
 /*
 	Utility library for tgen, the open source templating engine.
@@ -18,7 +18,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-//#endregion LICENSE
+// #endregion LICENSE
 
 exports.lastOf = function(string, char) {
 	return string.length - string.split(char)[string.split(char).length - 1].length - 1;

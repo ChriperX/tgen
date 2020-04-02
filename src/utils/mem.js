@@ -1,4 +1,4 @@
-//#region LICENSE
+// #region LICENSE
 
 /*
 	File used for costant memory across files for tgen, the open source templating engine.
@@ -18,13 +18,13 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-//#endregion LICENSE
+// #endregion LICENSE
 
-//file used for costant memory across files
+// file used for costant memory across files
 const yaml = require('js-yaml');
 const fs = require('fs');
 
-let vars = {};
+const vars = {};
 
 exports.tgenSettings = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '../.tgen.yaml', 'utf8')) || {
 	plugins: { ignore: [] }
@@ -32,13 +32,13 @@ exports.tgenSettings = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '../
 
 exports.newVar = function(content, varName) {
 	// prettier-ignore
-	vars['\\$\\(' + varName + '\\)'] = content;
+	vars['\\$\\(' + varName + '\\)'] = content
 	return content;
 };
 
 exports.fetch = function(varName = '') {
 	// prettier-ignore
-	return vars['\\$\\(' + varName + '\\)'] !== undefined ? vars['\\$\\(' + varName + '\\)'] : vars;
+	return vars['\\$\\(' + varName + '\\)'] !== undefined ? vars['\\$\\(' + varName + '\\)'] : vars
 };
 
 exports.replaceVars = function(string) {

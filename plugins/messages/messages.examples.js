@@ -1,5 +1,5 @@
-//this is an example file for modifying the messages in tgen
-//uncomment to see what the example does
+// this is an example file for modifying the messages in tgen
+// uncomment to see what the example does
 /*
 const chalk = require('chalk');
 
