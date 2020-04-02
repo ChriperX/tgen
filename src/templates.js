@@ -151,7 +151,7 @@ exports.loadTemplates = function(element, logLevel) {
 	exports.loadPlugins(file);
 
 	console.log(
-		chalk.cyanBright(
+		chalk.bold.blueBright(
 			'executing template: ' +
 				element[0] +
 				', ' +
@@ -167,7 +167,7 @@ exports.loadTemplates = function(element, logLevel) {
 		} catch (e) {
 			console.log(e);
 			if (e instanceof TypeError) {
-				logger(chalk.redBright('error: unsupported key: ') + chalk.whiteBright("'" + key + "'."), 'error');
+				logger('error: unsupported key: ' + chalk.whiteBright("'" + key + "'."), 'error');
 			}
 			return 1;
 		}
