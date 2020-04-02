@@ -50,7 +50,7 @@ exports.loadPlugins = function(file) {
 
 // entry point for plugins
 exports.templateKeys = {
-	create: function(file, element) {
+	create: function(file) {
 		const fileToCreate = file;
 		const createdDirs = {};
 
@@ -91,7 +91,7 @@ exports.templateKeys = {
 			}
 		}
 	},
-	commands: function(file, element) {
+	commands: function(file) {
 		const commands = file || [ 'echo' ];
 		let chainedCommand = '';
 
@@ -110,7 +110,7 @@ exports.templateKeys = {
 
 // #endregion PLUGIN_ENTRY_POINT
 
-exports.loadTemplates = function(element, logLevel) {
+exports.loadTemplates = function(element) {
 	try {
 		// if TGENPATH is not set, return 1
 		if (!process.env.TGENPATH) {
@@ -161,7 +161,7 @@ exports.loadTemplates = function(element, logLevel) {
 		)
 	);
 
-	for (key in file) {
+	for (let key in file) {
 		try {
 			exports.templateKeys[key](file[key], element[1], file);
 		} catch (e) {

@@ -25,7 +25,7 @@ const fs = require('fs');
 const plugins = [];
 
 function walk(dir) {
-	files = fs.readdirSync(dir);
+	let files = fs.readdirSync(dir);
 	files.forEach((element) => {
 		plugins.push(require(dir + element));
 	});

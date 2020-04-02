@@ -67,14 +67,14 @@ exports.use = function(plugin) {
 };
 
 function addCustomCommands() {
-	for (key in exports.commands) {
+	for (let key in exports.commands) {
 		//loops through the commands object and adds the commands
 		tp.add(exports.commands[key]['command'], exports.commands[key]['cb'], exports.commands[key]['desc']);
 	}
 }
 
 function walk(dir) {
-	files = fs.readdirSync(dir);
+	let files = fs.readdirSync(dir);
 	files.forEach((element) => {
 		if (!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.')))) {
 			plugins.push(require(dir + element));

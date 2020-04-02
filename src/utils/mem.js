@@ -44,7 +44,7 @@ exports.fetch = function(varName = '') {
 exports.replaceVars = function(string) {
 	let returnString = string;
 
-	for (key in vars) {
+	for (let key in vars) {
 		returnString = returnString.replace(new RegExp(key, 'g'), vars[key]);
 	}
 
