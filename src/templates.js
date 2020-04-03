@@ -112,18 +112,6 @@ exports.templateKeys = {
 
 exports.loadTemplates = function(element) {
 	try {
-		//if TGENPATH is not set, return 1
-		if (!process.env.TGENPATH) {
-			console.log(chalk.redBright('error: TGENPATH env variable not set.'));
-			console.log(
-				chalk.cyanBright(
-					'In your shell startup file (.bashrc or .zshrc if you have zsh installed), please add this line:'
-				)
-			);
-			logger('export TGENPATH="/usr/local/lib/node_modules/tgen/src/"');
-			return 1;
-		}
-
 		//load file, TGENPATH is the path to where tgen is installed
 		var extension = fs.existsSync(process.env.TGENPATH + '/templates/' + element[0] + '.yaml') ? '.yaml' : '.yml';
 		var file = yaml.safeLoad(
@@ -167,7 +155,7 @@ exports.loadTemplates = function(element) {
 		} catch (e) {
 			console.log(e);
 			if (e instanceof TypeError) {
-				logger('error: unsupported key: ' + chalk.whiteBright("'" + key + "'."), 'error');
+				logger('error: unknown key: ' + chalk.whiteBright("'" + key + "'."), 'error');
 			}
 			return 1;
 		}
@@ -186,7 +174,7 @@ function walk(dir, objTree) {
 	if (!objTree['use']) {
 		files.forEach((element) => {
 			if (count === 4) {
-				exports.pluginList += chalk.cyanBright(
+				exports.pluginList += chalk.bold.blueBright(
 					'and ' +
 						String(files.length - count) +
 						(files.length - count === 1 ? ' more plugin.' : ' more plugins.')
@@ -223,7 +211,7 @@ function walk(dir, objTree) {
 			}
 
 			if (count === 4) {
-				exports.pluginList += chalk.cyanBright(
+				exports.pluginList += chalk.bold.blueBright(
 					'and ' +
 						String(files.length - count) +
 						(files.length - count === 1 ? ' more plugin.' : ' more plugins.')
