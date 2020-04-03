@@ -11,73 +11,73 @@ log:
     - "After creation of the files, run the install.sh file to install the dependencies"
 
 prompt:
-  'Do you want routing? (y/N)':
+  'Do you want routing? {{y/N}}':
     'routing'
 if:
-  "'$(routing)' === 'y'":
+  "'${{routing}}' === 'y'":
     create:
-      - $(name)/src/app/app-routing.module.ts
+      - ${{name}}/src/app/app-routing.module.ts
 
 create:
   #create root files
-  - $(name)/.editorconfig
-  - $(name)/.gitignore
-  - $(name)/README.md
-  - $(name)/angular.json
-  - $(name)/install.sh
-  #- $(name)/package.json
-  - $(name)/src/
-  - $(name)/tsconfig.json
-  - $(name)/tslint.json
-  - $(name)/browserslist
-  - $(name)/karma.conf.js
-  - $(name)/tsconfig.spec.json
-  - $(name)/tsconfig.app.json
+  - ${{name}}/.editorconfig
+  - ${{name}}/.gitignore
+  - ${{name}}/README.md
+  - ${{name}}/angular.json
+  - ${{name}}/install.sh
+  #- ${{name}}/package.json
+  - ${{name}}/src/
+  - ${{name}}/tsconfig.json
+  - ${{name}}/tslint.json
+  - ${{name}}/browserslist
+  - ${{name}}/karma.conf.js
+  - ${{name}}/tsconfig.spec.json
+  - ${{name}}/tsconfig.app.json
 
   #src
-  - $(name)/src/assets/.gitkeep
-  - $(name)/src/environments/
-  - $(name)/src/environments/environment.prod.ts
-  - $(name)/src/environments/environment.ts
-  - $(name)/src/index.html
-  - $(name)/src/main.ts
-  - $(name)/src/polyfills.ts
-  - $(name)/src/styles.sass
-  - $(name)/src/test.ts
+  - ${{name}}/src/assets/.gitkeep
+  - ${{name}}/src/environments/
+  - ${{name}}/src/environments/environment.prod.ts
+  - ${{name}}/src/environments/environment.ts
+  - ${{name}}/src/index.html
+  - ${{name}}/src/main.ts
+  - ${{name}}/src/polyfills.ts
+  - ${{name}}/src/styles.sass
+  - ${{name}}/src/test.ts
   #components
   
-  - $(name)/src/app/app.component.ts
-  - $(name)/src/app/app.component.html
-  - $(name)/src/app/app.component.sass
-  - $(name)/src/app/app.component.spec.ts
-  - $(name)/src/app/app.module.ts
+  - ${{name}}/src/app/app.component.ts
+  - ${{name}}/src/app/app.component.html
+  - ${{name}}/src/app/app.component.sass
+  - ${{name}}/src/app/app.component.spec.ts
+  - ${{name}}/src/app/app.module.ts
   #e2e
-  - $(name)/e2e/src/
-  - $(name)/e2e/src/app.e2e-spec.ts
-  - $(name)/e2e/src/app.po.ts
-  - $(name)/e2e/protractor.conf.js
-  - $(name)/e2e/tsconfig.json
+  - ${{name}}/e2e/src/
+  - ${{name}}/e2e/src/app.e2e-spec.ts
+  - ${{name}}/e2e/src/app.po.ts
+  - ${{name}}/e2e/protractor.conf.js
+  - ${{name}}/e2e/tsconfig.json
 write:
-  '$(name)/karma.conf.js': |
+  '${{name}}/karma.conf.js': |
     // Karma configuration file, see link for more information
     // https://karma-runner.github.io/1.0/config/configuration-file.html
 
-    module.exports = function (config) {
-      config.set({
+    module.exports = function {{config}} {
+      config.set{{{
         basePath: '',
         frameworks: ['jasmine', '@angular-devkit/build-angular'],
         plugins: [
-          require('karma-jasmine'),
-          require('karma-chrome-launcher'),
-          require('karma-jasmine-html-reporter'),
-          require('karma-coverage-istanbul-reporter'),
-          require('@angular-devkit/build-angular/plugins/karma')
+          require{{'karma-jasmine'}},
+          require{{'karma-chrome-launcher'}},
+          require{{'karma-jasmine-html-reporter'}},
+          require{{'karma-coverage-istanbul-reporter'}},
+          require{{'@angular-devkit/build-angular/plugins/karma'}}
         ],
         client: {
           clearContext: false // leave Jasmine Spec Runner output visible in browser
         },
         coverageIstanbulReporter: {
-          dir: require('path').join(__dirname, './coverage/testProj'),
+          dir: require{{'path'}}.join{{__dirname, './coverage/testProj'}},
           reports: ['html', 'lcovonly', 'text-summary'],
           fixWebpackSourcePaths: true
         },
@@ -89,12 +89,12 @@ write:
         browsers: ['Chrome'],
         singleRun: false,
         restartOnFileChange: true
-      });
+      }}};
     };
-  '$(name)/README.md': | 
+  '${{name}}/README.md': | 
     # TestProj
 
-    This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.6.
+    This project was generated with [Angular CLI]{{https://github.com/angular/angular-cli}} version 9.0.6.
 
     ## Development server
 
@@ -110,17 +110,17 @@ write:
 
     ## Running unit tests
 
-    Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    Run `ng test` to execute the unit tests via [Karma]{{https://karma-runner.github.io}}.
 
     ## Running end-to-end tests
 
-    Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+    Run `ng e2e` to execute the end-to-end tests via [Protractor]{{http://www.protractortest.org/}}.
 
     ## Further help
 
-    To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+    To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README]{{https://github.com/angular/angular-cli/blob/master/README.md}}.
 
-  '$(name)/tsconfig.json': |
+  '${{name}}/tsconfig.json': |
     {
       "compileOnSave": false,
       "compilerOptions": {
@@ -144,7 +144,7 @@ write:
         "strictInjectionParameters": true
       }
     }
-  '$(name)/.editorconfig': | 
+  '${{name}}/.editorconfig': | 
     # Editor configuration, see https://editorconfig.org
     root = true
 
@@ -158,7 +158,7 @@ write:
     [*.md]
     max_line_length = off
     trim_trailing_whitespace = false
-  '$(name)/.gitignore': |
+  '${{name}}/.gitignore': |
     # See http://help.github.com/ignore-files/ for more about ignoring files.
 
     # compiled output
@@ -205,7 +205,7 @@ write:
     # System Files
     .DS_Store
     Thumbs.db
-  '$(name)/tsconfig.app.json': |
+  '${{name}}/tsconfig.app.json': |
     {
       "extends": "./tsconfig.json",
       "compilerOptions": {
@@ -220,7 +220,7 @@ write:
         "src/**/*.d.ts"
       ]
     } 
-  '$(name)/src/test.ts': |
+  '${{name}}/src/test.ts': |
     // This file is required by karma.conf.js and loads recursively all the .spec and framework files
 
     import 'zone.js/dist/zone-testing';
@@ -231,22 +231,22 @@ write:
     } from '@angular/platform-browser-dynamic/testing';
 
     declare const require: {
-      context(path: string, deep?: boolean, filter?: RegExp): {
-        keys(): string[];
-        <T>(id: string): T;
+      context{{path: string, deep?: boolean, filter?: RegExp}}: {
+        keys{{}}: string[];
+        <T>{{id: string}}: T;
       };
     };
 
     // First, initialize the Angular testing environment.
-    getTestBed().initTestEnvironment(
+    getTestBed{{}}.initTestEnvironment{{
       BrowserDynamicTestingModule,
-      platformBrowserDynamicTesting()
-    );
+      platformBrowserDynamicTesting{{}}
+    }};
     // Then we find all the tests.
-    const context = require.context('./', true, /\.spec\.ts$/);
+    const context = require.context{{'./', true, /\.spec\.ts$/}};
     // And load the modules.
-    context.keys().map(context);
-  '$(name)/src/polyfills.ts': |
+    context.keys{{}}.map{{context}};
+  '${{name}}/src/polyfills.ts': |
     /**
       * This file includes polyfills needed by Angular and is loaded before the app.
       * You can add your own extra polyfills to this file.
@@ -257,7 +257,7 @@ write:
       *      file.
       *
       * The current setup is for so-called "evergreen" browsers; the last versions of browsers that
-      * automatically update themselves. This includes Safari >= 10, Chrome >= 55 (including Opera),
+      * automatically update themselves. This includes Safari >= 10, Chrome >= 55 {{including Opera}},
       * Edge >= 13 on the desktop, and iOS 10 and Chrome on mobile.
       *
       * Learn more in https://angular.io/guide/browser-support
@@ -273,7 +273,7 @@ write:
       /**
       * Web Animations `@angular/platform-browser/animations`
       * Only required if AnimationBuilder is used within the application and using IE/Edge or Safari.
-      * Standard animation support in Angular DOES NOT require any polyfills (as of Angular 6.0).
+      * Standard animation support in Angular DOES NOT require any polyfills {{as of Angular 6.0}}.
       */
       // import 'web-animations-js';  // Run `npm install --save web-animations-js`.
 
@@ -282,7 +282,7 @@ write:
       * user can disable parts of macroTask/DomEvents patch by setting following flags
       * because those flags need to be set before `zone.js` being loaded, and webpack
       * will put import in the top of bundle, so user need to create a separate file
-      * in this directory (for example: zone-flags.ts), and put the following flags
+      * in this directory {{for example: zone-flags.ts}}, and put the following flags
       * into that file, and then add the following code before importing zone.js.
       * import './zone-flags';
       *
@@ -290,14 +290,14 @@ write:
       *
       * The following flags will work for all browsers.
       *
-      * (window as any).__Zone_disable_requestAnimationFrame = true; // disable patch requestAnimationFrame
-      * (window as any).__Zone_disable_on_property = true; // disable patch onProperty such as onclick
-      * (window as any).__zone_symbol__UNPATCHED_EVENTS = ['scroll', 'mousemove']; // disable patch specified eventNames
+      * {{window as any}}.__Zone_disable_requestAnimationFrame = true; // disable patch requestAnimationFrame
+      * {{window as any}}.__Zone_disable_on_property = true; // disable patch onProperty such as onclick
+      * {{window as any}}.__zone_symbol__UNPATCHED_EVENTS = ['scroll', 'mousemove']; // disable patch specified eventNames
       *
       *  in IE/Edge developer tools, the addEventListener will also be wrapped by zone.js
       *  with the following flag, it will bypass `zone.js` patch for IE/Edge
       *
-      *  (window as any).__Zone_enable_cross_context_check = true;
+      *  {{window as any}}.__Zone_enable_cross_context_check = true;
       *
       */
 
@@ -310,20 +310,20 @@ write:
       /***************************************************************************************************
       * APPLICATION IMPORTS
       */
-  '$(name)/src/main.ts': |
+  '${{name}}/src/main.ts': |
     import { enableProdMode } from '@angular/core';
     import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
     import { AppModule } from './app/app.module';
     import { environment } from './environments/environment';
 
-    if (environment.production) {
-      enableProdMode();
+    if {{environment.production}} {
+      enableProdMode{{}};
     }
 
-    platformBrowserDynamic().bootstrapModule(AppModule)
-      .catch(err => console.error(err));
-  '$(name)/src/index.html': |
+    platformBrowserDynamic{{}}.bootstrapModule{{AppModule}}
+      .catch{{err => console.error{{err}}}};
+  '${{name}}/src/index.html': |
     <!doctype html>
     <html lang="en">
     <head>
@@ -337,14 +337,14 @@ write:
       <app-root></app-root>
     </body>
     </html>
-  '$(name)/src/app/app.module.ts': |
+  '${{name}}/src/app/app.module.ts': |
     import { BrowserModule } from '@angular/platform-browser';
     import { NgModule } from '@angular/core';
 
     import { AppRoutingModule } from './app-routing.module';
     import { AppComponent } from './app.component';
 
-    @NgModule({
+    @NgModule{{{
       declarations: [
         AppComponent
       ],
@@ -354,72 +354,72 @@ write:
       ],
       providers: [],
       bootstrap: [AppComponent]
-    })
+    }}}
     export class AppModule { }
-  '$(name)/src/app/app-routing.module.ts': |
+  '${{name}}/src/app/app-routing.module.ts': |
     import { NgModule } from '@angular/core';
     import { Routes, RouterModule } from '@angular/router';
 
 
     const routes: Routes = [];
 
-    @NgModule({
-      imports: [RouterModule.forRoot(routes)],
+    @NgModule{{{
+      imports: [RouterModule.forRoot{{routes}}],
       exports: [RouterModule]
-    })
+    }}}
     export class AppRoutingModule { }
-  '$(name)/src/app/app.component.spec.ts': |
+  '${{name}}/src/app/app.component.spec.ts': |
     import { TestBed, async } from '@angular/core/testing';
     import { RouterTestingModule } from '@angular/router/testing';
     import { AppComponent } from './app.component';
 
-    describe('AppComponent', () => {
-      beforeEach(async(() => {
-        TestBed.configureTestingModule({
+    describe{{'AppComponent', {{}} => {
+      beforeEach{{async{{{{}} => {
+        TestBed.configureTestingModule{{{
           imports: [
             RouterTestingModule
           ],
           declarations: [
             AppComponent
           ],
-        }).compileComponents();
-      }));
+        }}}.compileComponents{{}};
+      }}}}};
 
-      it('should create the app', () => {
-        const fixture = TestBed.createComponent(AppComponent);
+      it{{'should create the app', {{}} => {
+        const fixture = TestBed.createComponent{{AppComponent}};
         const app = fixture.componentInstance;
-        expect(app).toBeTruthy();
-      });
+        expect{{app}}.toBeTruthy{{}};
+      }}};
 
-      it(`should have as title 'testProj'`, () => {
-        const fixture = TestBed.createComponent(AppComponent);
+      it{{`should have as title 'testProj'`, {{}} => {
+        const fixture = TestBed.createComponent{{AppComponent}};
         const app = fixture.componentInstance;
-        expect(app.title).toEqual('testProj');
-      });
+        expect{{app.title}}.toEqual{{'testProj'}};
+      }}};
 
-      it('should render title', () => {
-        const fixture = TestBed.createComponent(AppComponent);
-        fixture.detectChanges();
+      it{{'should render title', {{}} => {
+        const fixture = TestBed.createComponent{{AppComponent}};
+        fixture.detectChanges{{}};
         const compiled = fixture.nativeElement;
-        expect(compiled.querySelector('.content span').textContent).toContain('testProj app is running!');
-      });
-    });
-  '$(name)/src/app/app.component.ts': |
+        expect{{compiled.querySelector{{'.content span'}}.textContent}}.toContain{{'testProj app is running!'}};
+      }}};
+    }}};
+  '${{name}}/src/app/app.component.ts': |
     import { Component } from '@angular/core';
 
-    @Component({
+    @Component{{{
       selector: 'app-root',
       templateUrl: './app.component.html',
       styleUrls: ['./app.component.scss']
-    })
+    }}}
     export class AppComponent {
       title = 'testProj';
     }
-  '$(name)/src/environments/environment.prod.ts': |
+  '${{name}}/src/environments/environment.prod.ts': |
     export const environment = {
       production: true
     };
-  '$(name)/src/environments/environment.ts': |
+  '${{name}}/src/environments/environment.ts': |
     // This file can be replaced during build by using the `fileReplacements` array.
     // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
     // The list of file replacements can be found in `angular.json`.
@@ -436,51 +436,51 @@ write:
     * on performance if an error is thrown.
     */
     // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
-  '$(name)/e2e/src/app.e2e-spec.ts': |
+  '${{name}}/e2e/src/app.e2e-spec.ts': |
     import { AppPage } from './app.po';
     import { browser, logging } from 'protractor';
 
-    describe('workspace-project App', () => {
+    describe{{'workspace-project App', {{}} => {
       let page: AppPage;
 
-      beforeEach(() => {
-        page = new AppPage();
-      });
+      beforeEach{{{{}} => {
+        page = new AppPage{{}};
+      }}};
 
-      it('should display welcome message', () => {
-        page.navigateTo();
-        expect(page.getTitleText()).toEqual('testProj app is running!');
-      });
+      it{{'should display welcome message', {{}} => {
+        page.navigateTo{{}};
+        expect{{page.getTitleText{{}}}}.toEqual{{'testProj app is running!'}};
+      }}};
 
-      afterEach(async () => {
+      afterEach{{async {{}} => {
         // Assert that there are no errors emitted from the browser
-        const logs = await browser.manage().logs().get(logging.Type.BROWSER);
-        expect(logs).not.toContain(jasmine.objectContaining({
+        const logs = await browser.manage{{}}.logs{{}}.get{{logging.Type.BROWSER}};
+        expect{{logs}}.not.toContain{{jasmine.objectContaining{{{
           level: logging.Level.SEVERE,
-        } as logging.Entry));
-      });
-    });
-  '$(name)/e2e/src/app.po.ts': |
+        } as logging.Entry}}}};
+      }}};
+    }}};
+  '${{name}}/e2e/src/app.po.ts': |
     import { browser, by, element } from 'protractor';
 
     export class AppPage {
-      navigateTo(): Promise<unknown> {
-        return browser.get(browser.baseUrl) as Promise<unknown>;
+      navigateTo{{}}: Promise<unknown> {
+        return browser.get{{browser.baseUrl}} as Promise<unknown>;
       }
 
-      getTitleText(): Promise<string> {
-        return element(by.css('app-root .content span')).getText() as Promise<string>;
+      getTitleText{{}}: Promise<string> {
+        return element{{by.css{{'app-root .content span'}}}}.getText{{}} as Promise<string>;
       }
     }
-  '$(name)/e2e/protractor.conf.js': |
+  '${{name}}/e2e/protractor.conf.js': |
     // @ts-check
     // Protractor configuration file, see link for more information
     // https://github.com/angular/protractor/blob/master/lib/config.ts
 
-    const { SpecReporter } = require('jasmine-spec-reporter');
+    const { SpecReporter } = require{{'jasmine-spec-reporter'}};
 
     /**
-    * @type { import("protractor").Config }
+    * @type { import{{"protractor"}}.Config }
     */
     exports.config = {
       allScriptsTimeout: 11000,
@@ -496,16 +496,16 @@ write:
       jasmineNodeOpts: {
         showColors: true,
         defaultTimeoutInterval: 30000,
-        print: function() {}
+        print: function{{}} {}
       },
-      onPrepare() {
-        require('ts-node').register({
-          project: require('path').join(__dirname, './tsconfig.json')
-        });
-        jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
+      onPrepare{{}} {
+        require{{'ts-node'}}.register{{{
+          project: require{{'path'}}.join{{__dirname, './tsconfig.json'}}
+        }}};
+        jasmine.getEnv{{}}.addReporter{{new SpecReporter{{{ spec: { displayStacktrace: true } }}}}};
       }
     };
-  '$(name)/e2e/tsconfig.json': |
+  '${{name}}/e2e/tsconfig.json': |
       {
         "extends": "../tsconfig.json",
         "compilerOptions": {
@@ -519,7 +519,7 @@ write:
           ]
         }
       }
-  '$(name)/install.sh': |
+  '${{name}}/install.sh': |
       npm init -y 
       #required modules
       npm install @angular/core 
