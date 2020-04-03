@@ -1,5 +1,4 @@
-#!/usr/local/bin/node
-
+#!/usr/bin/env node
 //#region LICENSE
 
 /*
@@ -27,8 +26,8 @@
 //didn't want to change every require() in other files, i set
 //TGENPATH directly in here
 
-process.env.TGENPATH = require('path').join(__dirname, '/');
-
+const path = require('path');
+process.env.TGENPATH = path.resolve(__dirname) + (process.platform === 'win32' ? '\\' : '/');
 const chalk = require('chalk');
 const logger = require('./utils/logger');
 
