@@ -23,8 +23,7 @@
 		"mocha": "^7.1.1"
 	},
 	"scripts": {
-		"test": "mocha",
-		"postinstall": "echo \"Add a TGENPATH environmental variable pointing to /usr/local/lib/node_modules/tgen/src/.\""
+		"test": "mocha"
 	},
 	"repository": {
 		"type": "git",
@@ -39,9 +38,6 @@
 	"bin": {
 		"tgen": "./src/index.js"
 	},
-	"os": [
-		"darwin",
-		"linux"
-	],
+	"os": [ "darwin", "linux" ],
 	"preferGlobal": true
 }

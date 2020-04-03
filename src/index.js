@@ -22,6 +22,13 @@
 
 //#endregion LICENSE
 
+//we set the TGENPATH env variable to this directory.
+//orginally you had to set TGENPATH manually so because i
+//didn't want to change every require() in other files, i set
+//TGENPATH directly in here
+
+process.env.TGENPATH = require('path').join(__dirname, '/');
+
 const chalk = require('chalk');
 const logger = require('./utils/logger');
 
