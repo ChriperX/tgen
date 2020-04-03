@@ -14,6 +14,7 @@
     - [Parser plugins](#parser-plugins)
     - [Template plugins](#template-plugins)
     - [Variables](#variables)
+        - [Variable syntax](#variable-syntax)
         - [Creating a variable](#creating-a-variable)
         - [Read from a variable](#read-from-a-variable)
         - [Add variable support to plugins](#add-variable-support-to-plugins)
@@ -175,13 +176,24 @@ log:
 
 ### Variables
 
+#### Variable Syntax
+
+Variables, like in JavaScript, can't start with:
+  - A space
+  - A number
+  - Any special character (!, $ etc...).
+
+But variables can start with:
+  - \-
+  - _
+
 #### Creating a variable
 
 You can create and assign a value to a variable using the set key (see [set](#set)).
 
 #### Read from a variable
 
-You can reference a variable by writing $(var_name_here)
+You can reference a variable by writing ${{var_name_here}}
 
 #### Add variable support to plugins
 
