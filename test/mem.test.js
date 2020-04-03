@@ -27,13 +27,12 @@ describe('mem', () => {
 			expect(mem.containsVar('${{_}}')).to.be.true;
 			expect(mem.containsVar('${{test}}')).to.be.true;
 			expect(mem.containsVar('${{_test}}')).to.be.true;
-			expect(mem.containsVar('${{_test123}}')).to.be.true;
-			expect(mem.containsVar('${{_12}}')).to.be.true;
+			expect(mem.containsVar('${{_test}}')).to.be.true;
+			expect(mem.containsVar('${{_-a}}')).to.be.true;
 		});
 		it('should not be true', () => {
 			expect(mem.containsVar('${{_}')).to.not.be.true;
 			expect(mem.containsVar('${{1_}}')).to.not.be.true;
-			expect(mem.containsVar('${{_-a}}')).to.not.be.true;
 			expect(mem.containsVar('{{a}}')).to.not.be.true;
 		});
 	});
