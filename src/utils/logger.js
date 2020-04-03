@@ -1,4 +1,4 @@
-//#region LICENSE
+// #region LICENSE
 
 /*
 	Logger library for tgen, the open source templating engine.
@@ -18,7 +18,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-//#endregion LICENSE
+// #endregion LICENSE
 
 const chalk = require('chalk');
 const mem = require('./mem');
@@ -27,24 +27,26 @@ const levelCodes = {
 	none: function(msg) {
 		mem.fetch('suppressAll') || console.log('	' + msg);
 	},
+	/*
 	external: function(msg) {
-		mem.fetch('suppressAll') || console.log(chalk.yellowBright('	' + msg));
+		mem.fetch('suppressAll') || console.log(chalk.bold.yellowBright('	' + msg));
 	},
+	*/
 	default: function(msg) {
-		mem.fetch('suppressAll') || console.log(chalk.whiteBright('	' + msg));
+		mem.fetch('suppressAll') || console.log(chalk.bold.whiteBright('	' + msg));
 	},
 	info: function(msg) {
-		//log only if suppress is false
-		mem.fetch('suppress') || mem.fetch('suppressAll') || console.log(chalk.cyanBright('	' + msg));
+		// log only if suppress is false
+		mem.fetch('suppress') || mem.fetch('suppressAll') || console.log(chalk.bold.blueBright('	' + msg));
 	},
 	success: function(msg) {
-		mem.fetch('suppress') || mem.fetch('suppressAll') || console.log(chalk.greenBright('	' + msg));
+		mem.fetch('suppress') || mem.fetch('suppressAll') || console.log(chalk.bold.green('	' + msg));
 	},
 	warning: function(msg) {
-		mem.fetch('suppressAll') || console.log(chalk.yellowBright('	' + msg));
+		mem.fetch('suppressAll') || console.log(chalk.bold.yellow('	' + msg));
 	},
 	error: function(msg) {
-		mem.fetch('suppressAll') || console.log(chalk.redBright('	' + msg));
+		mem.fetch('suppressAll') || console.log(chalk.bold.redBright('	' + msg));
 	},
 	verbose: function(msg) {
 		!mem.fetch('verbose') || mem.fetch('suppressAll') || console.log(chalk.green('	' + msg));
@@ -53,13 +55,13 @@ const levelCodes = {
 
 module.exports = function(msg, levelCode) {
 	try {
-		//try calling a logLevel function
+		// try calling a logLevel function
 		levelCodes[levelCode](mem.replaceVars(msg));
 	} catch (e) {
-		//if the specified logLevel is not defined return 1
+		// if the specified logLevel is not defined return 1
 		console.log(chalk.redBright('	error: levelCode not found: ' + levelCode));
 		return 1;
 	}
-	//return 0 the message and the level code
+	// return 0 the message and the level code
 	return [ 0, msg, levelCode ];
 };
