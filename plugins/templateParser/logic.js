@@ -134,6 +134,7 @@ exports.templateKeys = {
 					// console.log(e);
 					logger(
 						'error: unknown key: ' +
+							/* eslint no-undef: */
 							chalk.whiteBright("'" + key2 + "'.") +
 							'\n	maybe there is an indentation error?',
 						'error'
