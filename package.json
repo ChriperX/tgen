@@ -38,6 +38,6 @@
 	"bin": {
 		"tgen": "./src/index.js"
 	},
-	"os": [ "darwin", "linux" ],
+	"os": [ "darwin", "linux", "win32" ],
 	"preferGlobal": true
 }
