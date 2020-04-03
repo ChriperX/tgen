@@ -32,13 +32,13 @@ exports.tgenSettings = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '../
 
 exports.newVar = function(content, varName) {
 	// prettier-ignore
-	vars['\\$\\(' + varName + '\\)'] = content
+	vars['\\$\\{\\{' + varName + '\\}\\}'] = content
 	return content;
 };
 
 exports.fetch = function(varName = '') {
 	// prettier-ignore
-	return vars['\\$\\(' + varName + '\\)'] !== undefined ? vars['\\$\\(' + varName + '\\)'] : vars
+	return vars['\\$\\{\\{' + varName + '\\}\\}'] !== undefined ? vars['\\$\\{\\{' + varName + '\\}\\}'] : vars
 };
 
 exports.replaceVars = function(string) {
@@ -49,6 +49,12 @@ exports.replaceVars = function(string) {
 	}
 
 	return returnString;
+};
+
+exports.containsVar = function(string) {
+	/*eslint no-unneeded-ternary:*/
+
+	return string.match(/\$\{\{_?[a-zA-Z0-9]*\}\}/g) ? true : false;
 };
 
 exports.newVar(false, 'suppress');
