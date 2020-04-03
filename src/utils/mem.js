@@ -54,9 +54,10 @@ exports.replaceVars = function(string) {
 exports.containsVar = function(string) {
 	/*eslint no-unneeded-ternary:*/
 
-	return string.match(/\$\{\{_?[a-zA-Z0-9]*\}\}/g) ? true : false;
+	return string.match(/\$\{\{_?[a-zA-Z-]*\}\}/g) ? true : false;
 };
 
 exports.newVar(false, 'suppress');
 exports.newVar(false, 'verbose');
 exports.newVar(false, 'suppressAll');
+//exports.newVar(false, '2-');
