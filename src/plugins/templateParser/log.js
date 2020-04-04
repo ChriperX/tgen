@@ -1,3 +1,5 @@
+/* @flow */
+
 // #region LICENSE
 
 /*
@@ -34,7 +36,7 @@ exports.pluginInfo = {
 };
 
 exports.templateKeys = {
-	log: function(file) {
+	log: function(file: Object) {
 		for (const key in file) {
 			for (let i = 0; i <= file[key].length - 1; i++) {
 				// logLevels[key](file[key][i], name);

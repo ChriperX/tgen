@@ -1,3 +1,5 @@
+/* @flow */
+
 const fs = require('fs');
 const logger = require('../../cli/utils/logger.js');
 const mem = require('../../cli/utils/mem.js');
@@ -12,7 +14,7 @@ exports.pluginInfo = {
 };
 
 exports.templateKeys = {
-	write: (objStructure) => {
+	write: (objStructure: Object) => {
 		// loop through the objects
 		for (const key in objStructure) {
 			try {

@@ -1,3 +1,5 @@
+/* @flow */
+
 const mem = require('../../cli/utils/mem.js');
 const logger = require('../../cli/utils/logger.js');
 const chalk = require('chalk');
@@ -18,7 +20,7 @@ exports.pluginInfo = {
 
 // functions
 exports.templateKeys = {
-	prompt: function(file) {
+	prompt: function(file: Object) {
 		try {
 			for (const key in file) {
 				// process.stdout.moveCursor(8, 0);

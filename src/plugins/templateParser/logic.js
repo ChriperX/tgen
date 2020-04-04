@@ -1,3 +1,5 @@
+/* @flow */
+
 // #region LICENSE
 
 /*
@@ -28,8 +30,9 @@ const logger = require('../../cli/utils/logger.js');
 var lastEval = [];
 var currKey = [];
 
-function safeEval(expr) {
+function safeEval(expr): Function {
 	// we don't evaluate with eval() because it opens attack vectors for malicious templates
+	// $FlowFixMe
 	return Function("'use strict'; return(" + expr + ')')();
 }
 
@@ -58,7 +61,7 @@ exports.pluginInfo = {
 };
 
 exports.templateKeys = {
-	if: function(file, name, fileStructure) {
+	if: function(file: Object, name: string, fileStructure: Object): ?number {
 		// variable used to maintain track of at wwhich if statement we are at
 		if (typeof mem.fetch('if_count') === 'object') {
 			mem.newVar(0, 'if_count');
@@ -121,7 +124,7 @@ exports.templateKeys = {
 			}
 		}
 	},
-	else: function(file, name, fileStructure) {
+	else: function(file: Object, name: string, fileStructure: Object) {
 		// get the current file or currKey if it exists
 		file = currKey[currKey.length - 1] || file;
 		for (let i = 0; i <= file.length - 1; i++) {
@@ -129,8 +132,9 @@ exports.templateKeys = {
 			if (lastEval[mem.fetch('if_count')][i] === false) {
 				// we take out of memory the last else statement
 				currKey.pop();
+				let key: string = '';
 				try {
-					for (const key in file[i]) {
+					for (key in file[i]) {
 						template.templateKeys[key](file[i][key], name, fileStructure.else);
 					}
 				} catch (e) {
@@ -138,7 +142,7 @@ exports.templateKeys = {
 					logger(
 						'error: unknown key: ' +
 							/* eslint no-undef: */
-							chalk.whiteBright("'" + key2 + "'.") +
+							chalk.whiteBright("'" + key + "'.") +
 							'\n	maybe there is an indentation error?',
 						'error'
 					);
