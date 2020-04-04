@@ -27,7 +27,7 @@
 	},
 	"scripts": {
 		"test": "mocha",
-		"build": "babel src/ -d lib/",
+		"build": "babel src/cli/ -d lib/ && babel src/plugins/ -d plugins/",
 		"prepublish": "npm run build",
 		"flow": "flow"
 	},
@@ -44,10 +44,6 @@
 	"bin": {
 		"tgen": "./lib/index.js"
 	},
-	"os": [
-		"darwin",
-		"linux",
-		"win32"
-	],
+	"os": [ "darwin", "linux", "win32" ],
 	"preferGlobal": true
 }
