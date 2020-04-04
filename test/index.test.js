@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
 const expect = require('chai').expect;
-const index = require('../lib/index.js');
+const index = require('../cli/index.js');
 
 describe('index.commands', () => {
 	it('should be undefined', () => {

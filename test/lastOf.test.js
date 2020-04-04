@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
 const expect = require('chai').expect;
-const utils = require('../lib/utils/utils.js');
+const utils = require('../cli/utils/utils.js');
 
 describe('lastOf()', () => {
 	it('should return 8', () => {

@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
 const expect = require('chai').expect;
-const logger = require('../lib/utils/logger.js');
+const logger = require('../cli/utils/logger.js');
 
 describe('logger()', () => {
 	it('should return message and logLevel', () => {

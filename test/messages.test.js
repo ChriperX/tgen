@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
 const expect = require('chai').expect;
-const messages = require('../lib/messages.js');
+const messages = require('../cli/messages.js');
 
 describe('messages.js', () => {
 	describe('logMessages', () => {

@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
 const expect = require('chai').expect;
-const templates = require('../lib/templates.js');
+const templates = require('../cli/templates.js');
 
 describe('templates.loadTemplates()', () => {
 	it('should return 0', () => {
