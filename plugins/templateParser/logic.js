@@ -31,6 +31,7 @@ var currKey = [];
 
 function safeEval(expr) {
   // we don't evaluate with eval() because it opens attack vectors for malicious templates
+  // $FlowFixMe
   return Function("'use strict'; return(" + expr + ')')();
 }
 
@@ -119,16 +120,17 @@ exports.templateKeys = {
       if (lastEval[mem.fetch('if_count')][i] === false) {
         // we take out of memory the last else statement
         currKey.pop();
+        let key = '';
 
         try {
-          for (const key in file[i]) {
+          for (key in file[i]) {
             template.templateKeys[key](file[i][key], name, fileStructure.else);
           }
         } catch (e) {
           // console.log(e);
           logger('error: unknown key: ' +
           /* eslint no-undef: */
-          chalk.whiteBright("'" + key2 + "'.") + '\n	maybe there is an indentation error?', 'error');
+          chalk.whiteBright("'" + key + "'.") + '\n	maybe there is an indentation error?', 'error');
           return 1;
         }
       }
