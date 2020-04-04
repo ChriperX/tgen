@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 /*eslint no-template-curly-in-string: */
 
-const mem = require('../src/utils/mem.js');
+const mem = require('../lib/utils/mem.js');
 const expect = require('chai').expect;
 
 describe('mem', () => {
