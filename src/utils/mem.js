@@ -32,7 +32,11 @@ exports.tgenSettings = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '../
 
 exports.newVar = function(content, varName) {
 	// prettier-ignore
-	vars['\\$\\{\\{' + varName + '\\}\\}'] = content
+	if (!exports.containsVar('${{' + varName + '}}')) {
+		throw new SyntaxError('Invalid character in var name: \'' + varName + '\'')
+	}
+
+	vars['\\$\\{\\{' + varName + '\\}\\}'] = content;
 	return content;
 };
 
@@ -54,10 +58,10 @@ exports.replaceVars = function(string) {
 exports.containsVar = function(string) {
 	/*eslint no-unneeded-ternary:*/
 
-	return string.match(/\$\{\{_?[a-zA-Z-]*\}\}/g) ? true : false;
+	//return string.match(/\$\{\{_?[a-zA-Z-]*\}\}/g) ? true : false;
+	return string.match(/\$\{\{\s*[a-zA-Z_0-9]+\s*\}\}/g) ? true : false;
 };
 
 exports.newVar(false, 'suppress');
 exports.newVar(false, 'verbose');
 exports.newVar(false, 'suppressAll');
-//exports.newVar(false, '2-');
