@@ -9,6 +9,16 @@ describe('mem', () => {
 		it('should return contents', () => {
 			expect(mem.newVar('new var', 'test_var')).to.be.equal('new var');
 		});
+		it('should not throw', () => {
+			expect(() => {
+				throw mem.newVar('new var', 'test_var');
+			}).to.not.throw(new SyntaxError("Invalid character in var name: 'test_var'."));
+		});
+		it('should throw', () => {
+			expect(() => {
+				throw mem.newVar('new var', 'test var');
+			}).to.throw();
+		});
 	});
 
 	describe('fetch()', () => {
