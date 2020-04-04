@@ -33,7 +33,7 @@ exports.tgenSettings = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '../
 exports.newVar = function(content, varName) {
 	// prettier-ignore
 	if (!exports.containsVar('${{' + varName + '}}')) {
-		throw new SyntaxError('Invalid character in var name: \'' + varName + '\'')
+		throw new SyntaxError('Invalid character in var name: \'' + varName + '\'.')
 	}
 
 	vars['\\$\\{\\{' + varName + '\\}\\}'] = content;
