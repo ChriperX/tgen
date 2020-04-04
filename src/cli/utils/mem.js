@@ -20,32 +20,36 @@
 
 // #endregion LICENSE
 
+/* @flow */
+
 // file used for costant memory across files
 const yaml = require('js-yaml');
 const fs = require('fs');
 
 const vars = {};
 
+// $FlowFixMe
 exports.tgenSettings = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '../.tgen.yaml', 'utf8')) || {
 	plugins: { ignore: [] }
 };
 
-exports.newVar = function(content, varName) {
+exports.newVar = function(content: ?any, varName: string): string | typeof undefined {
 	// prettier-ignore
 	if (!exports.containsVar('${{' + varName + '}}')) {
 		throw new SyntaxError('Invalid character in var name: \'' + varName + '\'.')
 	}
-
+	//prettier-ignore
 	vars['\\$\\{\\{' + varName + '\\}\\}'] = content;
+	// $FlowFixMe
 	return content;
 };
 
-exports.fetch = function(varName = '') {
+exports.fetch = function(varName: string = ''): any {
 	// prettier-ignore
 	return vars['\\$\\{\\{' + varName + '\\}\\}'] !== undefined ? vars['\\$\\{\\{' + varName + '\\}\\}'] : vars
 };
 
-exports.replaceVars = function(string) {
+exports.replaceVars = function(string: string): string {
 	let returnString = string;
 
 	for (let key in vars) {
@@ -55,7 +59,7 @@ exports.replaceVars = function(string) {
 	return returnString;
 };
 
-exports.containsVar = function(string) {
+exports.containsVar = function(string: string): boolean {
 	/*eslint no-unneeded-ternary:*/
 
 	//return string.match(/\$\{\{_?[a-zA-Z-]*\}\}/g) ? true : false;

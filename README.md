@@ -43,7 +43,6 @@ npm i tgen -g
 
 ```
 
-**NOTE: After install add to your shell startup file (ex. ~/.zshrc) an env variable called TGENPATH: `export TGENPATH=/usr/local/lib/node_modules/tgen/src/`**
 
 ## FAQ
 
@@ -69,7 +68,7 @@ You can install them directly with tgen, or you can put them in /plugins/templat
 
 ### How do i install and make templates?
 
-You can install templates directly with tgen, or drop them in **/src/templates/**.
+You can install templates directly with tgen, or drop them in **/cli/templates/**.
 
 To create templates you need to know how [YAML](https://yaml.org) works, and what [keys](#template-keys-syntax) are and how to use them.
 
@@ -80,7 +79,7 @@ tgen new yourLanguageHere yourProjectNameHere
 
 ```
 
-This will execute the template **yourLanguageHere** (you can see what templates you have installed in /src/templates/), creating a
+This will execute the template **yourLanguageHere** (you can see what templates you have installed in /cli/templates/), creating a
 project called **yourProjectNameHere**.
 
 ## Documentation
@@ -205,7 +204,7 @@ See [API](#api)
 
 #### Memory
 
-The memory is handled by **mem.js** (you can find it in **src/utils/**).
+The memory is handled by **mem.js** (you can find it in **cli/utils/**).
 
 It loads the **.tgen.yaml** config file, and handles variables.
 
@@ -224,8 +223,8 @@ Logger is a module that logs to the console with proper formatting.
 **Example**:
 
 ```js
-//require the logger module, located in src/utils/logger.js
-const logger = require('../../src/utils/logger.js')
+//require the logger module, located in cli/utils/logger.js
+const logger = require('../../cli/utils/logger.js')
 
 //logger takes as an argument a string, and a logLevel.
 //logLevels are identical to the log plugin logLevels

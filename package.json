@@ -19,14 +19,17 @@
 		"@babel/cli": "^7.8.4",
 		"@babel/core": "^7.9.0",
 		"@babel/preset-flow": "^7.9.0",
+		"babel-eslint": "^10.1.0",
 		"chai": "^4.2.0",
 		"eslint": "^6.8.0",
+		"flow-bin": "^0.122.0",
 		"mocha": "^7.1.1"
 	},
 	"scripts": {
 		"test": "mocha",
-		"build": "babel src/ -d lib/",
-		"prepublish": "npm run build"
+		"build": "babel src/cli/ -d cli/ && babel src/plugins/ -d plugins/",
+		"prepublish": "npm run build",
+		"flow": "flow"
 	},
 	"repository": {
 		"type": "git",
@@ -39,7 +42,7 @@
 	},
 	"homepage": "https://github.com/ChriperX/tgen#readme",
 	"bin": {
-		"tgen": "./src/index.js"
+		"tgen": "./cli/index.js"
 	},
 	"os": [ "darwin", "linux", "win32" ],
 	"preferGlobal": true

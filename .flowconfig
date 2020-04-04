@@ -1,0 +1,6 @@
+[include]
+./src/
+[ignore]
+./plugins/
+./cli/
+./test/

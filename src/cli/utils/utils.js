@@ -1,7 +1,9 @@
+/* @flow */
+
 // #region LICENSE
 
 /*
-	Modifiable messages for tgen, the open source templating engine.
+	Utility library for tgen, the open source templating engine.
     Copyright (C) 2020 Christian
 
     This program is free software: you can redistribute it and/or modify
@@ -19,31 +21,7 @@
 */
 
 // #endregion LICENSE
-const plugger = require('@nonamenpm/plugger');
-const fs = require('fs');
 
-const plugins = [];
-
-function walk(dir) {
-	let files = fs.readdirSync(dir);
-	files.forEach((element) => {
-		plugins.push(require(dir + element));
-	});
-}
-
-walk(process.env.TGENPATH + '../plugins/messages/');
-
-// entry point that will be used by plugin to make custom messages for tgen
-exports.logMessages = {};
-
-exports.newMessageType = (msgType) => (msg, id) => {
-	return exports.logMessages[msgType]
-		? exports.logMessages[msgType][id] ? exports.logMessages[msgType][id] : msg
-		: msg;
+exports.lastOf = function(string: string, char: string): number {
+	return string.length - string.split(char)[string.split(char).length - 1].length - 1;
 };
-
-exports.use = function(plugin) {
-	plugger(plugin, this, false);
-};
-
-exports.use(plugins);

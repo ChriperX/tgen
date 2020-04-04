@@ -17,9 +17,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
 // #endregion LICENSE
-
-exports.lastOf = function(string, char) {
-	return string.length - string.split(char)[string.split(char).length - 1].length - 1;
+exports.lastOf = function (string, char) {
+  return string.length - string.split(char)[string.split(char).length - 1].length - 1;
 };

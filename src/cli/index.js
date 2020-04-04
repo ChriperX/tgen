@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+
+/* @flow */
+
 //#region LICENSE
 
 /*
@@ -31,17 +34,6 @@ process.env.TGENPATH = path.resolve(__dirname) + (process.platform === 'win32' ?
 const chalk = require('chalk');
 const logger = require('./utils/logger');
 
-if (!process.env.TGENPATH) {
-	console.log(chalk.redBright('error: TGENPATH env variable not set.'));
-	console.log(
-		chalk.cyanBright(
-			'In your shell startup file (.bashrc or .zshrc if you have zsh installed), please add this line:'
-		)
-	);
-	logger('export TGENPATH="/usr/local/lib/node_modules/tgen/src/"', 'default');
-	return 1;
-}
-
 const template = require('./templates');
 const tp = require('@nonamenpm/text-parser');
 const fs = require('fs');
@@ -57,7 +49,6 @@ const general = messages.newMessageType('general');
 const TGEN_VERSION = '1.0.0';
 const INFO_NOT_GIVEN = 'not given';
 
-let logLevel;
 let plugins = [];
 
 //#region PLUGIN_ENTRY_POINT
@@ -68,7 +59,7 @@ exports.commands = {};
 //object that defines information about a plugin
 exports.pluginInfo = {};
 
-exports.use = function(plugin) {
+exports.use = function(plugin: any[]) {
 	plugger(plugin, this, false);
 };
 
@@ -83,11 +74,13 @@ function walk(dir) {
 	let files = fs.readdirSync(dir);
 	files.forEach((element) => {
 		if (!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.')))) {
+			// $FlowFixMe
 			plugins.push(require(dir + element));
 		}
 	});
 }
 
+// $FlowFixMe
 walk(process.env.TGENPATH + '../plugins/parser/');
 exports.use(plugins);
 addCustomCommands();
@@ -95,11 +88,11 @@ addCustomCommands();
 //#endregion PLUGIN_ENTRY_POINT
 
 //creates a new project from a template
-exports.newTemplate = function(element) {
+exports.newTemplate = function(element: any) {
 	mem.newVar(element[1], 'name');
 
 	//we return the exit status
-	return template.loadTemplates(element, logLevel);
+	return template.loadTemplates(element);
 };
 
 tp.error((token) => {
@@ -153,6 +146,7 @@ tp.add(
 					'version: ' + chalk.whiteBright(template.pluginInfo[element[1]]['version'] || INFO_NOT_GIVEN),
 					'info'
 				);
+				//console.log(process.env.TGENPATH);
 				logger(
 					'author: ' + chalk.whiteBright(template.pluginInfo[element[1]]['author'] || INFO_NOT_GIVEN),
 					'info'
@@ -182,12 +176,14 @@ tp.add(
 			//pushes to tgenSetting the plugin to ignore
 			mem.tgenSettings['plugins']['ignore'].push(element[1]);
 			//writes the changes to tgen.yaml
+			// $FlowFixMe
 			fs.writeFileSync(process.env.TGENPATH + '/../.tgen.yaml', yaml.safeDump(mem.tgenSettings));
 		}
 		if (element[0] === 'check') {
 			//check a plugin directory
 			try {
 				//reads a directory
+				// $FlowFixMe
 				var dir = fs.readdirSync(process.env.TGENPATH + '../plugins/' + element[1] + '/');
 			} catch (e) {
 				//the directory doesn't exist
@@ -213,7 +209,7 @@ if (typeof global.it !== 'function') {
 	);
 	const exitStatus = tp.parse();
 	//separator
-	console.log();
+	process.platform === 'win32' || console.log();
 	process.exit(exitStatus);
 }
 

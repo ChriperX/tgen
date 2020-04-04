@@ -1,5 +1,5 @@
 // plugin used to create variables inside a template.
-const mem = require('../../src/utils/mem.js')
+const mem = require('../../cli/utils/mem.js');
 
 exports.pluginInfo = {
   set: {
@@ -9,12 +9,11 @@ exports.pluginInfo = {
     extends: 'set',
     description: 'Adds a variable.'
   }
-}
-
+};
 exports.templateKeys = {
-  set: (objStructure) => {
+  set: objStructure => {
     for (const key in objStructure) {
-      mem.newVar(objStructure[key], key)
+      mem.newVar(objStructure[key], key);
     }
   }
-}
+};

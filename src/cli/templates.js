@@ -1,3 +1,5 @@
+/* @flow */
+
 //#region LICENSE
 
 /*
@@ -36,21 +38,22 @@ let plugins = [];
 
 //#region PLUGIN_ENTRY_POINT
 
-exports.use = function(plugins) {
+exports.use = function(plugins: any[]) {
 	plugger(plugins, this, false);
 };
 
 exports.pluginInfo = {};
 exports.pluginList = '';
 
-exports.loadPlugins = function(file) {
+exports.loadPlugins = function(file: any) {
+	// $FlowFixMe
 	walk(process.env.TGENPATH + '../plugins/templateParser/', file);
 	exports.use(plugins);
 };
 
 //entry point for plugins
 exports.templateKeys = {
-	create: function(file) {
+	create: function(file: any[]) {
 		const fileToCreate = file;
 		const createdDirs = {};
 
@@ -91,7 +94,7 @@ exports.templateKeys = {
 			}
 		}
 	},
-	commands: function(file) {
+	commands: function(file: any[]) {
 		const commands = file || [ 'echo' ];
 		let chainedCommand = '';
 
@@ -110,12 +113,14 @@ exports.templateKeys = {
 
 //#endregion PLUGIN_ENTRY_POINT
 
-exports.loadTemplates = function(element) {
+exports.loadTemplates = function(element: any[]) {
 	try {
 		//load file, TGENPATH is the path to where tgen is installed
-		var extension = fs.existsSync(process.env.TGENPATH + '/templates/' + element[0] + '.yaml') ? '.yaml' : '.yml';
+		// $FlowFixMe
+		var extension = fs.existsSync(process.env.TGENPATH + '../templates/' + element[0] + '.yaml') ? '.yaml' : '.yml';
 		var file = yaml.safeLoad(
-			fs.readFileSync(process.env.TGENPATH + '/templates/' + element[0] + extension, 'utf8')
+			// $FlowFixMe
+			fs.readFileSync(process.env.TGENPATH + '../templates/' + element[0] + extension, 'utf8')
 		); //parse the yaml template
 	} catch (e) {
 		if (e.name === 'YAMLException') {
@@ -170,7 +175,7 @@ function walk(dir, objTree) {
 	if (!objTree) {
 		return 1;
 	}
-
+	// $FlowFixMe
 	if (!objTree['use']) {
 		files.forEach((element) => {
 			if (count === 4) {
@@ -187,6 +192,7 @@ function walk(dir, objTree) {
 						element.substring(0, utils.lastOf(element, '.')) +
 						(files[files.length - 1] !== element ? ', ' : '.');
 				}
+				// $FlowFixMe
 				plugins.push(require(dir + element));
 			}
 			count++;
@@ -196,6 +202,7 @@ function walk(dir, objTree) {
 		files = objTree ? objTree['use'] : [];
 
 		//loop through the array, and load the plugins
+		// $FlowFixMe
 		files.forEach((element) => {
 			//user is trying directory traversal
 			if (element.includes('/')) {
@@ -221,11 +228,12 @@ function walk(dir, objTree) {
 			if (count < 4) {
 				exports.pluginList += element + (files[files.length - 1] !== element ? ', ' : '.');
 			}
-
+			// $FlowFixMe
 			plugins.push(require(dir + element + '.js'));
 
 			count++;
 		});
+		// $FlowFixMe
 		objTree ? delete objTree['use'] : '';
 	}
 }
