@@ -117,10 +117,10 @@ exports.loadTemplates = function(element: any[]) {
 	try {
 		//load file, TGENPATH is the path to where tgen is installed
 		// $FlowFixMe
-		var extension = fs.existsSync(process.env.TGENPATH + '/templates/' + element[0] + '.yaml') ? '.yaml' : '.yml';
+		var extension = fs.existsSync(process.env.TGENPATH + '../templates/' + element[0] + '.yaml') ? '.yaml' : '.yml';
 		var file = yaml.safeLoad(
 			// $FlowFixMe
-			fs.readFileSync(process.env.TGENPATH + '/templates/' + element[0] + extension, 'utf8')
+			fs.readFileSync(process.env.TGENPATH + '../templates/' + element[0] + extension, 'utf8')
 		); //parse the yaml template
 	} catch (e) {
 		if (e.name === 'YAMLException') {

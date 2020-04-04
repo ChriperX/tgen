@@ -146,6 +146,7 @@ tp.add(
 					'version: ' + chalk.whiteBright(template.pluginInfo[element[1]]['version'] || INFO_NOT_GIVEN),
 					'info'
 				);
+				//console.log(process.env.TGENPATH);
 				logger(
 					'author: ' + chalk.whiteBright(template.pluginInfo[element[1]]['author'] || INFO_NOT_GIVEN),
 					'info'

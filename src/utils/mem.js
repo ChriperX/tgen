@@ -39,11 +39,12 @@ exports.newVar = function(content: ?any, varName: string): string | typeof undef
 		throw new SyntaxError('Invalid character in var name: \'' + varName + '\'.')
 	}
 	//prettier-ignore
-	vars['\\$\\{\\{' + varName + '\\}\\}'] = content ? content : undefined;
-	return content ? content : undefined;
+	vars['\\$\\{\\{' + varName + '\\}\\}'] = content;
+	// $FlowFixMe
+	return content;
 };
 
-exports.fetch = function(varName?: string = ''): any {
+exports.fetch = function(varName: string = ''): any {
 	// prettier-ignore
 	return vars['\\$\\{\\{' + varName + '\\}\\}'] !== undefined ? vars['\\$\\{\\{' + varName + '\\}\\}'] : vars
 };
