@@ -26,8 +26,7 @@
 	},
 	"scripts": {
 		"test": "mocha",
-		"build": "babel src/ -d lib/",
-		"prepublish": "npm run build"
+		"build": "babel src/ -d lib/"
 	},
 	"repository": {
 		"type": "git",
@@ -40,12 +39,8 @@
 	},
 	"homepage": "https://github.com/ChriperX/tgen#readme",
 	"bin": {
-		"tgen": "./src/index.js"
+		"tgen": "./lib/index.js"
 	},
-	"os": [
-		"darwin",
-		"linux",
-		"win32"
-	],
+	"os": [ "darwin", "linux", "win32" ],
 	"preferGlobal": true
 }
