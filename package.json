@@ -42,7 +42,7 @@
 	},
 	"homepage": "https://github.com/ChriperX/tgen#readme",
 	"bin": {
-		"tgen": "./lib/index.js"
+		"tgen": "./cli/index.js"
 	},
 	"os": [ "darwin", "linux", "win32" ],
 	"preferGlobal": true
