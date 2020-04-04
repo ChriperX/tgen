@@ -27,7 +27,7 @@
 	},
 	"scripts": {
 		"test": "mocha",
-		"build": "babel src/cli/ -d lib/ && babel src/plugins/ -d plugins/",
+		"build": "babel src/cli/ -d cli/ && babel src/plugins/ -d plugins/",
 		"prepublish": "npm run build",
 		"flow": "flow"
 	},
