@@ -20,10 +20,10 @@
 
 // #endregion LICENSE
 
-const template = require('../../src/templates.js');
+const template = require('../../lib/templates.js');
 const chalk = require('chalk');
-const mem = require('../../src/utils/mem.js');
-const logger = require('../../src/utils/logger.js');
+const mem = require('../../lib/utils/mem.js');
+const logger = require('../../lib/utils/logger.js');
 
 var lastEval = [];
 var currKey = [];

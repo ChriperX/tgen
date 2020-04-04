@@ -1,6 +1,6 @@
 const fs = require('fs');
-const logger = require('../../src/utils/logger.js');
-const mem = require('../../src/utils/mem.js');
+const logger = require('../../lib/utils/logger.js');
+const mem = require('../../lib/utils/mem.js');
 const chalk = require('chalk');
 
 exports.pluginInfo = {
