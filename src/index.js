@@ -31,17 +31,6 @@ process.env.TGENPATH = path.resolve(__dirname) + (process.platform === 'win32' ?
 const chalk = require('chalk');
 const logger = require('./utils/logger');
 
-if (!process.env.TGENPATH) {
-	console.log(chalk.redBright('error: TGENPATH env variable not set.'));
-	console.log(
-		chalk.cyanBright(
-			'In your shell startup file (.bashrc or .zshrc if you have zsh installed), please add this line:'
-		)
-	);
-	logger('export TGENPATH="/usr/local/lib/node_modules/tgen/src/"', 'default');
-	return 1;
-}
-
 const template = require('./templates');
 const tp = require('@nonamenpm/text-parser');
 const fs = require('fs');
