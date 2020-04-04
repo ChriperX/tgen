@@ -93,11 +93,14 @@ exports.templateKeys = {
 					fileStructure.else ? lastEval[mem.fetch('if_count')].push(true) : '';
 					for (const key2 in file[i][constKey]) {
 						try {
+							let previous = mem.fetch('if_count');
+
 							template.templateKeys[key2](
 								file[i][constKey] ? file[i][constKey][key2] : file[i][key2],
 								name,
 								file[i][constKey]
 							);
+							mem.newVar(previous, 'if_count');
 						} catch (e) {
 							// console.log(e);
 							// there may be an inexistent key or an indentation error
