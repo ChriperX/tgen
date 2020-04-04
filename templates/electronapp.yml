@@ -1,0 +1,59 @@
+#electron template
+use:
+  - 'log'
+  - 'write'
+  - 'prompt'
+  - 'logic'
+
+log:
+  warning:
+    - This template doesn't install electron automatically, you have to install it yourself
+
+if:
+  '"${{name}}" === "undefined"':
+    prompt:
+      'Please specify a name for your project.':
+        - 'name'
+
+create:
+  - ${{name}}/index.html
+  - ${{name}}/src/css/style.css
+  - ${{name}}/src/js/index.js
+  - ${{name}}/main.js
+
+#write to index
+write:
+  '${{name}}/main.js': |
+    const { app, BrowserWindow } = require{{'electron'}};
+
+    function createWindow{{}} {
+        //create browser window
+        let win = new BrowserWindow{{{
+            width: 800,
+            height: 600,
+            webPreferences: { nodeIntegration: true }
+        }}}
+    
+        win.loadFile{{'index.html'}}
+    }
+
+    app.whenReady{{}}.then{{createWindow}}
+  
+  '${{name}}/src/js/index.js': |
+    //This is were your app's code goes
+
+  '${{name}}/index.html': |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title></title>
+    </head>
+    <body></body>
+    </html>
+
+commands:
+  - cd ./${{name}} && npm init -y
+
+
