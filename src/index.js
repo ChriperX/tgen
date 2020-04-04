@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+
+/* @flow */
+
 //#region LICENSE
 
 /*
@@ -40,13 +43,12 @@ const plugger = require('@nonamenpm/plugger');
 const messages = require('./messages.js');
 const mem = require('./utils/mem');
 
-const error = messages.newMessageType('error');
-const general = messages.newMessageType('general');
+const error: Function = messages.newMessageType('error');
+const general: Function = messages.newMessageType('general');
 
 const TGEN_VERSION = '1.0.0';
 const INFO_NOT_GIVEN = 'not given';
 
-let logLevel;
 let plugins = [];
 
 //#region PLUGIN_ENTRY_POINT
@@ -57,7 +59,7 @@ exports.commands = {};
 //object that defines information about a plugin
 exports.pluginInfo = {};
 
-exports.use = function(plugin) {
+exports.use = function(plugin: any[]) {
 	plugger(plugin, this, false);
 };
 
@@ -72,11 +74,13 @@ function walk(dir) {
 	let files = fs.readdirSync(dir);
 	files.forEach((element) => {
 		if (!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.')))) {
+			// $FlowFixMe
 			plugins.push(require(dir + element));
 		}
 	});
 }
 
+// $FlowFixMe
 walk(process.env.TGENPATH + '../plugins/parser/');
 exports.use(plugins);
 addCustomCommands();
@@ -84,11 +88,11 @@ addCustomCommands();
 //#endregion PLUGIN_ENTRY_POINT
 
 //creates a new project from a template
-exports.newTemplate = function(element) {
+exports.newTemplate = function(element: any) {
 	mem.newVar(element[1], 'name');
 
 	//we return the exit status
-	return template.loadTemplates(element, logLevel);
+	return template.loadTemplates(element);
 };
 
 tp.error((token) => {
@@ -171,12 +175,14 @@ tp.add(
 			//pushes to tgenSetting the plugin to ignore
 			mem.tgenSettings['plugins']['ignore'].push(element[1]);
 			//writes the changes to tgen.yaml
+			// $FlowFixMe
 			fs.writeFileSync(process.env.TGENPATH + '/../.tgen.yaml', yaml.safeDump(mem.tgenSettings));
 		}
 		if (element[0] === 'check') {
 			//check a plugin directory
 			try {
 				//reads a directory
+				// $FlowFixMe
 				var dir = fs.readdirSync(process.env.TGENPATH + '../plugins/' + element[1] + '/');
 			} catch (e) {
 				//the directory doesn't exist

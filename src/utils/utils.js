@@ -1,3 +1,5 @@
+/* @flow */
+
 // #region LICENSE
 
 /*
@@ -20,6 +22,6 @@
 
 // #endregion LICENSE
 
-exports.lastOf = function(string, char) {
+exports.lastOf = function(string: string, char: string): number {
 	return string.length - string.split(char)[string.split(char).length - 1].length - 1;
 };

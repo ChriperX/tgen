@@ -1,3 +1,5 @@
+/* @flow */
+
 // #region LICENSE
 
 /*
@@ -22,27 +24,29 @@
 const plugger = require('@nonamenpm/plugger');
 const fs = require('fs');
 
-const plugins = [];
+const plugins: any[] = [];
 
 function walk(dir) {
 	let files = fs.readdirSync(dir);
 	files.forEach((element) => {
+		// $FlowFixMe
 		plugins.push(require(dir + element));
 	});
 }
 
+// $FlowFixMe
 walk(process.env.TGENPATH + '../plugins/messages/');
 
 // entry point that will be used by plugin to make custom messages for tgen
 exports.logMessages = {};
 
-exports.newMessageType = (msgType) => (msg, id) => {
+exports.newMessageType = (msgType: string): Function => (msg: any, id: string): any => {
 	return exports.logMessages[msgType]
 		? exports.logMessages[msgType][id] ? exports.logMessages[msgType][id] : msg
 		: msg;
 };
 
-exports.use = function(plugin) {
+exports.use = function(plugin: any[]) {
 	plugger(plugin, this, false);
 };
 
