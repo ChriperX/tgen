@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/*eslint no-template-curly-in-string: */
 
 const mem = require('../src/utils/mem.js');
 const expect = require('chai').expect;
@@ -6,34 +7,48 @@ const expect = require('chai').expect;
 describe('mem', () => {
 	describe('newVar()', () => {
 		it('should return contents', () => {
-			expect(mem.newVar('new var', 'test var')).to.be.equal('new var');
+			expect(mem.newVar('new var', 'test_var')).to.be.equal('new var');
 		});
 	});
 
 	describe('fetch()', () => {
 		it('should return test var', () => {
-			expect(mem.fetch('test var')).to.be.equal('new var');
+			expect(mem.fetch('test_var')).to.be.equal('new var');
 		});
 	});
 
 	describe('replaceVars()', () => {
 		it('should return the string with vars', () => {
-			expect(mem.replaceVars('this (is) a ${{test var}}')).to.be.equal('this (is) a new var');
+			expect(mem.replaceVars('this (is) a ${{test_var}}')).to.be.equal('this (is) a new var');
 		});
 	});
 	describe('containsVar()', () => {
-		it('should return true', () => {
-			/*eslint no-template-curly-in-string: */
+		it('should match with an underscore', () => {
 			expect(mem.containsVar('${{_}}')).to.be.true;
-			expect(mem.containsVar('${{test}}')).to.be.true;
-			expect(mem.containsVar('${{_test}}')).to.be.true;
-			expect(mem.containsVar('${{_test}}')).to.be.true;
-			expect(mem.containsVar('${{_-a}}')).to.be.true;
 		});
-		it('should not be true', () => {
-			expect(mem.containsVar('${{_}')).to.not.be.true;
-			expect(mem.containsVar('${{1_}}')).to.not.be.true;
-			expect(mem.containsVar('{{a}}')).to.not.be.true;
+		it('should match with whitespaces at the start and at the end of the variable', () => {
+			expect(mem.containsVar('${{ test   }}')).to.be.true;
+		});
+		it('should match with underscores', () => {
+			expect(mem.containsVar('${{___testVar___}}')).to.be.true;
+		});
+		it('should match only the var name', () => {
+			expect(mem.containsVar('${{test}}')).to.be.true;
+		});
+		it("should match even if the numbers aren't at the start", () => {
+			expect(mem.containsVar('${{test23}}')).to.be.true;
+		});
+		it('should match even if the numbers are at the start', () => {
+			expect(mem.containsVar('${{1test}}')).to.be.true;
+		});
+
+		//to be false
+
+		it("shouldn't match with alphanumerical chars", () => {
+			expect(mem.containsVar('${{$}}')).to.not.be.true;
+		});
+		it("shouldn't match with spaces beetween the var name", () => {
+			expect(mem.containsVar('${{this is a test}}')).to.not.be.true;
 		});
 	});
 });
