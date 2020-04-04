@@ -208,7 +208,7 @@ if (typeof global.it !== 'function') {
 	);
 	const exitStatus = tp.parse();
 	//separator
-	console.log();
+	process.platform === 'win32' || console.log();
 	process.exit(exitStatus);
 }
 
