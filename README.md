@@ -3,6 +3,7 @@
 ## Legend
  - [Install](#install)
     - [npm](#npm)
+    - [yarn](#yarn)
  - [FAQ](#faq)
     - [What's tgen?](#what's-tgen)
     - [What do i need to install tgen?](#what-do-i-need-to-install-tgen)
@@ -39,10 +40,16 @@
 ### npm
 
 ```bash
-npm i tgen -g
+npm i @nonamenpm/tgen -g
 
 ```
 
+### yarn
+
+```bash
+yarn global add @nonamenpm/tgen
+
+```
 
 ## FAQ
 
