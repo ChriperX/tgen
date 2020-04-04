@@ -2,6 +2,5 @@
 ./src/
 [ignore]
 ./plugins/
-./lib/cli/
-./lib/plugins/
+./cli/
 ./test/
