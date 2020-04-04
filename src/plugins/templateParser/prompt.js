@@ -1,5 +1,5 @@
-const mem = require('../../lib/utils/mem.js');
-const logger = require('../../lib/utils/logger.js');
+const mem = require('../../cli/utils/mem.js');
+const logger = require('../../cli/utils/logger.js');
 const chalk = require('chalk');
 const cli_prompt = require('prompt-sync')({
 	sigint: true

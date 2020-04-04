@@ -21,7 +21,7 @@
 // #endregion LICENSE
 
 // const chalk = require('chalk');
-const logger = require('../../lib/utils/logger');
+const logger = require('../../cli/utils/logger');
 
 exports.pluginInfo = {
 	log: {

@@ -1,4 +1,4 @@
-const index = require('../../lib/index.js');
+const index = require('../../cli/index.js');
 
 exports.commands = {
 	start: {

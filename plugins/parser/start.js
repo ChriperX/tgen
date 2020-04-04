@@ -1,11 +1,11 @@
-const index = require('../../lib/index.js');
+const index = require('../../cli/index.js');
 
 exports.commands = {
-	start: {
-		command: 'start <template> <name>',
-		cb: (element) => {
-			index.newTemplate(element);
-		},
-		desc: 'Alias of new'
-	}
+  start: {
+    command: 'start <template> <name>',
+    cb: element => {
+      index.newTemplate(element);
+    },
+    desc: 'Alias of new'
+  }
 };

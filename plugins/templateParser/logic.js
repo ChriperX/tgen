@@ -18,13 +18,13 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 // #endregion LICENSE
-const template = require('../../lib/templates.js');
+const template = require('../../cli/templates.js');
 
 const chalk = require('chalk');
 
-const mem = require('../../lib/utils/mem.js');
+const mem = require('../../cli/utils/mem.js');
 
-const logger = require('../../lib/utils/logger.js');
+const logger = require('../../cli/utils/logger.js');
 
 var lastEval = [];
 var currKey = [];

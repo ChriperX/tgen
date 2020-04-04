@@ -1,6 +1,6 @@
-const mem = require('../../lib/utils/mem.js');
+const mem = require('../../cli/utils/mem.js');
 
-const logger = require('../../lib/utils/logger.js');
+const logger = require('../../cli/utils/logger.js');
 
 const chalk = require('chalk');
 
