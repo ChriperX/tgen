@@ -178,14 +178,16 @@ log:
 
 #### Variable Syntax
 
-Variables, like in JavaScript, can't start with:
-  - A space
-  - A number
-  - Any special character (!, $ etc...).
+Variables can't contain a space in between the var name, or any alphanumerical character ($, %, -, ., etc...), but variables can start and end with spaces.
 
-But variables can start with:
-  - \-
-  - _
+Example of a valid variable:
+
+```yaml
+log:
+  info:
+    - 'Hello ${{name}}!'
+
+```
 
 #### Creating a variable
 
