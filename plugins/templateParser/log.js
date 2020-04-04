@@ -17,29 +17,26 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
 // #endregion LICENSE
-
 // const chalk = require('chalk');
 const logger = require('../../lib/utils/logger');
 
 exports.pluginInfo = {
-	log: {
-		version: 'v1.0.0',
-		author: 'NoName',
-		repo: 'none',
-		extends: 'log, logLevel',
-		description: 'Log functionality for templates.'
-	}
+  log: {
+    version: 'v1.0.0',
+    author: 'NoName',
+    repo: 'none',
+    extends: 'log, logLevel',
+    description: 'Log functionality for templates.'
+  }
 };
-
 exports.templateKeys = {
-	log: function(file) {
-		for (const key in file) {
-			for (let i = 0; i <= file[key].length - 1; i++) {
-				// logLevels[key](file[key][i], name);
-				logger(file[key][i], key);
-			}
-		}
-	}
+  log: function (file) {
+    for (const key in file) {
+      for (let i = 0; i <= file[key].length - 1; i++) {
+        // logLevels[key](file[key][i], name);
+        logger(file[key][i], key);
+      }
+    }
+  }
 };
