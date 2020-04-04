@@ -43,8 +43,8 @@ const plugger = require('@nonamenpm/plugger');
 const messages = require('./messages.js');
 const mem = require('./utils/mem');
 
-const error: Function = messages.newMessageType('error');
-const general: Function = messages.newMessageType('general');
+const error = messages.newMessageType('error');
+const general = messages.newMessageType('general');
 
 const TGEN_VERSION = '1.0.0';
 const INFO_NOT_GIVEN = 'not given';
