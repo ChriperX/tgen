@@ -25,7 +25,7 @@
 const yaml = require('js-yaml');
 const fs = require('fs');
 const utils = require('./utils/utils');
-const exec = require('child_process').exec; //import the exec function, used for executing bash commands
+const exec = require('child_process').execSync; //import the exec function, used for executing bash commands
 const logger = require('./utils/logger.js');
 const plugger = require('@nonamenpm/plugger');
 const chalk = require('chalk');
@@ -105,7 +105,7 @@ exports.templateKeys = {
 			logger('ran command: ' + chalk.whiteBright(mem.replaceVars(commands[i])), 'info');
 		}
 
-		exec(mem.replaceVars(chainedCommand));
+		exec(mem.replaceVars(chainedCommand).trim());
 
 		logger('this may take a while', 'warning');
 	}
