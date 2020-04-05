@@ -1,6 +1,6 @@
 # tgen
 
-![](https://github.com/ChriperX/tgen/master/media/tgen-demo.gif)
+![](https://github.com/ChriperX/tgen/blob/master/media/tgen-demo.gif)
 
 ## Legend
  - [Install](#install)
