@@ -1,5 +1,9 @@
 create:
     - ${{name}}/index.js
     - ${{name}}/package.json
+    - ${{name}}/src/
+    - ${{name}}/.eslintrc
+    - ${{name}}/.editorconfig
 commands:
     - cd ./${{name}} && npm init -y
+    - git init
