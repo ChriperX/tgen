@@ -119,7 +119,7 @@ exports.loadTemplates = function (element) {
       logger(error(chalk.redBright('error: bad formatting in template: '), 'yaml_bad_formatting') + chalk.whiteBright(element[0]), 'error');
     } else {
       //template not found
-      logger(error(chalk.redBright('error: template not found: '), 'template_not_found') + chalk.whiteBright(element[0]), 'error');
+      element[0] !== undefined ? logger(error(chalk.redBright('error: template not found: '), 'template_not_found') + chalk.whiteBright(element[0]), 'error') : logger(error('error: please specify a template.', 'template_not_specified'), 'error');
     }
 
     return 1;
