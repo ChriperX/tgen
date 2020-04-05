@@ -5,6 +5,7 @@ templates/test2.yml
 templates/blank.yaml
 test
 examples/
+CONTRIBUTING.md
 .eslintrc
 .flowconfig
 .babelrc
