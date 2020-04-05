@@ -1,5 +1,7 @@
 # tgen
 
+![tgen example](https://github.com/ChriperX/tgen/tree/master/media/tgen-demo.gif)
+
 ## Legend
  - [Install](#install)
     - [npm](#npm)
