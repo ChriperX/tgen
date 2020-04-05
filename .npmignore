@@ -1,6 +1,12 @@
 node_modules
-src/templates/test.yaml
-src/templates/test2.yml
-src/templates/blank.yaml
+src/
+templates/test.yaml
+templates/test2.yml
+templates/blank.yaml
 test
-examples
+examples/
+.eslintrc
+.flowconfig
+.babelrc
+.editorconfig
+.vscode
