@@ -8,7 +8,7 @@
 	},
 	"dependencies": {
 		"@nonamenpm/plugger": "^1.0.5",
-		"@nonamenpm/text-parser": "^1.2.3",
+		"@nonamenpm/text-parser": "^1.2.4",
 		"chalk": "^3.0.0",
 		"extend": "^3.0.2",
 		"js-yaml": "^3.13.1",
@@ -45,6 +45,10 @@
 	"bin": {
 		"tgen": "./cli/index.js"
 	},
-	"os": [ "darwin", "linux", "win32" ],
+	"os": [
+		"darwin",
+		"linux",
+		"win32"
+	],
 	"preferGlobal": true
 }
