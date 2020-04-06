@@ -33,7 +33,7 @@ exports.tgenSettings = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '../
 	plugins: { ignore: [] },
 	loaders: {
 		templateKeys: 'pluginLoader.js',
-		fileLoader: 'fileLoader.js',
+		fileLoader: 'templateLoader.js',
 		commandLoader: 'commandLoader.js'
 	}
 };
