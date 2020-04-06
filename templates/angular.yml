@@ -11,7 +11,7 @@ log:
     - "After creation of the files, run the install.sh file to install the dependencies"
 
 prompt:
-  'Do you want routing? {{y/N}}':
+  'Do you want routing? (y/N)':
     'routing'
 if:
   "'${{routing}}' === 'y'":
@@ -51,6 +51,7 @@ create:
   - ${{name}}/src/app/app.component.sass
   - ${{name}}/src/app/app.component.spec.ts
   - ${{name}}/src/app/app.module.ts
+  - ${{name}}/src/app/app-routing.module.ts
   #e2e
   - ${{name}}/e2e/src/
   - ${{name}}/e2e/src/app.e2e-spec.ts
