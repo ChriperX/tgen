@@ -22,7 +22,6 @@
 
 //#endregion LICENSE
 
-const yaml = require('js-yaml');
 const fs = require('fs');
 const utils = require('./utils/utils');
 const exec = require('child_process').execSync; //import the exec function, used for executing bash commands
@@ -30,9 +29,6 @@ const logger = require('./utils/logger.js');
 const plugger = require('@nonamenpm/plugger');
 const chalk = require('chalk');
 const mem = require('./utils/mem');
-const messages = require('./messages.js');
-
-const error = messages.newMessageType('error');
 
 let plugins = [];
 
@@ -115,6 +111,12 @@ exports.templateKeys = {
 
 //#region PARSING
 exports.loadTemplates = function(element: any[]) {
+	var file;
+	// $FlowFixMe
+	require('../loaders/' + mem.LOADER.fileLoader)((result) => {
+		file = result;
+	}, element[0]);
+	/*
 	try {
 		//load file, TGENPATH is the path to where tgen is installed
 		// $FlowFixMe
@@ -143,7 +145,7 @@ exports.loadTemplates = function(element: any[]) {
 		}
 		return 1;
 	}
-
+	*/
 	exports.loadPlugins(file);
 
 	console.log(
