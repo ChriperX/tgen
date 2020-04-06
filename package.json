@@ -29,7 +29,8 @@
 		"test": "npm run build && mocha",
 		"build": "babel src/cli/ -d cli/ && babel src/plugins/ -d plugins/ && babel src/loaders/ -d loaders/",
 		"prepare": "npm run build",
-		"flow": "flow"
+		"flow": "flow",
+		"babel": "babel"
 	},
 	"repository": {
 		"type": "git",
