@@ -113,6 +113,7 @@ exports.templateKeys = {
 
 //#endregion PLUGIN_ENTRY_POINT
 
+//#region PARSING
 exports.loadTemplates = function(element: any[]) {
 	try {
 		//load file, TGENPATH is the path to where tgen is installed
@@ -169,6 +170,8 @@ exports.loadTemplates = function(element: any[]) {
 	}
 	return 0;
 };
+
+//#endregion PARSING
 
 function walk(dir, objTree) {
 	// $FlowFixMe
