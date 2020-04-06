@@ -71,6 +71,7 @@ function addCustomCommands() {
 }
 
 function walk(dir, objTree) {
+  // $FlowFixMe
   const loader = require('../loaders/' + mem.LOADER.commandLoader);
 
   function loadPlugins(plugins) {

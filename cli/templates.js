@@ -18,8 +18,6 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 //#endregion LICENSE
-const yaml = require('js-yaml');
-
 const fs = require('fs');
 
 const utils = require('./utils/utils');
@@ -35,9 +33,6 @@ const chalk = require('chalk');
 
 const mem = require('./utils/mem');
 
-const messages = require('./messages.js');
-
-const error = messages.newMessageType('error');
 let plugins = []; //#region PLUGIN_ENTRY_POINT
 
 exports.use = function (plugins) {
@@ -105,25 +100,45 @@ exports.templateKeys = {
     logger('this may take a while', 'warning');
   }
 }; //#endregion PLUGIN_ENTRY_POINT
+//#region PARSING
 
 exports.loadTemplates = function (element) {
-  try {
-    //load file, TGENPATH is the path to where tgen is installed
-    // $FlowFixMe
-    var extension = fs.existsSync(process.env.TGENPATH + '../templates/' + element[0] + '.yaml') ? '.yaml' : '.yml';
-    var file = yaml.safeLoad( // $FlowFixMe
-    fs.readFileSync(process.env.TGENPATH + '../templates/' + element[0] + extension, 'utf8')); //parse the yaml template
-  } catch (e) {
-    if (e.name === 'YAMLException') {
-      //bad formatting in template
-      logger(error(chalk.redBright('error: bad formatting in template: '), 'yaml_bad_formatting') + chalk.whiteBright(element[0]), 'error');
-    } else {
-      //template not found
-      element[0] !== undefined ? logger(error(chalk.redBright('error: template not found: '), 'template_not_found') + chalk.whiteBright(element[0]), 'error') : logger(error('error: please specify a template.', 'template_not_specified'), 'error');
-    }
+  var file; // $FlowFixMe
 
-    return 1;
+  require('../loaders/' + mem.LOADER.fileLoader)(result => {
+    file = result;
+  }, element[0]);
+  /*
+  try {
+  	//load file, TGENPATH is the path to where tgen is installed
+  	// $FlowFixMe
+  	var extension = fs.existsSync(process.env.TGENPATH + '../templates/' + element[0] + '.yaml') ? '.yaml' : '.yml';
+  	var file = yaml.safeLoad(
+  		// $FlowFixMe
+  		fs.readFileSync(process.env.TGENPATH + '../templates/' + element[0] + extension, 'utf8')
+  	); //parse the yaml template
+  } catch (e) {
+  	if (e.name === 'YAMLException') {
+  		//bad formatting in template
+  		logger(
+  			error(chalk.redBright('error: bad formatting in template: '), 'yaml_bad_formatting') +
+  				chalk.whiteBright(element[0]),
+  			'error'
+  		);
+  	} else {
+  		//template not found
+  		element[0] !== undefined
+  			? logger(
+  					error(chalk.redBright('error: template not found: '), 'template_not_found') +
+  						chalk.whiteBright(element[0]),
+  					'error'
+  				)
+  			: logger(error('error: please specify a template.', 'template_not_specified'), 'error');
+  	}
+  	return 1;
   }
+  */
+
 
   exports.loadPlugins(file);
   console.log(chalk.bold.blueBright('executing template: ' + element[0] + ', ' + (exports.pluginList ? 'with template plugins: ' + chalk.whiteBright(exports.pluginList) : 'with no template plugins installed.')));
@@ -143,7 +158,8 @@ exports.loadTemplates = function (element) {
   }
 
   return 0;
-};
+}; //#endregion PARSING
+
 
 function walk(dir, objTree) {
   // $FlowFixMe
