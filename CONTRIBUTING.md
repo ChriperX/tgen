@@ -8,6 +8,7 @@
 2. Go to your fork.
 3. Clone your fork `git clone https://github.com/YOUR_USERNAME/tgen.git`.
 4. Navigate to the tgen directory `cd tgen`.
+5. Download dependencies: `npm install && npm install --dev` 
 
 ### Making changes
 
@@ -62,6 +63,8 @@ Now that you know where to look at, there are some rules that you have to follow
 5. If the changes have difficult-to-read code, please add comments.
 
 6. When making a pull request, document the changes in the description.
+
+7. When making a change or creating a file, please follow eslint style errors.
 
 ## Useful npm scripts
 
