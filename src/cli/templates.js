@@ -113,9 +113,13 @@ exports.templateKeys = {
 exports.loadTemplates = function(element: any[]) {
 	var file;
 	// $FlowFixMe
-	require('../loaders/' + mem.LOADER.fileLoader)((result) => {
-		file = result;
-	}, element[0]);
+	if (
+		require('../loaders/' + mem.LOADER.fileLoader)((result) => {
+			file = result;
+		}, element[0])
+	) {
+		return 1;
+	}
 	/*
 	try {
 		//load file, TGENPATH is the path to where tgen is installed
