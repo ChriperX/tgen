@@ -28,6 +28,10 @@ const fs = require('fs');
 
 const vars = {};
 
+exports.LOADER = {
+	templateLoader: 'pluginLoader.js'
+};
+
 // $FlowFixMe
 exports.tgenSettings = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '../.tgen.yaml', 'utf8')) || {
 	plugins: { ignore: [] }
