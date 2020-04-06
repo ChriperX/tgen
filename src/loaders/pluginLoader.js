@@ -11,6 +11,8 @@ module.exports = function(load: Function, objTree: Object, dir: string) {
 	let count = 0;
 	let plugins: any[] = [];
 
+	exports.pluginList = '';
+
 	if (!objTree['use']) {
 		files.forEach((element) => {
 			if (count === 4) {

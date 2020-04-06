@@ -12,6 +12,7 @@ module.exports = function (load, objTree, dir) {
   let files = fs.readdirSync(dir);
   let count = 0;
   let plugins = [];
+  exports.pluginList = '';
 
   if (!objTree['use']) {
     files.forEach(element => {
