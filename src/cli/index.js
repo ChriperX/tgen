@@ -70,14 +70,13 @@ function addCustomCommands() {
 	}
 }
 
-function walk(dir) {
-	let files = fs.readdirSync(dir);
-	files.forEach((element) => {
-		if (!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.')))) {
-			// $FlowFixMe
-			plugins.push(require(dir + element));
-		}
-	});
+function walk(dir, objTree) {
+	const loader = require('../loaders/' + mem.LOADER.commandLoader);
+	function loadPlugins(plugins: any[]) {
+		exports.use(plugins);
+	}
+
+	loader(loadPlugins, objTree, dir);
 }
 
 // $FlowFixMe

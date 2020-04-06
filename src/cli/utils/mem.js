@@ -28,13 +28,20 @@ const fs = require('fs');
 
 const vars = {};
 
-exports.LOADER = {
-	templateLoader: 'pluginLoader.js'
-};
-
 // $FlowFixMe
 exports.tgenSettings = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '../.tgen.yaml', 'utf8')) || {
-	plugins: { ignore: [] }
+	plugins: { ignore: [] },
+	loaders: {
+		templateKeys: 'pluginLoader.js',
+		fileLoader: 'fileLoader.js',
+		commandLoader: 'commandLoader.js'
+	}
+};
+
+exports.LOADER = {
+	templateLoader: exports.tgenSettings.loaders.templateKeys,
+	fileLoader: exports.tgenSettings.loaders.fileLoader,
+	commandLoader: exports.tgenSettings.loaders.commandLoader
 };
 
 exports.newVar = function(content: ?any, varName: string): string | typeof undefined {
