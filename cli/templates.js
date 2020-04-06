@@ -98,11 +98,13 @@ exports.templateKeys = {
     for (let i = 0; i <= commands.length - 1; i++) {
       //exec(commands[i].replace(/\(name\)/g, element));
       chainedCommand += i === commands.length - 1 ? commands[i] : commands[i] + ' && ';
-      logger('ran command: ' + chalk.whiteBright(mem.replaceVars(commands[i])), 'info');
+      logger('running command: ' + chalk.whiteBright(mem.replaceVars(commands[i])), 'info');
     }
 
-    exec(mem.replaceVars(chainedCommand).trim());
     logger('this may take a while', 'warning');
+    exec(mem.replaceVars(chainedCommand).trim(), {
+      stdio: []
+    });
   }
 }; //#endregion PLUGIN_ENTRY_POINT
 
