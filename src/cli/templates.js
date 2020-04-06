@@ -120,36 +120,6 @@ exports.loadTemplates = function(element: any[]) {
 	) {
 		return 1;
 	}
-	/*
-	try {
-		//load file, TGENPATH is the path to where tgen is installed
-		// $FlowFixMe
-		var extension = fs.existsSync(process.env.TGENPATH + '../templates/' + element[0] + '.yaml') ? '.yaml' : '.yml';
-		var file = yaml.safeLoad(
-			// $FlowFixMe
-			fs.readFileSync(process.env.TGENPATH + '../templates/' + element[0] + extension, 'utf8')
-		); //parse the yaml template
-	} catch (e) {
-		if (e.name === 'YAMLException') {
-			//bad formatting in template
-			logger(
-				error(chalk.redBright('error: bad formatting in template: '), 'yaml_bad_formatting') +
-					chalk.whiteBright(element[0]),
-				'error'
-			);
-		} else {
-			//template not found
-			element[0] !== undefined
-				? logger(
-						error(chalk.redBright('error: template not found: '), 'template_not_found') +
-							chalk.whiteBright(element[0]),
-						'error'
-					)
-				: logger(error('error: please specify a template.', 'template_not_specified'), 'error');
-		}
-		return 1;
-	}
-	*/
 	exports.loadPlugins(file);
 
 	console.log(
