@@ -146,8 +146,7 @@ exports.loadTemplates = function (element) {
 };
 
 function walk(dir, objTree) {
-  console.log(exports.pluginList); // $FlowFixMe
-
+  // $FlowFixMe
   let loader = require('../loaders/' + mem.LOADER.templateLoader);
 
   function loadFunction(plugins, pluginList) {
