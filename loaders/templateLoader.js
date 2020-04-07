@@ -3,8 +3,7 @@ module.exports = function (load, fileName) {
 
   const yaml = require('js-yaml');
 
-  const chalk = require('chalk'); // $FlowFixMe
-
+  const chalk = require('chalk');
 
   const error = require('../cli/messages').newMessageType('error');
 

@@ -78,7 +78,12 @@ function walk(dir, objTree) {
     exports.use(plugins);
   }
 
-  loader(loadPlugins, objTree, dir);
+  try {
+    loader(loadPlugins, objTree, dir);
+  } catch (e) {
+    logger('error: loader specified not found.\n', 'error');
+    process.exit(1);
+  }
 } // $FlowFixMe
 
 
@@ -167,7 +172,19 @@ tp.add('plugin <option> <pluginName>', element => {
       logger(ind.substring(0, utils.lastOf(ind, '.')), 'default');
     });
   }
-}, 'Get info, install or ignore a plugin.'); //set exit status only if we are not in a mocha test, so shells like zsh can visualize the exit code
+}, 'Get info, install or ignore a plugin.');
+tp.add('use <loaderName> <newLoader>', element => {
+  logger('using loader ' + chalk.bold.whiteBright("'" + element[1] + "' ") + 'for ' + chalk.bold.whiteBright("'" + element[0] + "'"), 'info');
+
+  if (!fs.existsSync(process.env.TGENPATH + '../loaders/' + element[1])) {
+    logger("error: loader file specified doesn't exist.", 'error');
+    return 1;
+  }
+
+  mem.tgenSettings.loaders[element[0]] = element[1]; // $FlowFixMe
+
+  fs.writeFileSync(process.env.TGENPATH + '/../.tgen.yaml', yaml.safeDump(mem.tgenSettings));
+}); //set exit status only if we are not in a mocha test, so shells like zsh can visualize the exit code
 
 if (typeof global.it !== 'function') {
   console.log(general(chalk.bold.greenBright('tgen templating engine version '), 'tgen_version') + chalk.whiteBright(TGEN_VERSION));
