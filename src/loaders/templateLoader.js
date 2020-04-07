@@ -4,7 +4,6 @@ module.exports = function(load: Function, fileName: string): ?number {
 	const fs = require('fs');
 	const yaml = require('js-yaml');
 	const chalk = require('chalk');
-	// $FlowFixMe
 	const error = require('../cli/messages').newMessageType('error');
 	const logger = require('../cli/utils/logger');
 
