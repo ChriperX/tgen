@@ -112,14 +112,20 @@ exports.templateKeys = {
 //#region PARSING
 exports.loadTemplates = function(element: any[]) {
 	var file;
-	// $FlowFixMe
-	if (
-		require('../loaders/' + mem.LOADER.fileLoader)((result) => {
-			file = result;
-		}, element[0])
-	) {
-		return 1;
+	try {
+		if (
+			// $FlowFixMe
+			require('../loaders/' + mem.LOADER.fileLoader)((result) => {
+				file = result;
+			}, element[0])
+		) {
+			return 1;
+		}
+	} catch (e) {
+		logger('error: loader specified not found.\n', 'error');
+		process.exit(1);
 	}
+
 	exports.loadPlugins(file);
 
 	console.log(
