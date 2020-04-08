@@ -12,6 +12,7 @@
     - [What do i need to create plugins?](#what-do-i-need-to-create-plugins)
     - [Ok how do i create my first project with tgen?](#ok-how-do-i-create-my-first-project-with-tgen)
  - [Documentation](#documentation)
+    - [CLI Commands](#cli-commands)
     - [Template formatting](#template-formatting)
     - [Common plugin syntax](#common-plugin-syntax)
     - [Parser plugins](#parser-plugins)
@@ -92,6 +93,46 @@ This will execute the template **yourLanguageHere** (you can see what templates 
 project called **yourProjectNameHere**.
 
 ## Documentation
+
+### CLI Commands
+
+#### `start <template> <projName>`
+
+Creates a project called `projName` from template `template`.
+
+#### `new <template> <projName>`
+
+Alias of start.
+
+#### `exec <template> <projName>`
+
+Alias of start.
+
+#### `verbose` and `suppress`
+
+Enables verbose logging or suppresses:
+
+- info;
+- default;
+- success logs.
+
+#### `plugin <option> <pluginName>`
+
+Performs an action on `pluginName`.  
+Available actions are:
+
+- info: displays info of `pluginName`;
+- ignore: when loading a template it ignores a list of plugins;
+- check: displays installed plugins given plugin directory name.
+
+#### `use <loaderName> <newLoader>`
+
+Uses a custom loader `newLoader` for `loaderName`.  
+Available loader types are:
+
+- templateKeysLoader;
+- templateLoader;
+- commandLoader.
 
 ### Template formatting
 

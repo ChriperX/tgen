@@ -184,7 +184,7 @@ tp.add('use <loaderName> <newLoader>', element => {
   mem.tgenSettings.loaders[element[0]] = element[1]; // $FlowFixMe
 
   fs.writeFileSync(process.env.TGENPATH + '/../.tgen.yaml', yaml.safeDump(mem.tgenSettings));
-}); //set exit status only if we are not in a mocha test, so shells like zsh can visualize the exit code
+}, 'Use custom loader for loaderName.'); //set exit status only if we are not in a mocha test, so shells like zsh can visualize the exit code
 
 if (typeof global.it !== 'function') {
   console.log(general(chalk.bold.greenBright('tgen templating engine version '), 'tgen_version') + chalk.whiteBright(TGEN_VERSION));
