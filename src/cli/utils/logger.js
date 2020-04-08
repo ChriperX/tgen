@@ -58,7 +58,6 @@ const levelCodes = {
 module.exports = function(msg: string, levelCode: string): any[] | number {
 	try {
 		// try calling a logLevel function
-
 		levelCodes[levelCode](mem.replaceVars(msg));
 	} catch (e) {
 		// if the specified logLevel is not defined return 1

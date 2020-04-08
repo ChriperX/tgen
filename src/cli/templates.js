@@ -22,7 +22,6 @@
 
 //#endregion LICENSE
 
-const yaml = require('js-yaml');
 const fs = require('fs');
 const utils = require('./utils/utils');
 const exec = require('child_process').execSync; //import the exec function, used for executing bash commands
@@ -30,9 +29,6 @@ const logger = require('./utils/logger.js');
 const plugger = require('@nonamenpm/plugger');
 const chalk = require('chalk');
 const mem = require('./utils/mem');
-const messages = require('./messages.js');
-
-const error = messages.newMessageType('error');
 
 let plugins = [];
 
@@ -114,34 +110,21 @@ exports.templateKeys = {
 
 //#endregion PLUGIN_ENTRY_POINT
 
+//#region PARSING
 exports.loadTemplates = function(element: any[]) {
+	var file;
 	try {
-		//load file, TGENPATH is the path to where tgen is installed
-		// $FlowFixMe
-		var extension = fs.existsSync(process.env.TGENPATH + '../templates/' + element[0] + '.yaml') ? '.yaml' : '.yml';
-		var file = yaml.safeLoad(
+		if (
 			// $FlowFixMe
-			fs.readFileSync(process.env.TGENPATH + '../templates/' + element[0] + extension, 'utf8')
-		); //parse the yaml template
-	} catch (e) {
-		if (e.name === 'YAMLException') {
-			//bad formatting in template
-			logger(
-				error(chalk.redBright('error: bad formatting in template: '), 'yaml_bad_formatting') +
-					chalk.whiteBright(element[0]),
-				'error'
-			);
-		} else {
-			//template not found
-			element[0] !== undefined
-				? logger(
-						error(chalk.redBright('error: template not found: '), 'template_not_found') +
-							chalk.whiteBright(element[0]),
-						'error'
-					)
-				: logger(error('error: please specify a template.', 'template_not_specified'), 'error');
+			require('../loaders/' + mem.LOADER.fileLoader)((result) => {
+				file = result;
+			}, element[0])
+		) {
+			return 1;
 		}
-		return 1;
+	} catch (e) {
+		logger('error: loader specified not found.\n', 'error');
+		process.exit(1);
 	}
 
 	exports.loadPlugins(file);
@@ -161,7 +144,6 @@ exports.loadTemplates = function(element: any[]) {
 		try {
 			exports.templateKeys[key](file[key], element[1], file);
 		} catch (e) {
-			console.log(e);
 			if (e instanceof TypeError) {
 				logger('error: unknown key: ' + chalk.whiteBright("'" + key + "'."), 'error');
 			}
@@ -171,72 +153,18 @@ exports.loadTemplates = function(element: any[]) {
 	return 0;
 };
 
+//#endregion PARSING
+
 function walk(dir, objTree) {
-	let files = fs.readdirSync(dir);
-	let count = 0;
+	// $FlowFixMe
+	let loader = require('../loaders/' + mem.LOADER.templateLoader);
+	function loadFunction(plugins: any[], pluginList: string) {
+		exports.use(plugins);
+		exports.pluginList = pluginList;
+	}
 
 	if (!objTree) {
 		return 1;
 	}
-	// $FlowFixMe
-	if (!objTree['use']) {
-		files.forEach((element) => {
-			if (count === 4) {
-				exports.pluginList += chalk.bold.blueBright(
-					'and ' +
-						String(files.length - count) +
-						(files.length - count === 1 ? ' more plugin.' : ' more plugins.')
-				);
-			}
-
-			if (!mem.tgenSettings['plugins']['ignore'].includes(element.substring(0, utils.lastOf(element, '.')))) {
-				if (count < 4) {
-					exports.pluginList +=
-						element.substring(0, utils.lastOf(element, '.')) +
-						(files[files.length - 1] !== element ? ', ' : '.');
-				}
-				// $FlowFixMe
-				plugins.push(require(dir + element));
-			}
-			count++;
-		});
-	} else if (objTree['use']) {
-		//load the use key, if objTree is undefined we return an empty array
-		files = objTree ? objTree['use'] : [];
-
-		//loop through the array, and load the plugins
-		// $FlowFixMe
-		files.forEach((element) => {
-			//user is trying directory traversal
-			if (element.includes('/')) {
-				element = element.substring(utils.lastOf(element, '/') + 1);
-			}
-
-			//check if file exists
-			if (!fs.existsSync(dir + element + '.js')) {
-				logger('error: plugin not found: ' + chalk.whiteBright(element), 'error');
-				//separator
-				console.log();
-				process.exit(1);
-			}
-
-			if (count === 4) {
-				exports.pluginList += chalk.bold.blueBright(
-					'and ' +
-						String(files.length - count) +
-						(files.length - count === 1 ? ' more plugin.' : ' more plugins.')
-				);
-			}
-
-			if (count < 4) {
-				exports.pluginList += element + (files[files.length - 1] !== element ? ', ' : '.');
-			}
-			// $FlowFixMe
-			plugins.push(require(dir + element + '.js'));
-
-			count++;
-		});
-		// $FlowFixMe
-		objTree ? delete objTree['use'] : '';
-	}
+	loader(loadFunction, objTree, dir);
 }

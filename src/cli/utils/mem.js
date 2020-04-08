@@ -30,7 +30,18 @@ const vars = {};
 
 // $FlowFixMe
 exports.tgenSettings = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '../.tgen.yaml', 'utf8')) || {
-	plugins: { ignore: [] }
+	plugins: { ignore: [] },
+	loaders: {
+		templateKeysLoader: 'pluginLoader.js',
+		templateLoader: 'templateLoader.js',
+		commandLoader: 'commandLoader.js'
+	}
+};
+
+exports.LOADER = {
+	templateLoader: exports.tgenSettings.loaders.templateKeysLoader,
+	fileLoader: exports.tgenSettings.loaders.templateLoader,
+	commandLoader: exports.tgenSettings.loaders.commandLoader
 };
 
 exports.newVar = function(content: ?any, varName: string): string | typeof undefined {
