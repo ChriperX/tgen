@@ -143,7 +143,6 @@ exports.loadTemplates = function(element: any[]) {
 		try {
 			exports.templateKeys[key](file[key], element[1], file);
 		} catch (e) {
-			console.log(e);
 			if (e instanceof TypeError) {
 				logger('error: unknown key: ' + chalk.whiteBright("'" + key + "'."), 'error');
 			}
