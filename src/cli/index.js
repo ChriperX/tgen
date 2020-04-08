@@ -214,6 +214,7 @@ tp.add('use <loaderName> <newLoader>', (element) => {
 			chalk.bold.whiteBright("'" + element[0] + "'"),
 		'info'
 	);
+	// $FlowFixMe
 	if (!fs.existsSync(process.env.TGENPATH + '../loaders/' + element[1])) {
 		logger("error: loader file specified doesn't exist.", 'error');
 		return 1;
