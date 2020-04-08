@@ -23,6 +23,7 @@
     - [Common plugin syntax](#common-plugin-syntax)
     - [Parser plugins](#parser-plugins)
     - [Template plugins](#template-plugins)
+    - [Loaders](#loaders)
     - [Variables](#variables)
         - [Variable syntax](#variable-syntax)
         - [Creating a variable](#creating-a-variable)
@@ -228,6 +229,79 @@ log:
 **NOTE: When writing a plugin, please add a pluginInfo object to your plugin. It's optional, but it's recommended.**
 
 **NOTE: The log plugin is already installed by default. Installed template plugins will be listed whenever a new project is created.**
+
+### Loaders
+
+Loaders are "plugins" that perform loading/parsing operations, that can be customized. They can be found in /loaders/
+
+#### templateLoader
+
+The templateLoader defines what loader to use for templates. 
+
+#### commandLoader
+
+The commandLoader defines what loader to use to load commands for the cli.
+
+#### templateKeysLoader
+
+The templateKeysLoader defines what loader to use for templateKeys plugins.
+
+### Common Loader Syntax
+
+A loader is a simple .js file that includes a function exported with `module.exports`.  
+The function takes 3 aruments, in the case of `pluginLoader`s, and 2 arguments in the case of `templateLoader`s and `commandLoader`s:  
+- `load`: function that passes necessary arguments to tgen
+- `objTree`: (exclusive to `pluginLoader`s) used to check for the `use` keyword in a template.
+- `fileName` | `dir`: used for loading `fileName` or scanning `dir`  
+
+#### `load`
+
+In `commandLoader`s and `templateLoader`s, `load` takes 1 argument:  
+the imported plugin (`commandLoader`) or the parsed template file (`templateLoader`).
+
+**NOTE: `load()` takes 2 arguments in `pluginLoader`s, the imported plugins and the list of plugins.**
+
+#### Example
+
+```js
+/* @flow */
+
+//This file is a modified version of the default templateLoader
+//instead of loading .yaml files, it loads .json files
+
+//create the custom loader function
+module.exports = function(load: Function, fileName: string): ?number {
+	const fs = require('fs');
+	const chalk = require('chalk');
+	const error = require('../cli/messages').newMessageType('error');
+	const logger = require('../cli/utils/logger');
+
+	try {
+		//load file, TGENPATH is the path to where tgen is installed
+		// $FlowFixMe
+		var extension = fs.existsSync(process.env.TGENPATH + '../templates/' + fileName + '.json') ? '.json' : '.jsonc';
+		var file = JSON.parse(
+			// $FlowFixMe
+			fs.readFileSync(process.env.TGENPATH + '../templates/' + fileName + extension, 'utf8')
+		); //parse the yaml template
+	} catch (e) {
+
+    //template not found
+    fileName !== undefined
+      ? logger(
+          error(chalk.redBright('error: template not found: '), 'template_not_found') +
+            chalk.whiteBright(fileName),
+          'error'
+        )
+      : logger(error('error: please specify a template.', 'template_not_specified'), 'error');
+  
+		return 1;
+	}
+	load(file);
+};
+
+
+```
 
 ### Variables
 
