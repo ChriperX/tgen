@@ -27,22 +27,24 @@
 
 ## File Structure
 
-If you see the file structure, in the root there are two main folders:
+If you see the file structure, in the root there are three main folders:
     
     - src/
     - cli/
     - plugins/
+    - loaders/
 
-Inside `src` there are two other directories:
+Inside `src` there are three other directories:
 
     - cli/
     - plugins/
+    - loaders/
 
-Inside `src/cli/` there is the source code for the cli (tgen), whereas `src/plugins/` is were the source code for the plugins is stored.
+Inside `src/cli/` there is the source code for the cli (tgen), whereas `src/plugins/` is were the source code for the plugins is stored, and `src/loaders/` contains the source code for the loaders.
 
 ### What's the diffrence?
 
-The source code for the cli and the plugins are built with [Flow](https://flow.org), and obviously the they need to be compiled, respectively the source code of the cli and the plugins end up in `cli/` and `plugins/`.
+The source code for the cli, the plugins and the loaders are built with [Flow](https://flow.org), and obviously the they need to be compiled, respectively the source code of the cli and the plugins end up in `cli/` and `plugins/`.
 
 ## Contributing rules.
 
