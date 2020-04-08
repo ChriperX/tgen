@@ -174,7 +174,7 @@ tp.add('plugin <option> <pluginName>', element => {
   }
 }, 'Get info, install or ignore a plugin.');
 tp.add('use <loaderName> <newLoader>', element => {
-  logger('using loader ' + chalk.bold.whiteBright("'" + element[1] + "' ") + 'for ' + chalk.bold.whiteBright("'" + element[0] + "'"), 'info');
+  logger('using loader ' + chalk.bold.whiteBright("'" + element[1] + "' ") + 'for ' + chalk.bold.whiteBright("'" + element[0] + "'"), 'info'); // $FlowFixMe
 
   if (!fs.existsSync(process.env.TGENPATH + '../loaders/' + element[1])) {
     logger("error: loader file specified doesn't exist.", 'error');
