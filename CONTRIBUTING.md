@@ -18,12 +18,12 @@
 2. Make your changes.
 3. Push your changes to your branch `git push origin YOUR_BRANCH_NAME`
 4. Go to your fork's GitHub repo, and you should see something like this: ![GitHub Pull Request](https://galaxyproject.github.io/training-material/topics/contributing/images/PR_button.png)
-5. Click on `Compare & pull request`.
-   
-    **NOTE: When making a pull request please follow the [contributing rules](#contributing-rules).**
-6. Make sure you see master on the left and your branch name on the right: ![GitHub Compare](https://galaxyproject.github.io/training-material/topics/contributing/images/PR_branch_check.png)
-7. Fill in the pull request title and description.
-8. Create pull request.
+5. Make your changes.  
+    **NOTE: Please follow the [contributing rules](#contributing-rules) while making changes.**
+6. Click on `Compare & pull request`.
+7. Make sure you see master on the left and your branch name on the right: ![GitHub Compare](https://galaxyproject.github.io/training-material/topics/contributing/images/PR_branch_check.png)
+8. Fill in the pull request title and description.
+9. Create pull request.
 
 ## File Structure
 
