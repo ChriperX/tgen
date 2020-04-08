@@ -49,7 +49,7 @@ module.exports = function(load: Function, objTree: Object, dir: string) {
 			if (!fs.existsSync(dir + element + '.js')) {
 				logger('error: plugin not found: ' + chalk.whiteBright(element), 'error');
 				//separator
-				console.log();
+				process.platform === 'win32' || console.log();
 				process.exit(1);
 			}
 
