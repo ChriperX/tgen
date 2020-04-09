@@ -3,11 +3,11 @@ use:
     - 'log'
 
 if:
-  'true':
-    log:
-      default:
-        - 'It should log'
+  - 'true':
+        log:
+            default:
+                - 'It should log'
 else:
-  log:
-    warning:
-      - 'It shouldn't log'
+  - log:
+        warning:
+            - 'It shouldn't log'
