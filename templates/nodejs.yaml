@@ -1,9 +1,18 @@
+use:
+    - write
+
 create:
-    - ${{name}}/index.js
-    - ${{name}}/package.json
-    - ${{name}}/src/
-    - ${{name}}/.eslintrc
-    - ${{name}}/.editorconfig
+    - ${{ name }}/index.js
+    - ${{ name }}/package.json
+    - ${{ name }}/src/
+    - ${{ name }}/test/
+    - ${{ name }}/.eslintrc
+    - ${{ name }}/.editorconfig
+    - ${{ name }}/.gitignore
 commands:
-    - cd ./${{name}} && npm init -y
+    - cd ./${{ name }} && npm init -y
     - git init
+write:
+    ${{ name }}/.gitignore: |
+        node_modules
+        test

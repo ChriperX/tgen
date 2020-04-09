@@ -1,7 +1,22 @@
+use:
+    - write
+
 create:
     - ${{name}}/index.ts
     - ${{name}}/package.json
+    - ${{ name }}/src/.gitkeep
+    - ${{ name }}/test/.gitkeep
+    - ${{ name }}/.gitignore
+    - ${{ name }}/.eslintrc
+    - ${{ name }}/.editorconfig
+
+write:
+    ${{ name }}/.gitignore: |
+        node_modules
+        test
+
 commands:
     - cd ./${{name}}
+    - git init
     - npm init -y && npm i typescript --save-dev
     - tsc --init
