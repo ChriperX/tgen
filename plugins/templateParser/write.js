@@ -19,6 +19,11 @@ exports.templateKeys = {
     for (const key in objStructure) {
       try {
         // check if file path is a directory
+        if (Array.isArray(objStructure)) {
+          logger('error: expected object in write but found array', 'error');
+          return 1;
+        }
+
         if (fs.lstatSync(mem.replaceVars(key)).isDirectory()) {
           logger('error: file is a directory.', 'error');
           return 1;
