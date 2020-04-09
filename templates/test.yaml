@@ -10,4 +10,4 @@ if:
 else:
   - log:
       warning:
-        - 'It shouldn't log'
+       - "It shouldn't log"
