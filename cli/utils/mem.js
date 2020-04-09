@@ -18,6 +18,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 // #endregion LICENSE
+
+/*eslint prefer-regex-literals:*/
+
+/*eslint  dot-location:*/
 // file used for costant memory across files
 const yaml = require('js-yaml');
 
@@ -48,21 +52,25 @@ exports.newVar = function (content, varName) {
   } //prettier-ignore
 
 
-  vars['\\$\\{\\{' + varName + '\\}\\}'] = content; // $FlowFixMe
+  vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] = content; // $FlowFixMe
 
   return content;
 };
 
-exports.fetch = function (varName = '') {
+exports.fetch = function (varName) {
   // prettier-ignore
-  return vars['\\$\\{\\{' + varName + '\\}\\}'] !== undefined ? vars['\\$\\{\\{' + varName + '\\}\\}'] : vars;
+  return vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] !== undefined ? vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] : undefined;
 };
 
 exports.replaceVars = function (string) {
   let returnString = string;
 
-  for (let key in vars) {
-    returnString = returnString.replace(new RegExp(key, 'g'), vars[key]);
+  if (exports.containsVar(string)) {
+    for (let key in vars) {
+      returnString = returnString.replace(/\$\{\{\s*/g, '${{').replace(/\s*\}\}/g, '}}').replace(new RegExp(key, 'g'), vars[key]);
+    }
+
+    returnString = returnString.replace(/\$\{\{\s*/g, '').replace(/\s*\}\}/g, '');
   }
 
   return returnString;
