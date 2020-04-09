@@ -29,7 +29,12 @@ describe('mem', () => {
 
 	describe('replaceVars()', () => {
 		it('should return the string with vars', () => {
-			expect(mem.replaceVars('this (is) a ${{test_var}}')).to.be.equal('this (is) a new var');
+			expect(mem.replaceVars('this (is) a ${{test_var }}')).to.be.equal('this (is) a new var');
+		});
+		it('should replace more than one variable', () => {
+			expect(mem.replaceVars('this is a ${{test_var}} ${{ test_var }} ${{ test_var}}')).to.be.equal(
+				'this is a new var new var new var'
+			);
 		});
 	});
 	describe('containsVar()', () => {

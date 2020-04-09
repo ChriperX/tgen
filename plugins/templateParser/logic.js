@@ -68,6 +68,7 @@ exports.templateKeys = {
     } // create 2d array
     // this will be used with if count to execute the various else statements
     // only if the corresponding if and the corresponding conditions are met
+    // $FlowFixMe
 
 
     lastEval[mem.fetch('if_count')] = [];
@@ -90,6 +91,7 @@ exports.templateKeys = {
 
         if (evaluation) {
           // this is where we execute the syntax inside the if
+          // $FlowFixMe
           fileStructure.else ? lastEval[mem.fetch('if_count')].push(true) : '';
 
           for (const key2 in file[i][constKey]) {
@@ -106,6 +108,7 @@ exports.templateKeys = {
           }
         } else {
           // if the evaluation is false, we push to the current if a false flag, only if there are any elses
+          // $FlowFixMe
           fileStructure.else ? lastEval[mem.fetch('if_count')].push(false) : '';
         }
       }
@@ -117,6 +120,7 @@ exports.templateKeys = {
 
     for (let i = 0; i <= file.length - 1; i++) {
       // check if any of the last if's conditions are false
+      // $FlowFixMe
       if (lastEval[mem.fetch('if_count')][i] === false) {
         // we take out of memory the last else statement
         currKey.pop();
