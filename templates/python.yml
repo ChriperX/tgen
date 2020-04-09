@@ -1,0 +1,36 @@
+use:
+  - write
+  - prompt
+  - logic
+
+create:
+  - ${{ name }}/bin/
+  - ${{ name }}/setup.py
+  - ${{ name }}/README.md
+  - ${{ name }}/LICENSE.md
+  - ${{ name }}/CHANGELOG.md
+  - ${{ name }}/SECURITY.md
+  - ${{ name }}/requirements.txt
+  - ${{ name }}/.gitignore
+
+if:
+  - "'${{ name }}' === '.'":
+      prompt:
+        "please put a valid project name":
+          proj_name
+      create:
+        - ${{ name }}/bin/${{ proj_name }}/
+        - ${{ name }}/${{ proj_name }}/test/__init__.py
+        - ${{ name }}/${{ proj_name }}/test/test_main.py
+        - ${{ name }}/${{ proj_name }}/main.py
+        - ${{ name }}/${{ proj_name }}/__init__.py
+else:
+  - create:
+      - ${{ name }}/bin/${{ name }}/
+      - ${{ name }}/${{ name }}/test/__init__.py
+      - ${{ name }}/${{ name }}/test/test_main.py
+      - ${{ name }}/${{ name }}/main.py
+      - ${{ name }}/${{ name }}/__init__.py
+commands:
+  - cd ${{ name }}
+  - git init
