@@ -1,0 +1,14 @@
+use:
+  - 'logic'
+  - 'log'
+if:
+  - "false":
+      log:
+        info:
+          - It should not log
+else:
+  - if:
+    - 'true':
+        log:
+          success:
+            - Should log here

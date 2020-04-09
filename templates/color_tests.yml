@@ -1,0 +1,18 @@
+use:
+  - 'log'
+
+log:
+  none:
+    - 'None levelLog'
+  default:
+    - 'Default levelLog'
+  info:
+    - 'Info levelLog'
+  success:
+    - 'Success levelLog'
+  verbose:
+    - 'Verbose levelLog'
+  warning:
+    - 'Warning levelLog'
+  error:
+    - 'Error levelLog'
