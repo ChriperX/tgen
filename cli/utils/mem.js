@@ -27,7 +27,8 @@ const yaml = require('js-yaml');
 
 const fs = require('fs');
 
-const vars = {}; // $FlowFixMe
+const vars = {};
+const internalVars = {}; // $FlowFixMe
 
 exports.tgenSettings = yaml.safeLoad(fs.readFileSync(process.env.TGENPATH + '../.tgen.yaml', 'utf8')) || {
   plugins: {
@@ -49,7 +50,23 @@ exports.newVar = function (content, varName) {
   // prettier-ignore
   if (!exports.containsVar('${{' + varName + '}}')) {
     throw new SyntaxError('Invalid character in var name: \'' + varName + '\'.');
-  } //prettier-ignore
+  }
+  /*
+  	! Variable types don't seem to work, so for now i'm not implementing it
+  	if (type === 'internal') {
+  	internalVars['\\$\\{\\{' + varName + '\\}\\}'] = content;
+  } else if (!type || (type === 'variable' && type !== 'internal')) {
+  	//prettier-ignore
+  	vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] = content;
+  }
+  */
+
+  /*
+  TODO
+  	if (type === VarTypes.CONSTANT) {
+  	constants[]
+  }
+  */
 
 
   vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] = content; // $FlowFixMe
@@ -57,9 +74,18 @@ exports.newVar = function (content, varName) {
   return content;
 };
 
-exports.fetch = function (varName) {
-  // prettier-ignore
-  return vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] !== undefined ? vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] : undefined;
+exports.fetch = function (varName, type) {
+  if (!type || type === 'variable') {
+    return vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'];
+    /*!== undefined
+    ? vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}']
+    : undefined;*/
+  } else if (type === 'internal') {
+    return internalVars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'];
+    /* !== undefined
+    ? internalVars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}']
+    : undefined;*/
+  }
 };
 
 exports.replaceVars = function (string) {
@@ -82,6 +108,6 @@ exports.containsVar = function (string) {
   return string.match(/\$\{\{\s*[a-zA-Z_0-9]+\s*\}\}/g) ? true : false;
 };
 
-exports.newVar(false, 'suppress');
-exports.newVar(false, 'verbose');
-exports.newVar(false, 'suppressAll');
+exports.newVar(false, 'suppress', 'internal');
+exports.newVar(false, 'verbose', 'internal');
+exports.newVar(false, 'suppressAll', 'internal');
