@@ -21,6 +21,8 @@
 // #endregion LICENSE
 
 /* @flow */
+/*eslint prefer-regex-literals:*/
+/*eslint  dot-location:*/
 
 // file used for costant memory across files
 const yaml = require('js-yaml');
@@ -50,21 +52,29 @@ exports.newVar = function(content: ?any, varName: string): string | typeof undef
 		throw new SyntaxError('Invalid character in var name: \'' + varName + '\'.')
 	}
 	//prettier-ignore
-	vars['\\$\\{\\{' + varName + '\\}\\}'] = content;
+	vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] = content;
 	// $FlowFixMe
 	return content;
 };
 
-exports.fetch = function(varName: string = ''): any {
+exports.fetch = function(varName: string): any | typeof undefined {
 	// prettier-ignore
-	return vars['\\$\\{\\{' + varName + '\\}\\}'] !== undefined ? vars['\\$\\{\\{' + varName + '\\}\\}'] : vars
+	return vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] !== undefined
+		? vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}']
+		: undefined;
 };
 
 exports.replaceVars = function(string: string): string {
 	let returnString = string;
 
-	for (let key in vars) {
-		returnString = returnString.replace(new RegExp(key, 'g'), vars[key]);
+	if (exports.containsVar(string)) {
+		for (let key in vars) {
+			returnString = returnString
+				.replace(/\$\{\{\s*/g, '${{')
+				.replace(/\s*\}\}/g, '}}')
+				.replace(new RegExp(key, 'g'), vars[key]);
+		}
+		returnString = returnString.replace(/\$\{\{\s*/g, '').replace(/\s*\}\}/g, '');
 	}
 
 	return returnString;
