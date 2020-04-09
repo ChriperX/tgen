@@ -1,13 +1,13 @@
 use:
-    - 'logic'
-    - 'log'
+  - 'logic'
+  - 'log'
 
 if:
   - 'true':
-        log:
-            default:
-                - 'It should log'
+      log:
+        default:
+          - 'It should log'
 else:
   - log:
-        warning:
-            - 'It shouldn't log'
+      warning:
+        - 'It shouldn't log'
