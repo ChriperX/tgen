@@ -11,6 +11,7 @@
     - [What do i need to install tgen?](#what-do-i-need-to-install-tgen)
     - [What do i need to create plugins?](#what-do-i-need-to-create-plugins)
     - [Ok how do i create my first project with tgen?](#ok-how-do-i-create-my-first-project-with-tgen)
+    - [Compatibility](#compatibility)
  - [Documentation](#documentation)
     - [CLI Commands](#cli-commands)
       - [`start`](#start-template-projname)
@@ -88,6 +89,14 @@ You can install them directly with tgen, or you can put them in /plugins/templat
 You can install templates directly with tgen, or drop them in **/cli/templates/**.
 
 To create templates you need to know how [YAML](https://yaml.org) works, and what [keys](#template-keys-syntax) are and how to use them.
+
+### Compatibility
+
+TGen has been tested and works in the following environments:  
+- Windows (x64)
+- Ubuntu (x64)
+- macOs (x64)  
+With node version: > 10.16.0.
 
 ### Ok how do i create my first project with tgen?
 
