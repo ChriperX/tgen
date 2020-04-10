@@ -129,6 +129,27 @@ tp.add('new <template> <name>', exports.newTemplate, 'Create new project from te
 //alias for new
 tp.add('exec <template> <name>', exports.newTemplate, 'Alias of new.');
 
+tp.add('template <option | path>', (element: any[]) => {
+	if (element[0] === 'list') {
+		// $FlowFixMe
+		let dir = fs.readdirSync(process.env.TGENPATH + '../templates/');
+		console.log(chalk.bold.blueBright('installed templates:'));
+
+		for (let i = 0; i <= dir.length - 1; i++) {
+			logger(dir[i], 'default');
+		}
+	} else {
+		try {
+			// $FlowFixMe
+			fs.copyFileSync(element[0], process.env.TGENPATH + '../templates/' + element[0]);
+		} catch (e) {
+			logger("error: template doesn't exist: " + chalk.bold.whiteBright(element[0]), 'error');
+			return 1;
+		}
+		logger('successfully installed template.', 'success');
+	}
+});
+
 tp.add(
 	'plugin <option> <pluginName>',
 	(element) => {
