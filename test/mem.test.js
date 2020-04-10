@@ -32,9 +32,9 @@ describe('mem', () => {
 			expect(mem.replaceVars('this (is) a ${{test_var }}')).to.be.equal('this (is) a new var');
 		});
 		it('should replace more than one variable', () => {
-			expect(mem.replaceVars('this is a ${{test_var}} ${{ test_var }} ${{ test_var}}')).to.be.equal(
-				'this is a new var new var new var'
-			);
+			expect(
+				mem.replaceVars('this is a ${{test_var}} ${{ test_var }} ${{ test_var}} ${{ this_is_not_a_real_var }}')
+			).to.be.equal('this is a new var new var new var ${{ this_is_not_a_real_var }}');
 		});
 	});
 	describe('containsVar()', () => {
@@ -53,9 +53,6 @@ describe('mem', () => {
 		it("should match even if the numbers aren't at the start", () => {
 			expect(mem.containsVar('${{test23}}')).to.be.true;
 		});
-		it('should match even if the numbers are at the start', () => {
-			expect(mem.containsVar('${{1test}}')).to.be.true;
-		});
 
 		//to be false
 
@@ -64,6 +61,9 @@ describe('mem', () => {
 		});
 		it("shouldn't match with spaces beetween the var name", () => {
 			expect(mem.containsVar('${{this is a test}}')).to.not.be.true;
+		});
+		it('should not match if the numbers are at the start', () => {
+			expect(mem.containsVar('${{1test}}')).to.not.be.true;
 		});
 	});
 });
