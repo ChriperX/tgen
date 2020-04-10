@@ -1,6 +1,6 @@
 {
 	"name": "@nonamenpm/tgen",
-	"version": "1.0.0-prerelease",
+	"version": "1.0.1-prerelease",
 	"description": "",
 	"main": "index.js",
 	"directories": {
@@ -45,6 +45,10 @@
 	"bin": {
 		"tgen": "./cli/index.js"
 	},
-	"os": [ "darwin", "linux", "win32" ],
+	"os": [
+		"darwin",
+		"linux",
+		"win32"
+	],
 	"preferGlobal": true
 }
