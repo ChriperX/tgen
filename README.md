@@ -14,6 +14,7 @@
     - [Compatibility](#compatibility)
  - [Documentation](#documentation)
     - [CLI Commands](#cli-commands)
+      - [`template`](#template-option--path)
       - [`start`](#start-template-projname)
       - [`new`](#new-template-projname)
       - [`exec`](#exec-template-projname)
