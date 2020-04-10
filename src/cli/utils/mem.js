@@ -115,7 +115,7 @@ exports.containsVar = function(string: string): boolean {
 	/*eslint no-unneeded-ternary:*/
 
 	//return string.match(/\$\{\{_?[a-zA-Z-]*\}\}/g) ? true : false;
-	return string.match(/\$\{\{\s*[a-zA-Z_0-9]+\s*\}\}/g) ? true : false;
+	return string.match(/\$\{\{\s*[a-zA-Z_][a-zA-Z_0-9]*\s*\}\}/g) ? true : false;
 };
 
 exports.newVar(false, 'suppress');
