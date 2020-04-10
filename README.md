@@ -133,6 +133,11 @@ Enables verbose logging or suppresses:
 - default;
 - success logs.
 
+#### `template <option | path>`
+
+If `list` is given as an option, it will display all templates installed.  
+If a path to a template is given, it will install the template for use in tgen.
+
 #### `plugin <option> <pluginName>`
 
 Performs an action on `pluginName`.  
