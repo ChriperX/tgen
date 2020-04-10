@@ -99,12 +99,13 @@ exports.replaceVars = function(string: string): string {
 
 	if (exports.containsVar(string)) {
 		for (let key in vars) {
-			returnString = returnString
-				.replace(/\$\{\{\s*/g, '${{')
-				.replace(/\s*\}\}/g, '}}')
-				.replace(new RegExp(key, 'g'), vars[key]);
+			//the keys in vars are stored like this: \$\{\{VAR_NAME\}\}.
+			//So we have to replace the brackets with nothing, otherwise
+			//the regex will not work
+			let parsedKey = key.replace('\\$\\{\\{', '').replace('\\}\\}', '');
+			returnString = returnString.replace(new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'), vars[key]);
 		}
-		returnString = returnString.replace(/\$\{\{\s*/g, '').replace(/\s*\}\}/g, '');
+		//returnString = returnString.replace(/\$\{\{\s*/g, '').replace(/\s*\}\}/g, '');
 	}
 
 	return returnString;
@@ -114,9 +115,9 @@ exports.containsVar = function(string: string): boolean {
 	/*eslint no-unneeded-ternary:*/
 
 	//return string.match(/\$\{\{_?[a-zA-Z-]*\}\}/g) ? true : false;
-	return string.match(/\$\{\{\s*[a-zA-Z_0-9]+\s*\}\}/g) ? true : false;
+	return string.match(/\$\{\{\s*[a-zA-Z_][a-zA-Z_0-9]*\s*\}\}/g) ? true : false;
 };
 
-exports.newVar(false, 'suppress', 'internal');
-exports.newVar(false, 'verbose', 'internal');
-exports.newVar(false, 'suppressAll', 'internal');
+exports.newVar(false, 'suppress');
+exports.newVar(false, 'verbose');
+exports.newVar(false, 'suppressAll');
