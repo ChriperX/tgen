@@ -1,0 +1,27 @@
+use:
+  - logic
+  - prompt
+  - set
+
+set:
+  proj_name:
+    ${{ name }}
+
+if:
+  - "'${{ name }}' === '.'":
+      prompt:
+        "please type a valid name":
+          proj_name
+
+create:
+  - ${{ name }}/cmd/${{ proj_name }}/main.go
+  - ${{ name }}/internal/
+  - ${{ name }}/vendor/
+  - ${{ name }}/scripts/build.sh
+  - ${{ name }}/build/package/
+  - ${{ name }}/build/ci/
+  - ${{ name }}/tools/
+  - ${{ name }}/examples/example.go
+commands:
+  - cd ${{ name }}
+  - git init
