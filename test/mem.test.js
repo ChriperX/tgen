@@ -53,9 +53,6 @@ describe('mem', () => {
 		it("should match even if the numbers aren't at the start", () => {
 			expect(mem.containsVar('${{test23}}')).to.be.true;
 		});
-		it('should match even if the numbers are at the start', () => {
-			expect(mem.containsVar('${{1test}}')).to.be.true;
-		});
 
 		//to be false
 
@@ -64,6 +61,9 @@ describe('mem', () => {
 		});
 		it("shouldn't match with spaces beetween the var name", () => {
 			expect(mem.containsVar('${{this is a test}}')).to.not.be.true;
+		});
+		it('should not match if the numbers are at the start', () => {
+			expect(mem.containsVar('${{1test}}')).to.not.be.true;
 		});
 	});
 });
