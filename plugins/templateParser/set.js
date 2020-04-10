@@ -13,7 +13,7 @@ exports.pluginInfo = {
 exports.templateKeys = {
   set: objStructure => {
     for (const key in objStructure) {
-      mem.newVar(objStructure[key], key);
+      mem.newVar(mem.replaceVars(objStructure[key]), key);
     }
   }
 };

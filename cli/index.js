@@ -111,6 +111,29 @@ tp.add('suppress', () => {
 tp.add('new <template> <name>', exports.newTemplate, 'Create new project from template.'); //alias for new
 
 tp.add('exec <template> <name>', exports.newTemplate, 'Alias of new.');
+tp.add('template <option | path>', element => {
+  if (element[0] === 'list') {
+    // $FlowFixMe
+    let dir = fs.readdirSync(process.env.TGENPATH + '../templates/');
+    console.log(chalk.bold.blueBright('installed templates:'));
+
+    for (let i = 0; i <= dir.length - 1; i++) {
+      logger(dir[i], 'default');
+    }
+  } else {
+    let extension = fs.existsSync(element[0] + '.yml') ? '.yml' : '.yaml';
+
+    try {
+      // $FlowFixMe
+      fs.copyFileSync(element[0] + extension, process.env.TGENPATH + '../templates/' + element[0] + extension);
+    } catch (e) {
+      logger("error: template doesn't exist: " + chalk.bold.whiteBright(element[0] + extension), 'error');
+      return 1;
+    }
+
+    logger('successfully installed template.', 'success');
+  }
+});
 tp.add('plugin <option> <pluginName>', element => {
   if (element[0] === 'info') {
     //load the plugins, if i don't do this the plugins will never load
