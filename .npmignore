@@ -3,6 +3,7 @@ src/
 templates/test.yaml
 templates/test2.yml
 templates/blank.yaml
+templates/color_tests.yml
 test
 examples/
 media/
