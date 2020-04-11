@@ -126,16 +126,20 @@ exports.replaceVarsWithStrings = function(string: ?any): any | typeof undefined 
 				);
 			} else {
 				let parsedKey = key.replace('\\$\\{\\{', '').replace('\\}\\}', '');
-				returnString = returnString.replace(
-					new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'),
-					vars[key]
-				);
+				if (typeof vars[key] === 'string') {
+					// $FlowFixMe
+					returnString = returnString.replace(
+						new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'),
+						"'" + vars[key] + "'"
+					);
+				} else {
+					returnString = returnString.replace(
+						new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'),
+						vars[key]
+					);
+				}
 			}
 		}
-	}
-	if (typeof string === 'string') {
-		// $FlowFixMe
-		returnString = "'" + string + "'";
 	}
 
 	//vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] = newContent;
@@ -146,6 +150,7 @@ exports.replaceVarsWithStrings = function(string: ?any): any | typeof undefined 
 
 exports.replaceVars = function(string: string): string {
 	let returnString = string;
+	/** */
 	if (exports.containsVar(string)) {
 		for (let key in vars) {
 			//the keys in vars are stored like this: \$\{\{VAR_NAME\}\}.
@@ -167,6 +172,7 @@ exports.replaceVars = function(string: string): string {
 				);
 			} else {
 				let parsedKey = key.replace('\\$\\{\\{', '').replace('\\}\\}', '');
+				// if it's only a string or something else, we don't do anything
 				returnString = returnString.replace(
 					new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'),
 					vars[key]
