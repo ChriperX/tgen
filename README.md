@@ -192,10 +192,12 @@ To add a parser plugin you have to create a .js file inside /plugins/parser/:
 //declare the commands object
 //inside commands you have to declare 3 more objects: command, cb, desc
 //these use the text-parser syntax
+const logger = require('../../cli/utils/logger.js')
+
 exports.commands = {
     command: 'foo <message>',
     cb: function(element) {
-        console.log('   ' + element[1])
+        logger(element[0], 'default')
     },
     desc: 'Example command for documentation'
 }
@@ -217,6 +219,8 @@ They can be as **complex** or as **simple** as you want.
 Example:
 
 ```js
+const logger = require('../../cli/utils/logger.js')
+
 //declare templateKeys object. This holds our custom template keys
 exports.templateKeys = {
     log: function(objTree, name, completeObjTree) {
@@ -226,7 +230,7 @@ exports.templateKeys = {
 
         for (var i = 0; i <= objTree.length - 1; i++) {
             //loops through the array inside objTree
-            console.log('   ' + objTree[i])
+            logger(objTree[i])
         }
     }
 }
@@ -237,8 +241,7 @@ This adds a template key called **log** that can be used as it follows:
 
 ```yaml
 log:
-  default:
-    - i am logging to the console with the log template key!
+  - i am logging to the console with the log template key!
 
 ```
 
@@ -438,7 +441,7 @@ prompt:
     'user_name'
 log:
   default:
-    - Hi $(user_name)!
+    - Hi ${{user_name}}!
 ```
 
 ### set
@@ -451,7 +454,7 @@ set:
     'Hi!'
 log:
   default:
-    - $(greetings)
+    - ${{greetings}}
 ```
 
 ### write
