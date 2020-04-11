@@ -115,14 +115,15 @@ exports.replaceVarsWithStrings = function (string) {
         returnString = returnString.replace(new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'), JSON.stringify(vars[key]));
       } else {
         let parsedKey = key.replace('\\$\\{\\{', '').replace('\\}\\}', '');
-        returnString = returnString.replace(new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'), vars[key]);
+
+        if (typeof vars[key] === 'string') {
+          // $FlowFixMe
+          returnString = returnString.replace(new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'), "'" + vars[key] + "'");
+        } else {
+          returnString = returnString.replace(new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'), vars[key]);
+        }
       }
     }
-  }
-
-  if (typeof string === 'string') {
-    // $FlowFixMe
-    returnString = "'" + string + "'";
   } //vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] = newContent;
   // $FlowFixMe
 
@@ -132,6 +133,7 @@ exports.replaceVarsWithStrings = function (string) {
 
 exports.replaceVars = function (string) {
   let returnString = string;
+  /** */
 
   if (exports.containsVar(string)) {
     for (let key in vars) {
@@ -147,7 +149,8 @@ exports.replaceVars = function (string) {
 
         returnString = returnString.replace(new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'), JSON.stringify(vars[key]));
       } else {
-        let parsedKey = key.replace('\\$\\{\\{', '').replace('\\}\\}', '');
+        let parsedKey = key.replace('\\$\\{\\{', '').replace('\\}\\}', ''); // if it's only a string or something else, we don't do anything
+
         returnString = returnString.replace(new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'), vars[key]);
       }
     } //returnString = returnString.replace(/\$\{\{\s*/g, '').replace(/\s*\}\}/g, '');
