@@ -70,6 +70,49 @@ exports.newVar = function (content, varName) {
 
 
   let newContent = content;
+  vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] = newContent; // $FlowFixMe
+
+  return content;
+};
+
+exports.fetch = function (varName, type) {
+  if (!type || type === 'variable') {
+    return vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'];
+    /*!== undefined
+    ? vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}']
+    : undefined;*/
+  } else if (type === 'internal') {
+    return internalVars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'];
+    /* !== undefined
+    ? internalVars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}']
+    : undefined;*/
+  }
+};
+
+exports.newVarWithStrings = function (content, varName) {
+  // prettier-ignore
+  if (!exports.containsVar('${{' + varName + '}}')) {
+    throw new SyntaxError('Invalid character in var name: \'' + varName + '\'.');
+  }
+  /*
+  	! Variable types don't seem to work, so for now i'm not implementing it
+  	if (type === 'internal') {
+  	internalVars['\\$\\{\\{' + varName + '\\}\\}'] = content;
+  } else if (!type || (type === 'variable' && type !== 'internal')) {
+  	//prettier-ignore
+  	vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] = content;
+  }
+  */
+
+  /*
+  TODO
+  	if (type === VarTypes.CONSTANT) {
+  	constants[]
+  }
+  */
+
+
+  let newContent = content;
 
   if (Array.isArray(content)) {
     for (let i in content) {
@@ -88,20 +131,6 @@ exports.newVar = function (content, varName) {
   vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] = newContent; // $FlowFixMe
 
   return content;
-};
-
-exports.fetch = function (varName, type) {
-  if (!type || type === 'variable') {
-    return vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'];
-    /*!== undefined
-    ? vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}']
-    : undefined;*/
-  } else if (type === 'internal') {
-    return internalVars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'];
-    /* !== undefined
-    ? internalVars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}']
-    : undefined;*/
-  }
 };
 
 exports.replaceVars = function (string) {
