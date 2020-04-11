@@ -10,7 +10,7 @@ log:
     - This template doesn't install electron automatically, you have to install it yourself
 
 if:
-  '"${{name}}" === "undefined"':
+  '${{name}} === undefined':
     prompt:
       'Please specify a name for your project.':
         - 'name'

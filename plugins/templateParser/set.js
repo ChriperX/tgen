@@ -13,7 +13,16 @@ exports.pluginInfo = {
 exports.templateKeys = {
   set: objStructure => {
     for (const key in objStructure) {
-      mem.newVar(mem.replaceVars(objStructure[key]), key);
+      if (typeof objStructure[key] === 'object') {
+        for (let i in objStructure[key]) {
+          //mem.newVar(mem.replaceVars(objStructure[key][i]), key);
+          objStructure[key][i] = mem.replaceVars(objStructure[key][i]);
+        }
+      } else {
+        mem.replaceVars(objStructure[key]);
+      }
+
+      mem.newVar(objStructure[key], key);
     }
   }
 };

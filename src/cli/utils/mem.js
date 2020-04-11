@@ -72,7 +72,9 @@ exports.newVar = function(content: ?any, varName: string): string | typeof undef
 	}
 	*/
 
-	vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] = content;
+	let newContent: typeof content = content;
+
+	vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] = newContent;
 
 	// $FlowFixMe
 	return content;
@@ -94,16 +96,88 @@ exports.fetch = function(varName: string, type: ?string): any | typeof undefined
 	}
 };
 
-exports.replaceVars = function(string: string): string {
+exports.replaceVarsWithStrings = function(string: ?any): any | typeof undefined {
 	let returnString = string;
-
 	if (exports.containsVar(string)) {
 		for (let key in vars) {
 			//the keys in vars are stored like this: \$\{\{VAR_NAME\}\}.
 			//So we have to replace the brackets with nothing, otherwise
 			//the regex will not work
-			let parsedKey = key.replace('\\$\\{\\{', '').replace('\\}\\}', '');
-			returnString = returnString.replace(new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'), vars[key]);
+			if (Array.isArray(vars[key])) {
+				//we format correctly the vars that are strings
+				for (let i in vars[key]) {
+					if (typeof vars[key][i] === 'string') {
+						// $FlowFixMe
+						vars[key][i] = "'" + vars[key][i] + "'";
+					}
+				}
+				let parsedKey = key.replace('\\$\\{\\{', '').replace('\\}\\}', '');
+				//adds brackets so users can reference indexes in an object
+				returnString = returnString.replace(
+					new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'),
+					'[' + vars[key] + ']'
+				);
+			} else if (typeof vars[key] === 'object') {
+				let parsedKey = key.replace('\\$\\{\\{', '').replace('\\}\\}', '');
+				//we stringify to add curly braces
+				returnString = returnString.replace(
+					new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'),
+					JSON.stringify(vars[key])
+				);
+			} else {
+				let parsedKey = key.replace('\\$\\{\\{', '').replace('\\}\\}', '');
+				if (typeof vars[key] === 'string') {
+					// $FlowFixMe
+					returnString = returnString.replace(
+						new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'),
+						"'" + vars[key] + "'"
+					);
+				} else {
+					returnString = returnString.replace(
+						new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'),
+						vars[key]
+					);
+				}
+			}
+		}
+	}
+
+	//vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] = newContent;
+
+	// $FlowFixMe
+	return returnString;
+};
+
+exports.replaceVars = function(string: string): string {
+	let returnString = string;
+	/** */
+	if (exports.containsVar(string)) {
+		for (let key in vars) {
+			//the keys in vars are stored like this: \$\{\{VAR_NAME\}\}.
+			//So we have to replace the brackets with nothing, otherwise
+			//the regex will not work
+			if (Array.isArray(vars[key])) {
+				let parsedKey = key.replace('\\$\\{\\{', '').replace('\\}\\}', '');
+				//adds brackets so users can reference indexes in an object
+				returnString = returnString.replace(
+					new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'),
+					'[' + vars[key] + ']'
+				);
+			} else if (typeof vars[key] === 'object') {
+				let parsedKey = key.replace('\\$\\{\\{', '').replace('\\}\\}', '');
+				//we stringify to add curly braces
+				returnString = returnString.replace(
+					new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'),
+					JSON.stringify(vars[key])
+				);
+			} else {
+				let parsedKey = key.replace('\\$\\{\\{', '').replace('\\}\\}', '');
+				// if it's only a string or something else, we don't do anything
+				returnString = returnString.replace(
+					new RegExp('\\$\\{\\{\\s*' + parsedKey + '\\s*\\}\\}', 'g'),
+					vars[key]
+				);
+			}
 		}
 		//returnString = returnString.replace(/\$\{\{\s*/g, '').replace(/\s*\}\}/g, '');
 	}
@@ -114,6 +188,9 @@ exports.replaceVars = function(string: string): string {
 exports.containsVar = function(string: string): boolean {
 	/*eslint no-unneeded-ternary:*/
 
+	if (typeof string !== 'string') {
+		return false;
+	}
 	//return string.match(/\$\{\{_?[a-zA-Z-]*\}\}/g) ? true : false;
 	return string.match(/\$\{\{\s*[a-zA-Z_][a-zA-Z_0-9]*\s*\}\}/g) ? true : false;
 };

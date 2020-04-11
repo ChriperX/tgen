@@ -14,7 +14,7 @@ create:
   - ${{ name }}/.gitignore
 
 if:
-  - "'${{ name }}' === '.'":
+  - "${{ name }} === '.'":
       prompt:
         "please put a valid project name":
           proj_name

@@ -8,7 +8,7 @@ set:
     ${{ name }}
 
 if:
-  - "'${{ name }}' === '.'":
+  - "${{ name }} === '.'":
       prompt:
         "please type a valid name":
           proj_name

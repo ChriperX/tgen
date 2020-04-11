@@ -14,7 +14,7 @@ prompt:
   'Do you want routing? (y/N)':
     'routing'
 if:
-  "'${{routing}}' === 'y'":
+  "${{ routing }} === 'y'":
     create:
       - ${{name}}/src/app/app-routing.module.ts
 
