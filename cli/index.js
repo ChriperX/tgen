@@ -121,13 +121,11 @@ tp.add('template <option | path>', element => {
       logger(dir[i], 'default');
     }
   } else {
-    let extension = fs.existsSync(element[0] + '.yml') ? '.yml' : '.yaml';
-
     try {
       // $FlowFixMe
-      fs.copyFileSync(element[0] + extension, process.env.TGENPATH + '../templates/' + element[0] + extension);
+      fs.copyFileSync(element[0], process.env.TGENPATH + '../templates/' + element[0]);
     } catch (e) {
-      logger("error: template doesn't exist: " + chalk.bold.whiteBright(element[0] + extension), 'error');
+      logger("error: template doesn't exist: " + chalk.bold.whiteBright(element[0]), 'error');
       return 1;
     }
 
