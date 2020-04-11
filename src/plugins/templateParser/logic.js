@@ -82,7 +82,7 @@ exports.templateKeys = {
 
 				try {
 					// evaluate the condition
-					var evaluation = safeEval(mem.replaceVars(key));
+					var evaluation = safeEval(mem.replaceVarsWithStrings(key));
 				} catch (e) {
 					// there may be a reference error or an indentation error in the template
 					logger(
