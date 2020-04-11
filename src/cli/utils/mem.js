@@ -74,19 +74,6 @@ exports.newVar = function(content: ?any, varName: string): string | typeof undef
 
 	let newContent: typeof content = content;
 
-	if (Array.isArray(content)) {
-		for (let i in content) {
-			if (typeof content[i] === 'string') {
-				// $FlowFixMe
-				newContent[i] = "'" + newContent[i] + "'";
-			}
-		}
-	}
-	if (typeof content === 'string') {
-		// $FlowFixMe
-		newContent = "'" + newContent + "'";
-	}
-
 	vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] = newContent;
 
 	// $FlowFixMe
@@ -107,6 +94,52 @@ exports.fetch = function(varName: string, type: ?string): any | typeof undefined
 			? internalVars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}']
 			: undefined;*/
 	}
+};
+
+exports.newVarWithStrings = function(content: ?any, varName: string): any | typeof undefined {
+	// prettier-ignore
+	if (!exports.containsVar('${{' + varName + '}}')) {
+		throw new SyntaxError('Invalid character in var name: \'' + varName + '\'.')
+	}
+	/*
+
+	! Variable types don't seem to work, so for now i'm not implementing it
+
+	if (type === 'internal') {
+		internalVars['\\$\\{\\{' + varName + '\\}\\}'] = content;
+	} else if (!type || (type === 'variable' && type !== 'internal')) {
+		//prettier-ignore
+		vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] = content;
+	}
+	*/
+
+	/*
+	TODO
+
+	if (type === VarTypes.CONSTANT) {
+		constants[]
+	}
+	*/
+
+	let newContent: typeof content = content;
+
+	if (Array.isArray(content)) {
+		for (let i in content) {
+			if (typeof content[i] === 'string') {
+				// $FlowFixMe
+				newContent[i] = "'" + newContent[i] + "'";
+			}
+		}
+	}
+	if (typeof content === 'string') {
+		// $FlowFixMe
+		newContent = "'" + newContent + "'";
+	}
+
+	vars['\\$\\{\\{' + varName.replace(/\s/g, '') + '\\}\\}'] = newContent;
+
+	// $FlowFixMe
+	return content;
 };
 
 exports.replaceVars = function(string: string): string {
